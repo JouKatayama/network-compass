@@ -1,0 +1,7 @@
+# Testing Specifications
+
+- `acceptance-criteria-vs001.md` — complete VS001 acceptance matrix
+- `testing-strategy.md` — test pyramid, tooling, quality gates
+- `e2e-hero-scenario.md` — final human-visible hero flow
+
+NC-001 has a narrower acceptance set defined in `docs/issues/NC-001-repository-foundation.md`.

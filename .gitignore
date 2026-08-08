@@ -1,0 +1,29 @@
+# Node
+node_modules/
+.next/
+coverage/
+playwright-report/
+test-results/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# IDE/OS
+.DS_Store
+.idea/
+.vscode/
+
+# Build/logs
+*.log
+dist/
+build/
