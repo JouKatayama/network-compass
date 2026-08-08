@@ -1,0 +1,26 @@
+{
+  "name": "network-compass",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@10.34.5",
+  "engines": {
+    "node": ">=24 <25",
+    "pnpm": ">=10 <11"
+  },
+  "scripts": {
+    "build:web": "pnpm --filter @network-compass/web build",
+    "dev:api": "uv --directory services/api run uvicorn app.main:app --reload --host 0.0.0.0 --port 8000",
+    "dev:web": "pnpm --filter @network-compass/web dev",
+    "format:js": "prettier --write package.json pnpm-workspace.yaml playwright.config.ts \"apps/web/**/*.{ts,tsx,js,mjs,json,css}\" \"tests/e2e/**/*.{ts,json}\" .github/workflows/ci.yml",
+    "format:check:js": "prettier --check package.json pnpm-workspace.yaml playwright.config.ts \"apps/web/**/*.{ts,tsx,js,mjs,json,css}\" \"tests/e2e/**/*.{ts,json}\" .github/workflows/ci.yml",
+    "lint:web": "pnpm --filter @network-compass/web lint",
+    "test:e2e": "playwright test",
+    "test:web": "pnpm --filter @network-compass/web test",
+    "typecheck:web": "pnpm --filter @network-compass/web typecheck"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.61.1",
+    "prettier": "3.9.6",
+    "typescript": "6.0.3"
+  }
+}

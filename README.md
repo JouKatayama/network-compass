@@ -1,46 +1,109 @@
 # Network Compass
 
-Network Compass is a person-first internal networking product that visualizes an employee's internal network as a **second social memory** and helps them remember people, reconnect dormant ties, discover reachable people, and build meaningful relationships. It also provides a Network Ramp journey for both graduate and experienced new joiners so initial network gaps do not unnecessarily suppress access to people and opportunities.
+Network Compass is a person-first internal networking product. This repository currently contains
+the NC-001 executable foundation: one Next.js web application, one FastAPI modular monolith, and one
+PostgreSQL database. Product screens, domain models, graph logic, recommendations, and production
+authentication are intentionally not part of this foundation.
 
-## Current status
+## Runtime baseline
 
-**Specification complete; implementation begins with Vertical Slice 001 / NC-001.** See `PROJECT_STATUS.md`.
+- Node.js 24 LTS
+- pnpm 10.34.5 via Corepack
+- Python 3.13
+- uv 0.11.16 or a lock-compatible newer uv release
+- Docker with Docker Compose
 
-## Start here
+The JavaScript dependency graph is locked in `pnpm-lock.yaml`; the Python dependency graph is locked
+in `services/api/uv.lock`. Container base images are pinned to the verified multi-architecture
+repository digests used by this scaffold.
 
-For humans: read `docs/index.md` and `docs/product/vision.md`.
+## Quick start with Docker Compose
 
-For Codex: read `AGENTS.md`, then `CODEX_START_HERE.md`, then the relevant issue specification.
+No local Node or Python installation is required for this path.
 
-## Vertical Slice 001
-
-The first slice proves this experience:
-
-`Synthetic facts -> Relationship Engine -> Personal Network Projection -> My Network Graph -> Person Detail -> Relationship Timeline -> 2-hop discovery`
-
-It deliberately excludes Home recommendations, analog-interaction writes, Network Ramp UI, enterprise integrations, admin analytics, ML ranking, and production SSO.
-
-## Approved architecture
-
-Modular monolith: Next.js/React/TypeScript + Sigma.js/Graphology frontend; FastAPI/Python + NetworkX domain logic; PostgreSQL/Alembic persistence; OpenAPI contract; Docker Compose local environment.
-
-See `ARCHITECTURE.md` and `docs/architecture/overview.md`.
-
-## Repository layout target
-
-```text
-network-compass/
-├── AGENTS.md
-├── README.md
-├── CODEX_START_HERE.md
-├── PROJECT_STATUS.md
-├── ARCHITECTURE.md
-├── docs/
-├── apps/web/
-├── services/api/
-├── packages/contracts/
-├── tools/synthetic-data/
-└── tests/e2e/
+```bash
+cp .env.example .env
+docker compose up --build
 ```
 
-NC-001 creates the executable application foundation inside that layout.
+The local services are:
+
+| Service | URL or port | Purpose |
+|---|---|---|
+| Web | <http://localhost:3000> | Minimal NC-001 foundation page |
+| API | <http://localhost:8000/health> | FastAPI liveness endpoint |
+| API docs | <http://localhost:8000/docs> | FastAPI-generated OpenAPI UI |
+| PostgreSQL | `localhost:5432` | Local application database |
+
+Compose waits for PostgreSQL, upgrades the empty Alembic baseline, starts the API, and then starts
+the web application. Stop the stack without deleting its database volume with:
+
+```bash
+docker compose down
+```
+
+## Local development
+
+Install the locked dependencies:
+
+```bash
+corepack pnpm install --frozen-lockfile
+uv --directory services/api sync --frozen
+```
+
+Start PostgreSQL only, then run the applications with reload enabled in separate terminals:
+
+```bash
+docker compose up db
+corepack pnpm dev:web
+uv --directory services/api run uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+```
+
+Copy `.env.example` to `.env` when overriding Compose ports or database settings. Compose reads that
+file automatically. For host-run API commands, export `DATABASE_URL` in the shell when the default
+local URL is not suitable. The checked-in example contains local-only values and no production
+secrets.
+
+## Quality commands
+
+The root `Makefile` provides the common entry points:
+
+| Command | Checks or action |
+|---|---|
+| `make install` | Install both locked dependency graphs |
+| `make start` / `make stop` | Start/build or stop the full Compose stack |
+| `make dev-web` / `make dev-api` | Start one application with reload |
+| `make format` / `make format-check` | Format or verify JS/TS/Python formatting |
+| `make lint` | Run ESLint and Ruff |
+| `make typecheck` | Run TypeScript and mypy |
+| `make test` | Run Vitest and pytest |
+| `make build` | Build the production Next.js application |
+| `make e2e` | Run Playwright smoke tests with local web/API servers |
+| `make check` | Run format, lint, typecheck, unit tests, and web build |
+| `make db-check` | Run `SELECT 1` inside the started API container |
+| `make migrate` / `make migrate-current` | Upgrade or report the Alembic revision |
+
+To run the Playwright smoke directly, install Chromium once and then execute the test:
+
+```bash
+corepack pnpm exec playwright install chromium
+corepack pnpm test:e2e
+```
+
+The test runner starts the local web and API development servers unless
+`PLAYWRIGHT_EXTERNAL_SERVERS=1` is set. CI sets that variable after bringing up the Compose stack.
+
+## Repository layout
+
+```text
+apps/web/          Next.js application and frontend unit tests
+services/api/      FastAPI application, Alembic, and backend tests
+packages/contracts Future generated OpenAPI contracts (no handwritten duplicate contract)
+tests/e2e/         Playwright smoke tests
+docs/              Product and architecture system of record
+```
+
+FastAPI's generated OpenAPI document is the implemented API-contract source. Later issues may
+generate frontend types from it; NC-001 does not add product API schemas.
+
+Read `AGENTS.md`, `PROJECT_STATUS.md`, and the relevant issue specification before implementation.

@@ -1,0 +1,3 @@
+Alembic migrations for the Network Compass modular monolith.
+
+The NC-001 baseline is intentionally empty and creates no domain tables.

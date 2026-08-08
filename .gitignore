@@ -1,17 +1,22 @@
 # Node
 node_modules/
+.pnpm-store/
 .next/
+*.tsbuildinfo
 coverage/
 playwright-report/
 test-results/
 
 # Python
 __pycache__/
+**/__pycache__/
 *.py[cod]
+**/*.py[cod]
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
 .venv/
+.coverage
 
 # Environment
 .env

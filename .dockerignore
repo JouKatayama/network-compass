@@ -1,0 +1,9 @@
+**/.git
+**/.next
+**/.venv
+**/__pycache__
+**/*.tsbuildinfo
+**/coverage
+**/node_modules
+**/playwright-report
+**/test-results

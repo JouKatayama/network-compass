@@ -1,0 +1,90 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  frontend:
+    name: Frontend quality gate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.34.5
+      - uses: actions/setup-node@v4
+        with:
+          cache: pnpm
+          node-version: 24
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm format:check:js
+      - run: pnpm lint:web
+      - run: pnpm typecheck:web
+      - run: pnpm test:web
+      - run: pnpm build:web
+
+  backend:
+    name: Backend quality and database gate
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine@sha256:742f40ea20b9ff2ff31db5458d127452988a2164df9e17441e191f3b72252193
+        env:
+          POSTGRES_DB: network_compass
+          POSTGRES_PASSWORD: network_compass_local
+          POSTGRES_USER: network_compass
+        options: >-
+          --health-cmd "pg_isready -U network_compass -d network_compass"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+        ports:
+          - 5432:5432
+    env:
+      DATABASE_URL: postgresql+psycopg://network_compass:network_compass_local@localhost:5432/network_compass
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+          version: 0.11.16
+      - run: uv --directory services/api sync --frozen
+      - run: uv --directory services/api run ruff format --check .
+      - run: uv --directory services/api run ruff check .
+      - run: uv --directory services/api run mypy app tests
+      - run: uv --directory services/api run pytest
+      - run: uv --directory services/api run alembic upgrade head
+      - run: uv --directory services/api run alembic current
+      - run: uv --directory services/api run python -m app.infrastructure.database
+
+  compose-e2e:
+    name: Docker Compose and Playwright smoke
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.34.5
+      - uses: actions/setup-node@v4
+        with:
+          cache: pnpm
+          node-version: 24
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: docker compose up --build --wait
+      - env:
+          PLAYWRIGHT_EXTERNAL_SERVERS: "1"
+        run: pnpm test:e2e
+      - if: failure()
+        run: docker compose logs --no-color
+      - if: always()
+        run: docker compose down --volumes
