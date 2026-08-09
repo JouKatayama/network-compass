@@ -29,9 +29,11 @@
 
 **Completed:** NC-004 Relationship Engine v0.1 — human-reviewed and accepted at Review Gate A; user-correction semantics are deferred to a later frozen specification.
 
-**Current:** NC-005 Persistence + Demo Reset — implemented and ready for review/CI publication.
+**Completed:** NC-005 Persistence + Demo Reset — human-reviewed, migration/reset verified, and accepted.
 
-Issues NC-006 through NC-010 must not be implemented ahead of their issue unless the active issue requires a minimal boundary explicitly described in its scope.
+**Next:** NC-006 Network Projection Service — not started.
+
+Issues NC-007 through NC-010 must not be implemented ahead of their issue unless the active issue requires a minimal boundary explicitly described in its scope.
 
 ## Review gates
 
