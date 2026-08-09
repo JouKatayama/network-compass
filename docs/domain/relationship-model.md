@@ -54,3 +54,11 @@ Use thresholds/configuration plus minimum elapsed periods to avoid noisy state c
 - large-event co-presence alone gives minimal evidence
 - missing analog data lowers confidence, not relationship strength by fiat
 - user correction is evidence and does not rewrite raw events
+
+## Implemented calibration
+
+NC-004 implements this conceptual model as the immutable version `relationship-v0.1.0`. Exact formula composition, weights, half-lives, thresholds, state precedence, and data-coverage behavior are recorded in `relationship-model-v0.1-config.md`. Calibration changes require a new model version; v0.1.0 values must not change silently.
+
+Raw chat/message volume remains an upstream aggregation responsibility: the engine consumes meaningful active-day/session `InteractionEvent` facts and never message bodies or raw message counts.
+
+The canonical `UserRelationshipFeedback` fact currently records pair and authorship metadata only. Feedback kinds and directional formula semantics remain deferred, as accepted in NC-002; the engine does not invent a positive or negative interpretation and never mutates raw events.

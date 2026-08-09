@@ -3,8 +3,17 @@ from datetime import timedelta
 from uuid import UUID
 
 from app.domain.entities import Person
-from app.domain.enums import HireType, InteractionChannel, InteractionSource, InteractionType
+from app.domain.enums import (
+    HireType,
+    InteractionChannel,
+    InteractionSource,
+    InteractionType,
+    RelationshipState,
+)
 from app.domain.interactions import InteractionEvent
+from app.domain.relationship_engine import RelationshipEngine
+from app.domain.relationships import EvidenceCoverage, RelationshipContext, RelationshipProfile
+from app.domain.value_objects import PersonPair
 from network_compass_synthetic.generator import ORGANIZATION_SPECS, REFERENCE_TIME
 from network_compass_synthetic.models import (
     DatasetSummary,
@@ -106,6 +115,29 @@ def _project_ids(dataset: SyntheticDataset, person_id: UUID) -> set[UUID]:
         for participation in dataset.project_participations
         if participation.person_id == person_id
     }
+
+
+def _relationship_context(
+    dataset: SyntheticDataset,
+    first_person: Person,
+    second_person: Person,
+) -> RelationshipContext:
+    return RelationshipContext(
+        shared_community_count=len(
+            _community_ids(dataset, first_person.id) & _community_ids(dataset, second_person.id)
+        ),
+        shared_activity_count=len(
+            _activity_ids(dataset, first_person.id) & _activity_ids(dataset, second_person.id)
+        ),
+        shared_project_count=len(
+            _project_ids(dataset, first_person.id) & _project_ids(dataset, second_person.id)
+        ),
+        same_primary_organization=(
+            first_person.primary_organization_unit_id is not None
+            and first_person.primary_organization_unit_id
+            == second_person.primary_organization_unit_id
+        ),
+    )
 
 
 def _check(
@@ -651,18 +683,148 @@ def validate_dataset(dataset: SyntheticDataset) -> ValidationReport:
         )
     )
 
-    for scenario in dataset.scenario_expectations:
-        if (
-            scenario.relationship_state_expectation is None
-            and scenario.code != "P001_MIXED_RELATIONSHIPS"
-        ):
-            continue
+    relationship_engine = RelationshipEngine()
+    person_by_id = {person.id: person for person in dataset.people}
+
+    def derive_profile(
+        first_person: Person,
+        second_person: Person,
+        *,
+        coverage: EvidenceCoverage | None = None,
+    ) -> RelationshipProfile | None:
+        return relationship_engine.derive_profile(
+            PersonPair.between(first_person.id, second_person.id),
+            dataset.interaction_events,
+            calculated_at=dataset.generated_at,
+            context=_relationship_context(dataset, first_person, second_person),
+            coverage=coverage,
+        )
+
+    digital_only_profile = derive_profile(people_by_code["P114"], people_by_code["P115"])
+    analog_only_profile = derive_profile(people_by_code["P116"], people_by_code["P117"])
+    community_only_profile = derive_profile(people_by_code["P130"], people_by_code["P137"])
+    activity_only_profile = derive_profile(people_by_code["P140"], people_by_code["P147"])
+    large_event_profile = derive_profile(people_by_code["P120"], people_by_code["P122"])
+    one_sided_profile = derive_profile(people_by_code["P110"], people_by_code["P111"])
+    reciprocal_profile = derive_profile(people_by_code["P112"], people_by_code["P113"])
+    full_coverage_profile = derive_profile(people_by_code["P152"], people_by_code["P153"])
+    missing_analog_profile = derive_profile(
+        people_by_code["P152"],
+        people_by_code["P153"],
+        coverage=EvidenceCoverage(digital=1.0, analog=0.0),
+    )
+    checks.extend(
+        (
+            _check(
+                "RELATIONSHIP_ENGINE_DIGITAL_ONLY_CLOSE",
+                digital_only_profile is not None
+                and digital_only_profile.state is RelationshipState.CLOSE
+                and digital_only_profile.analog_evidence == 0.0,
+                "Digital-only evidence can derive a CLOSE relationship.",
+                actual_state=(
+                    digital_only_profile.state.value if digital_only_profile is not None else None
+                ),
+            ),
+            _check(
+                "RELATIONSHIP_ENGINE_ANALOG_ONLY_CLOSE",
+                analog_only_profile is not None
+                and analog_only_profile.state is RelationshipState.CLOSE
+                and analog_only_profile.digital_evidence == 0.0,
+                "Analog-only evidence can derive a CLOSE relationship.",
+                actual_state=(
+                    analog_only_profile.state.value if analog_only_profile is not None else None
+                ),
+            ),
+            _check(
+                "RELATIONSHIP_ENGINE_CONTEXT_ONLY_NONE",
+                community_only_profile is None and activity_only_profile is None,
+                "Shared community or activity without interaction derives no relationship.",
+            ),
+            _check(
+                "RELATIONSHIP_ENGINE_LARGE_EVENT_MINIMAL",
+                large_event_profile is not None
+                and large_event_profile.state is RelationshipState.NEW
+                and large_event_profile.relationship_strength < 0.05,
+                "Large-event co-presence produces only minimal relationship evidence.",
+                relationship_strength=(
+                    large_event_profile.relationship_strength
+                    if large_event_profile is not None
+                    else None
+                ),
+            ),
+            _check(
+                "RELATIONSHIP_ENGINE_RECIPROCITY",
+                one_sided_profile is not None
+                and reciprocal_profile is not None
+                and one_sided_profile.reciprocity == 0.0
+                and reciprocal_profile.reciprocity > 0.8,
+                "Directional evidence distinguishes one-sided and reciprocal fixtures.",
+                one_sided_reciprocity=(
+                    one_sided_profile.reciprocity if one_sided_profile is not None else None
+                ),
+                reciprocal_reciprocity=(
+                    reciprocal_profile.reciprocity if reciprocal_profile is not None else None
+                ),
+            ),
+            _check(
+                "RELATIONSHIP_ENGINE_MISSING_ANALOG_CONFIDENCE",
+                full_coverage_profile is not None
+                and missing_analog_profile is not None
+                and missing_analog_profile.relationship_strength
+                == full_coverage_profile.relationship_strength
+                and missing_analog_profile.data_confidence < full_coverage_profile.data_confidence,
+                "Missing analog coverage lowers confidence without changing strength.",
+                full_data_confidence=(
+                    full_coverage_profile.data_confidence
+                    if full_coverage_profile is not None
+                    else None
+                ),
+                missing_analog_data_confidence=(
+                    missing_analog_profile.data_confidence
+                    if missing_analog_profile is not None
+                    else None
+                ),
+            ),
+        )
+    )
+
+    if dataset.family == "demo":
+        p001 = people_by_code["P001"]
+        p001_states = {
+            profile.state.value
+            for person_id in interaction_graph[p001.id]
+            if (profile := derive_profile(p001, person_by_id[person_id])) is not None
+        }
+        expected_p001_states = {"CLOSE", "ACTIVE", "WEAK", "DORMANT", "RECONNECTED"}
         checks.append(
-            ValidationCheck(
-                code=f"RELATIONSHIP_ENGINE_{scenario.code}",
-                status="PENDING_NC_004",
-                message="Relationship-state derivation is intentionally deferred to NC-004.",
-                details={"expected_assertion": scenario.expected_assertion},
+            _check(
+                "RELATIONSHIP_ENGINE_P001_MIXED_RELATIONSHIPS",
+                expected_p001_states.issubset(p001_states),
+                "The Relationship Engine derives the required mixed P001 state set.",
+                actual_states=sorted(p001_states),
+                expected_states=sorted(expected_p001_states),
+            )
+        )
+
+    for scenario in dataset.scenario_expectations:
+        if scenario.relationship_state_expectation is None:
+            continue
+        first_person = next(
+            person for person in dataset.people if person.id == scenario.person_ids[0]
+        )
+        second_person = next(
+            person for person in dataset.people if person.id == scenario.person_ids[1]
+        )
+        profile = derive_profile(first_person, second_person)
+        actual_state = profile.state if profile is not None else None
+        checks.append(
+            _check(
+                f"RELATIONSHIP_ENGINE_{scenario.code}",
+                actual_state is scenario.relationship_state_expectation,
+                "The Relationship Engine state matches the scenario expectation.",
+                actual_state=actual_state.value if actual_state is not None else None,
+                expected_state=scenario.relationship_state_expectation.value,
+                model_version=(profile.model_version if profile is not None else None),
             )
         )
 

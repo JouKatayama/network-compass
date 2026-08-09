@@ -2,28 +2,26 @@
 
 Use this repository as a spec-driven implementation project. Do not infer future functionality from the product vision and implement it early.
 
-## Current task
+## Next task
 
-The current implementation task is **NC-003 Synthetic Data Generator**. NC-001 and NC-002 are complete.
+**NC-004 Relationship Engine v0.1 is complete and accepted at Review Gate A.** No implementation issue is currently active. The next issue is **NC-005 Persistence + Demo Reset**.
 
-Read, in order:
+Before starting NC-005, read in order:
 
 1. `AGENTS.md`
 2. `PROJECT_STATUS.md`
-3. `docs/issues/NC-003-synthetic-data-generator.md`
-4. `docs/exec-plans/active/NC-003.md`
-5. `docs/data/synthetic-data-spec.md`
-6. `docs/domain/domain-model.md`
-7. `docs/domain/interaction-event-model.md`
-8. accepted ADRs affecting fact generation and tooling
-9. `tools/synthetic-data/AGENTS.md`
-10. `docs/testing/testing-strategy.md`
+3. `docs/issues/NC-005-persistence-demo-reset.md`
+4. `docs/exec-plans/completed/NC-004.md`
+5. the domain, architecture, privacy, data, and testing specifications affecting persistence and deterministic rebuilds
+6. accepted ADRs affecting the database and source/derived separation
+7. `services/api/AGENTS.md`
+8. `tools/synthetic-data/AGENTS.md`
 
 ## Required operating mode
 
-Before editing, return a short plan containing: files/directories to create or modify, dependency/tooling choices within approved constraints, test strategy, and any unresolved assumption. Do not implement unrelated later issues.
+Before editing, create `docs/exec-plans/active/NC-005.md` and return a short plan containing: files/directories to create or modify, dependency/tooling choices within approved constraints, migration and reset strategy, test strategy, and any unresolved assumption. Do not implement unrelated later issues.
 
-After implementation, report: commands run, acceptance criteria satisfied/not satisfied, files changed, remaining risks/technical debt, and whether NC-003 is ready for human review.
+After implementation, report: commands run, acceptance criteria satisfied/not satisfied, files changed, and remaining risks/technical debt.
 
 ## Runtime baseline
 

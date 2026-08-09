@@ -93,18 +93,26 @@ def test_p001_has_forty_counterparts_and_p067_has_only_expected_two_hop_path(
     assert pair_event_count(demo_dataset, p010.id, p067.id) > 0
 
 
-def test_structural_validation_passes_and_relationship_state_stays_pending(
+def test_structural_and_relationship_engine_validation_passes(
     demo_dataset: SyntheticDataset,
 ) -> None:
     report = validate_dataset(demo_dataset)
 
     assert report.structural_checks_passed
     assert all(check.status != "FAIL" for check in report.checks)
-    pending_codes = {check.code for check in report.checks if check.status == "PENDING_NC_004"}
-    assert pending_codes == {
+    relationship_check_codes = {
+        check.code for check in report.checks if check.code.startswith("RELATIONSHIP_ENGINE_")
+    }
+    assert relationship_check_codes == {
+        "RELATIONSHIP_ENGINE_ANALOG_ONLY_CLOSE",
+        "RELATIONSHIP_ENGINE_CONTEXT_ONLY_NONE",
+        "RELATIONSHIP_ENGINE_DIGITAL_ONLY_CLOSE",
+        "RELATIONSHIP_ENGINE_LARGE_EVENT_MINIMAL",
+        "RELATIONSHIP_ENGINE_MISSING_ANALOG_CONFIDENCE",
         "RELATIONSHIP_ENGINE_P001_MIXED_RELATIONSHIPS",
         "RELATIONSHIP_ENGINE_P018_DORMANT",
         "RELATIONSHIP_ENGINE_P102_RECONNECTED",
+        "RELATIONSHIP_ENGINE_RECIPROCITY",
     }
     passed_codes = {check.code for check in report.checks if check.status == "PASS"}
     assert {

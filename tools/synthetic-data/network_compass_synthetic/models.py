@@ -19,7 +19,7 @@ from app.domain.enums import RelationshipState
 from app.domain.interactions import InteractionEvent
 
 type DatasetFamily = Literal["demo", "edge_cases"]
-type CheckStatus = Literal["PASS", "FAIL", "PENDING_NC_004"]
+type CheckStatus = Literal["PASS", "FAIL"]
 
 
 @dataclass(frozen=True, slots=True)
