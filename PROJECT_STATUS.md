@@ -21,9 +21,11 @@
 
 ## Implementation status
 
-**Current:** NC-001 Repository Foundation — Ready to implement.
+**Completed:** NC-001 Repository Foundation — implemented, published, and accepted to proceed.
 
-Issues NC-002 through NC-010 are specified but must not be implemented ahead of their issue unless NC-001 requires a minimal placeholder explicitly described in its acceptance criteria.
+**Current:** NC-002 Canonical Domain Models — human-reviewed and approved for integration.
+
+Issues NC-003 through NC-010 must not be implemented ahead of their issue unless NC-002 requires a minimal boundary explicitly described in its scope.
 
 ## Review gates
 

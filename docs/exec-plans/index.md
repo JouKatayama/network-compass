@@ -1,3 +1,6 @@
 # Execution Plans
 
-`active/` contains the current issue plan seed; Codex should update the active plan with concrete implementation decisions during the issue if useful. Completed plans can move to `completed/` after human acceptance.
+`active/` contains the current issue plan; Codex should update it with concrete implementation decisions during the issue. Completed plans move to `completed/` after human acceptance.
+
+- Active: `active/NC-002.md`
+- Completed: `completed/NC-001.md`
