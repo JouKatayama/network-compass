@@ -23,6 +23,7 @@ from app.domain.enums import (
     RelationshipState,
     Visibility,
 )
+from app.domain.facts import CanonicalFactSet
 from app.domain.interactions import InteractionEvent
 from app.domain.relationship_config import RELATIONSHIP_MODEL_V1, RelationshipModelConfig
 from app.domain.relationship_engine import RelationshipEngine
@@ -33,6 +34,7 @@ __all__ = [
     "Activity",
     "Community",
     "CommunityMembership",
+    "CanonicalFactSet",
     "Confidence",
     "DurationBucket",
     "EvidenceCoverage",

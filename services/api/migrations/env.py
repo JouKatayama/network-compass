@@ -5,7 +5,8 @@ from logging.config import fileConfig
 from alembic import context
 from sqlalchemy import engine_from_config, pool
 
-from app.infrastructure.database import get_database_url, metadata
+from app.infrastructure.database import get_database_url
+from app.infrastructure.persistence import models as persistence_models
 
 config = context.config
 
@@ -13,7 +14,7 @@ if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
 config.set_main_option("sqlalchemy.url", get_database_url())
-target_metadata = metadata
+target_metadata = persistence_models.Base.metadata
 
 
 def run_migrations_offline() -> None:

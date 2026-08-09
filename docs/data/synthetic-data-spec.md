@@ -30,6 +30,11 @@ Use deterministic seed and datasetVersion. Generator and Relationship Engine mus
 
 Scenario expectations are validation metadata, never source facts. NC-003 reported relationship-state comparisons as pending; beginning with NC-004, validation derives profiles from the facts and compares the expected scenarios through the versioned Relationship Engine.
 
+Beginning with NC-005, the local demo reset generates the fixed dataset in memory, persists only
+canonical facts, and rebuilds `RelationshipProfile` from those persisted facts. Scenario expectations
+and generated relationship states are never loaded into source tables. Repeating the same dataset
+version and seed must replace rows without duplicates or output drift.
+
 ## Required edge cases
 
 Digital-only close; analog-only close; dormant; reconnected; same community/no interaction; same activity/no interaction; large event only; 1:1 lunch; one-sided digital; reciprocal; old project; missing analog; new joiner; no network; multiple org context; duplicate analog entry; long names; missing avatar.

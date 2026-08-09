@@ -16,6 +16,13 @@ CI must run formatting/lint, typecheck, backend tests, frontend tests/build, and
 
 Prefer state/transform/controller tests over brittle WebGL pixel assertions. Use deterministic layout seed and selected screenshot regression states when graph implementation exists.
 
+## Persistence and reset testing
+
+Use fast isolated SQLAlchemy repository tests for mapping, constraints, context visibility, source/
+derived separation, repeatability, and transaction rollback. CI additionally runs Alembic and the
+deterministic demo reset twice against PostgreSQL, then checks that ORM metadata has no uncommitted
+migration diff. Docker Compose remains the executable integration boundary.
+
 ## Merge rule
 
 Green tests are necessary but not sufficient. Acceptance criteria, architecture/privacy compliance, and human UX review are also required.

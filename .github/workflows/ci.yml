@@ -64,6 +64,9 @@ jobs:
       - run: uv --directory services/api run pytest
       - run: make synthetic-demo
       - run: uv --directory services/api run alembic upgrade head
+      - run: make demo-reset-host
+      - run: make demo-reset-host
+      - run: uv --directory services/api run alembic check
       - run: uv --directory services/api run alembic current
       - run: uv --directory services/api run python -m app.infrastructure.database
 
