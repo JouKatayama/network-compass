@@ -77,5 +77,6 @@ A task is complete only when acceptance criteria are satisfied, tests/lint/typec
 - Testing: `docs/testing/index.md`
 - Issues: `docs/issues/index.md`
 - Codex workflow: `docs/codex/index.md`
-- No active plan: NC-001 through NC-010 and VS001 are completed. Future work requires a new frozen
-  issue/specification; the final plan is `docs/exec-plans/completed/NC-010.md`.
+- No active plan: NC-001 through NC-010 and VS001 are completed. NC-011 specifications are draft and
+  implementation is blocked until the pre-implementation Review Gate freezes them; the final
+  implementation plan remains `docs/exec-plans/completed/NC-010.md`.

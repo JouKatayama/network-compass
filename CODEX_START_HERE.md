@@ -5,14 +5,15 @@ Use this repository as a spec-driven implementation project. Do not infer future
 ## Active task
 
 **No implementation task is active.** NC-010 received a human GO decision on 2026-08-09 and VS001
-is complete. The final plan is `docs/exec-plans/completed/NC-010.md` and the accepted evidence is
-`docs/testing/vs001-acceptance-matrix.md`.
+is complete. NC-011 Analog Interaction Capture specifications are drafted but await the human
+pre-implementation Review Gate; no active execution plan may be created before freeze approval.
 
 Before any future implementation, read in order:
 
 1. `AGENTS.md`
 2. `PROJECT_STATUS.md`
-3. the new frozen issue/specification supplied for that work
+3. the new frozen issue/specification supplied for that work; NC-011 drafts do not qualify until
+   their Review Gate decision is recorded
 4. `docs/exec-plans/completed/NC-010.md`
 5. the accepted VS001 matrix and every product/domain/UX/architecture specification referenced by
    the new issue

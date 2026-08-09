@@ -38,3 +38,20 @@ Evaluate all VS001 acceptance criteria, hero E2E, performance/error states, and 
 Detail/UX requirements to accepted passing evidence in `docs/testing/vs001-acceptance-matrix.md`.
 VS001 is complete. This decision does not approve production launch or authorize future
 product-slice scope.
+
+## NC-011 Pre-implementation Specification Review Gate
+
+Review the draft Analog Interaction Capture specification before any implementation. Confirm:
+
+- one capture is current user + exactly one other person, preventing third-party relationship claims
+- the seven analog types and required SHORT/MEDIUM/LONG duration mapping are sufficient
+- occurrence time defaults to now and is bounded to 30 days past with future values rejected
+- self-reported confidence is server-owned `1.0`, initiator stays unknown, and
+  `relationship-v0.1.0` is not recalibrated
+- event insert and affected-pair profile upsert are atomic and idempotent
+- capture stays in Person Detail, preserves focus/graph mental map, and targets <=10 seconds
+- `また話したい`, user correction, multi-person capture, inferred reconciliation, recommendations,
+  and later product/production scope are correctly deferred
+
+**Decision:** Pending human review. Approval freezes the NC-011 UX/domain/API/acceptance documents
+as v0.1 and permits creation of an active execution plan. It does not itself start implementation.
