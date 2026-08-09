@@ -12,12 +12,13 @@ COPY --from=uv /uv /uvx /bin/
 
 WORKDIR /app
 
-COPY pyproject.toml uv.lock ./
+COPY services/api/pyproject.toml services/api/uv.lock ./
 RUN uv sync --frozen --no-dev --no-install-project
 
-COPY alembic.ini ./
-COPY migrations ./migrations
-COPY app ./app
+COPY services/api/alembic.ini ./
+COPY services/api/migrations ./migrations
+COPY services/api/app ./app
+COPY tools/synthetic-data/network_compass_synthetic ./network_compass_synthetic
 
 EXPOSE 8000
 

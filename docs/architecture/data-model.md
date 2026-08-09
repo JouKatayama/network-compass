@@ -31,3 +31,14 @@ Aggregates current-user-relative connection summary, mutual connections, common 
 ## Persistence invariants
 
 Normalize person-pair order and make it unique. Interaction participants should be relational, not only JSON. Derived models must include calculation/model version where relevant.
+
+## Implemented persistence boundary
+
+NC-005 stores canonical fact entities in normalized PostgreSQL tables. Interaction participants and
+person external identifiers use relational child tables. `RelationshipProfile` is stored separately
+as a replaceable materialization with a canonical person-pair primary key, complete explainable
+decomposition, `modelVersion`, and `calculatedAt`.
+
+The deterministic demo reset replaces source facts and then rebuilds profiles in one transaction.
+Rebuilding or clearing derived profiles does not rewrite `InteractionEvent` or other source facts.
+Private activity declarations are excluded from shared activity context during materialization.
