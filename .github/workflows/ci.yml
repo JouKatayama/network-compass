@@ -23,6 +23,7 @@ jobs:
           cache: pnpm
           node-version: 24
       - run: pnpm install --frozen-lockfile
+      - run: pnpm api-types:check
       - run: pnpm format:check:js
       - run: pnpm lint:web
       - run: pnpm typecheck:web
@@ -92,6 +93,8 @@ jobs:
       - run: pnpm install --frozen-lockfile
       - run: pnpm exec playwright install --with-deps chromium
       - run: docker compose up --build --wait
+      - run: docker compose exec -T api alembic upgrade head
+      - run: docker compose exec -T api python -m app.commands.demo_reset --family demo
       - env:
           PLAYWRIGHT_EXTERNAL_SERVERS: "1"
         run: pnpm test:e2e

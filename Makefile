@@ -1,4 +1,4 @@
-.PHONY: build check db-check demo-reset demo-reset-host dev-api dev-web e2e format format-check install lint migrate migrate-current openapi openapi-check projection-review-p001 start stop synthetic-demo synthetic-edge-cases test typecheck
+.PHONY: api-types api-types-check build check db-check demo-reset demo-reset-host dev-api dev-web e2e format format-check install lint migrate migrate-current openapi openapi-check projection-review-p001 start stop synthetic-demo synthetic-edge-cases test typecheck
 
 install:
 	corepack pnpm install --frozen-lockfile
@@ -70,10 +70,16 @@ openapi:
 openapi-check:
 	uv --directory services/api run python -m app.commands.export_openapi --check
 
+api-types:
+	corepack pnpm api-types
+
+api-types-check:
+	corepack pnpm api-types:check
+
 migrate:
 	docker compose exec -T api alembic upgrade head
 
 migrate-current:
 	docker compose exec -T api alembic current
 
-check: format-check lint typecheck test openapi-check build
+check: format-check lint typecheck test openapi-check api-types-check build

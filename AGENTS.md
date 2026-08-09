@@ -77,4 +77,4 @@ A task is complete only when acceptance criteria are satisfied, tests/lint/typec
 - Testing: `docs/testing/index.md`
 - Issues: `docs/issues/index.md`
 - Codex workflow: `docs/codex/index.md`
-- Active NC-007 plan: `docs/exec-plans/active/NC-007.md`; NC-006 is completed and accepted at Review Gate B.
+- Active NC-008 plan: `docs/exec-plans/active/NC-008.md`; NC-007 is completed, human-reviewed, and merged.

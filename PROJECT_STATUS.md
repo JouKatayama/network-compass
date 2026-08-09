@@ -33,9 +33,13 @@
 
 **Completed:** NC-006 Network Projection Service — human-reviewed and accepted at Review Gate B.
 
-**Awaiting review:** NC-007 API v0.1 — implemented and fully verified on `feat/nc-007-api-v01`. The active execution plan and evidence are in `docs/exec-plans/active/NC-007.md`. Do not start NC-008 before NC-007 review acceptance.
+**Completed:** NC-007 API v0.1 — human-reviewed, CI-verified, and merged as PR #6.
 
-Issues NC-007 through NC-010 must not be implemented ahead of their issue unless the active issue requires a minimal boundary explicitly described in its scope.
+**Awaiting review:** NC-008 Frontend Shell + Graph Foundation — implemented and fully verified on
+`feat/nc-008-frontend-graph-foundation`. Review the P001 screenshot and `/network` interaction using
+`docs/exec-plans/active/NC-008.md`; do not start NC-009 before Human UI Review acceptance.
+
+Issues NC-008 through NC-010 must not be implemented ahead of their issue unless the active issue requires a minimal boundary explicitly described in its scope.
 
 ## Review gates
 
