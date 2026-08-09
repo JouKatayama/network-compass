@@ -1,7 +1,8 @@
 # Vertical Slice 001 Final Acceptance Matrix
 
-**Assessment:** GO recommended for accepting VS001 as the coherent internal-demo vertical slice.
-This is not a production-launch approval and does not include production SSO or later product areas.
+**Decision:** GO approved on 2026-08-09. VS001 is accepted as the coherent internal-demo vertical
+slice. This is not a production-launch approval and does not include production SSO or later product
+areas.
 
 ## Backend/domain
 
@@ -99,11 +100,12 @@ This is not a production-launch approval and does not include production SSO or 
   regressions are guarded by deterministic graph transforms/controller assertions, semantic E2E
   checks, and the checked-in human-review artifacts.
 
-## Go/No-Go recommendation
+## Go/No-Go decision
 
-**GO** for VS001 acceptance. All 48 named backend/synthetic/API/graph acceptance criteria pass, the
+**GO accepted** for VS001. All 48 named backend/synthetic/API/graph acceptance criteria pass, the
 Person Detail/UX requirements pass, and the factual hero journey is green against the real Docker
-stack. No unresolved privacy, architecture, contract, or product-coherence blocker remains.
+stack. The human reviewer confirmed that no unresolved privacy, architecture, contract, or
+product-coherence blocker remains for this slice.
 
 Remaining boundaries are not VS001 failures: production SSO, user-correction semantics, later
 Home/Recommendation/Analog/Network Health/Network Ramp slices, production observability, and

@@ -34,7 +34,7 @@ hardening. PR #8 was squash-merged as `3280d10`.
 
 Evaluate all VS001 acceptance criteria, hero E2E, performance/error states, and known technical debt. Future Home/Recommendation/Analog/Ramp work begins only after this slice is coherent.
 
-**Candidate recommendation:** GO. NC-010 maps all 48 numbered VS001 criteria and the Person
-Detail/UX requirements to passing evidence in `docs/testing/vs001-acceptance-matrix.md`. Human
-Go/No-Go decision remains open; this recommendation does not approve production launch or future
+**Decision:** GO approved on 2026-08-09. NC-010 maps all 48 numbered VS001 criteria and the Person
+Detail/UX requirements to accepted passing evidence in `docs/testing/vs001-acceptance-matrix.md`.
+VS001 is complete. This decision does not approve production launch or authorize future
 product-slice scope.
