@@ -29,7 +29,8 @@ from app.domain.value_objects import Confidence, ExternalIdentifier
 from network_compass_synthetic.models import DatasetFamily, ScenarioExpectation, SyntheticDataset
 
 DEFAULT_SEED = 20_260_809
-DEMO_VERSION = "demo-v0.1.0"
+DEMO_VERSION = "demo-v0.1.1"
+DEMO_ID_VERSION = "demo-v0.1.0"
 EDGE_CASES_VERSION = "edge-cases-v0.1.0"
 REFERENCE_TIME = datetime(2026, 8, 9, 12, tzinfo=UTC)
 UUID_NAMESPACE = UUID("f4526691-e3cd-5d9d-931c-283b814a9f4f")
@@ -105,6 +106,7 @@ class _DemoBuilder:
     def __init__(self, seed: int) -> None:
         self.seed = seed
         self.version = DEMO_VERSION
+        self.id_version = DEMO_ID_VERSION
         self.organization_units = self._build_organization_units()
         self.organization_by_code = {
             specification.code: organization
@@ -151,7 +153,7 @@ class _DemoBuilder:
         )
 
     def _id(self, kind: str, code: str) -> UUID:
-        return _stable_id(self.seed, self.version, kind, code)
+        return _stable_id(self.seed, self.id_version, kind, code)
 
     def _build_organization_units(self) -> tuple[OrganizationUnit, ...]:
         return tuple(
@@ -231,7 +233,7 @@ class _DemoBuilder:
             Skill(self._id("skill", f"S{index:02d}"), name)
             for index, name in enumerate(SKILL_NAMES, start=1)
         )
-        self.projects = tuple(
+        standard_projects = tuple(
             ProjectContext(
                 id=self._id("project", f"PR{index:02d}"),
                 name=f"Synthetic Project {index:02d}",
@@ -241,6 +243,15 @@ class _DemoBuilder:
                 ),
             )
             for index in range(1, 13)
+        )
+        self.projects = (
+            *standard_projects,
+            ProjectContext(
+                id=self._id("project", "PR13"),
+                name="Synthetic Project 13",
+                started_at=REFERENCE_TIME - timedelta(days=600),
+                ended_at=REFERENCE_TIME - timedelta(days=300),
+            ),
         )
 
         for index, person in enumerate(self.people, start=1):
@@ -283,7 +294,7 @@ class _DemoBuilder:
             self._ensure_person_skill(experienced_joiner, skill)
 
         participation_keys: set[tuple[UUID, UUID]] = set()
-        for project_index, project in enumerate(self.projects, start=1):
+        for project_index, project in enumerate(standard_projects, start=1):
             for offset in range(12):
                 person_index = ((project_index * 17 + offset * 13) % 249) + 1
                 person = self.people[person_index - 1]
@@ -303,7 +314,24 @@ class _DemoBuilder:
                     )
                 )
 
-        cross_unit_project = self.projects[-1]
+        dormant_project = self.projects[12]
+        for code in ("P001", "P018"):
+            person = self.person_by_code[code]
+            dormant_project_key = (person.id, dormant_project.id)
+            self.project_participations.append(
+                ProjectParticipation(
+                    person_id=person.id,
+                    project_id=dormant_project.id,
+                    started_at=max(
+                        dormant_project.started_at,
+                        person.joined_at + timedelta(days=1),
+                    ),
+                    ended_at=dormant_project.ended_at,
+                )
+            )
+            participation_keys.add(dormant_project_key)
+
+        cross_unit_project = self.projects[11]
         for code in ("P160", "P161"):
             person = self.person_by_code[code]
             key = (person.id, cross_unit_project.id)
@@ -320,7 +348,7 @@ class _DemoBuilder:
                 )
                 participation_keys.add(key)
 
-        cohort_project = self.projects[-1]
+        cohort_project = self.projects[11]
         for code in ("P201", *(_person_code(index) for index in range(203, 211))):
             person = self.person_by_code[code]
             key = (person.id, cohort_project.id)
@@ -338,7 +366,7 @@ class _DemoBuilder:
             )
             participation_keys.add(key)
 
-        for project in self.projects[-4:-1]:
+        for project in self.projects[8:11]:
             key = (experienced_joiner.id, project.id)
             if key in participation_keys:
                 continue
@@ -469,6 +497,7 @@ class _DemoBuilder:
         second_code: str,
         days: tuple[int, ...],
         channels: tuple[InteractionChannel, ...],
+        project_id: UUID | None = None,
     ) -> None:
         for index, days_ago in enumerate(days, start=1):
             channel = channels[(index - 1) % len(channels)]
@@ -484,6 +513,7 @@ class _DemoBuilder:
                 source=(InteractionSource.SELF_REPORTED if is_analog else InteractionSource.SYSTEM),
                 confidence=0.9 if is_analog else 0.8,
                 duration_bucket=DurationBucket.MEDIUM,
+                project_id=project_id,
                 initiator_code=first_code,
                 created_by_code=first_code if is_analog else None,
             )
@@ -498,6 +528,7 @@ class _DemoBuilder:
                     second_code=target_code,
                     days=(570, 500, 440, 380, 330),
                     channels=(InteractionChannel.DIGITAL, InteractionChannel.ANALOG),
+                    project_id=self.projects[12].id,
                 )
             elif 2 <= target_index <= 9:
                 self._add_pair_series(

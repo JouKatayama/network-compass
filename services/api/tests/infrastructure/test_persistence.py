@@ -91,6 +91,14 @@ def test_fact_repository_round_trips_people_and_relational_interactions(
         repository.replace_all(_canonical_facts(dataset))
         people = repository.list_people()
         organization_units = repository.list_organization_units()
+        communities = repository.list_communities()
+        memberships = repository.list_community_memberships()
+        activities = repository.list_activities()
+        person_activities = repository.list_person_activities()
+        skills = repository.list_skills()
+        person_skills = repository.list_person_skills()
+        projects = repository.list_projects()
+        participations = repository.list_project_participations()
         events = repository.list_interaction_events()
         counts = repository.counts()
 
@@ -98,6 +106,22 @@ def test_fact_repository_round_trips_people_and_relational_interactions(
         person.id: person for person in dataset.people
     }
     assert organization_units == tuple(sorted(dataset.organization_units, key=lambda item: item.id))
+    assert communities == tuple(sorted(dataset.communities, key=lambda item: item.id))
+    assert memberships == tuple(
+        sorted(dataset.community_memberships, key=lambda item: (item.person_id, item.community_id))
+    )
+    assert activities == tuple(sorted(dataset.activities, key=lambda item: item.id))
+    assert person_activities == tuple(
+        sorted(dataset.person_activities, key=lambda item: (item.person_id, item.activity_id))
+    )
+    assert skills == tuple(sorted(dataset.skills, key=lambda item: item.id))
+    assert person_skills == tuple(
+        sorted(dataset.person_skills, key=lambda item: (item.person_id, item.skill_id))
+    )
+    assert projects == tuple(sorted(dataset.projects, key=lambda item: item.id))
+    assert participations == tuple(
+        sorted(dataset.project_participations, key=lambda item: (item.person_id, item.project_id))
+    )
     assert {event.id: event for event in events} == {
         event.id: event for event in dataset.interaction_events
     }

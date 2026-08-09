@@ -62,6 +62,7 @@ jobs:
       - run: uv --directory services/api run ruff check . ../../tools/synthetic-data
       - run: uv --directory services/api run mypy app tests ../../tools/synthetic-data/network_compass_synthetic ../../tools/synthetic-data/tool_tests
       - run: uv --directory services/api run pytest
+      - run: make openapi-check
       - run: make synthetic-demo
       - run: uv --directory services/api run alembic upgrade head
       - run: make demo-reset-host

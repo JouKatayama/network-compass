@@ -1,0 +1,1225 @@
+{
+  "components": {
+    "schemas": {
+      "CommonContextSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "activities": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/NamedContextSchema"
+            },
+            "title": "Activities",
+            "type": "array"
+          },
+          "communities": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/NamedContextSchema"
+            },
+            "title": "Communities",
+            "type": "array"
+          },
+          "mutualConnections": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/PersonIdentitySchema"
+            },
+            "title": "Mutualconnections",
+            "type": "array"
+          },
+          "projects": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/NamedContextSchema"
+            },
+            "title": "Projects",
+            "type": "array"
+          },
+          "skills": {
+            "default": [],
+            "items": {
+              "$ref": "#/components/schemas/NamedContextSchema"
+            },
+            "title": "Skills",
+            "type": "array"
+          }
+        },
+        "title": "CommonContextSchema",
+        "type": "object"
+      },
+      "ConnectionType": {
+        "enum": [
+          "SELF",
+          "DIRECT",
+          "TWO_HOP",
+          "NONE"
+        ],
+        "title": "ConnectionType",
+        "type": "string"
+      },
+      "ErrorDetailSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "code": {
+            "title": "Code",
+            "type": "string"
+          },
+          "message": {
+            "title": "Message",
+            "type": "string"
+          },
+          "requestId": {
+            "title": "Requestid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "requestId"
+        ],
+        "title": "ErrorDetailSchema",
+        "type": "object"
+      },
+      "ErrorResponseSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "error": {
+            "$ref": "#/components/schemas/ErrorDetailSchema"
+          }
+        },
+        "required": [
+          "error"
+        ],
+        "title": "ErrorResponseSchema",
+        "type": "object"
+      },
+      "GraphClusterSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "title": "Id",
+            "type": "string"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "memberCount": {
+            "exclusiveMinimum": 0.0,
+            "title": "Membercount",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "label",
+          "memberCount"
+        ],
+        "title": "GraphClusterSchema",
+        "type": "object"
+      },
+      "GraphEdgeOpacity": {
+        "enum": [
+          "MUTED",
+          "LOW",
+          "MEDIUM",
+          "HIGH"
+        ],
+        "title": "GraphEdgeOpacity",
+        "type": "string"
+      },
+      "GraphEdgeStyle": {
+        "enum": [
+          "SOLID",
+          "DASHED",
+          "DOTTED"
+        ],
+        "title": "GraphEdgeStyle",
+        "type": "string"
+      },
+      "GraphEdgeType": {
+        "enum": [
+          "DIRECT",
+          "POTENTIAL_PATH"
+        ],
+        "title": "GraphEdgeType",
+        "type": "string"
+      },
+      "GraphEdgeWidth": {
+        "enum": [
+          "MUTED",
+          "THIN",
+          "MEDIUM",
+          "THICK"
+        ],
+        "title": "GraphEdgeWidth",
+        "type": "string"
+      },
+      "GraphPersonNodeSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "avatarUrl": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avatarurl"
+          },
+          "clusterId": {
+            "title": "Clusterid",
+            "type": "string"
+          },
+          "displayName": {
+            "title": "Displayname",
+            "type": "string"
+          },
+          "hop": {
+            "maximum": 2.0,
+            "minimum": 0.0,
+            "title": "Hop",
+            "type": "integer"
+          },
+          "isPotential": {
+            "title": "Ispotential",
+            "type": "boolean"
+          },
+          "mutualConnectionIds": {
+            "anyOf": [
+              {
+                "items": {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mutualconnectionids"
+          },
+          "personId": {
+            "format": "uuid",
+            "title": "Personid",
+            "type": "string"
+          },
+          "relationshipState": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RelationshipState"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "relevance": {
+            "maximum": 1.0,
+            "minimum": 0.0,
+            "title": "Relevance",
+            "type": "number"
+          },
+          "shortRole": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Shortrole"
+          },
+          "shortestPaths": {
+            "anyOf": [
+              {
+                "items": {
+                  "items": {
+                    "format": "uuid",
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Shortestpaths"
+          }
+        },
+        "required": [
+          "personId",
+          "displayName",
+          "shortRole",
+          "avatarUrl",
+          "hop",
+          "clusterId",
+          "relevance",
+          "isPotential"
+        ],
+        "title": "GraphPersonNodeSchema",
+        "type": "object"
+      },
+      "GraphProjectionMetaSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "expandedFromPersonIds": {
+            "default": [],
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "title": "Expandedfrompersonids",
+            "type": "array"
+          },
+          "generatedAt": {
+            "format": "date-time",
+            "title": "Generatedat",
+            "type": "string"
+          },
+          "hops": {
+            "maximum": 2.0,
+            "minimum": 1.0,
+            "title": "Hops",
+            "type": "integer"
+          },
+          "lens": {
+            "title": "Lens",
+            "type": "string"
+          },
+          "oneHopCount": {
+            "maximum": 24.0,
+            "minimum": 0.0,
+            "title": "Onehopcount",
+            "type": "integer"
+          },
+          "projectionVersion": {
+            "title": "Projectionversion",
+            "type": "string"
+          },
+          "softLimitExceeded": {
+            "default": false,
+            "title": "Softlimitexceeded",
+            "type": "boolean"
+          },
+          "totalNetworkSize": {
+            "minimum": 0.0,
+            "title": "Totalnetworksize",
+            "type": "integer"
+          },
+          "twoHopCount": {
+            "maximum": 12.0,
+            "minimum": 0.0,
+            "title": "Twohopcount",
+            "type": "integer"
+          },
+          "visibleNodeCount": {
+            "maximum": 80.0,
+            "minimum": 1.0,
+            "title": "Visiblenodecount",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "lens",
+          "hops",
+          "totalNetworkSize",
+          "visibleNodeCount",
+          "oneHopCount",
+          "twoHopCount",
+          "projectionVersion",
+          "generatedAt"
+        ],
+        "title": "GraphProjectionMetaSchema",
+        "type": "object"
+      },
+      "GraphProjectionSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "clusters": {
+            "items": {
+              "$ref": "#/components/schemas/GraphClusterSchema"
+            },
+            "title": "Clusters",
+            "type": "array"
+          },
+          "edges": {
+            "items": {
+              "$ref": "#/components/schemas/GraphRelationshipEdgeSchema"
+            },
+            "title": "Edges",
+            "type": "array"
+          },
+          "focalPersonId": {
+            "format": "uuid",
+            "title": "Focalpersonid",
+            "type": "string"
+          },
+          "meta": {
+            "$ref": "#/components/schemas/GraphProjectionMetaSchema"
+          },
+          "nodes": {
+            "items": {
+              "$ref": "#/components/schemas/GraphPersonNodeSchema"
+            },
+            "title": "Nodes",
+            "type": "array"
+          }
+        },
+        "required": [
+          "focalPersonId",
+          "nodes",
+          "edges",
+          "clusters",
+          "meta"
+        ],
+        "title": "GraphProjectionSchema",
+        "type": "object"
+      },
+      "GraphRelationshipEdgeSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "currentActivation": {
+            "anyOf": [
+              {
+                "maximum": 1.0,
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Currentactivation"
+          },
+          "edgeType": {
+            "$ref": "#/components/schemas/GraphEdgeType"
+          },
+          "opacity": {
+            "$ref": "#/components/schemas/GraphEdgeOpacity"
+          },
+          "relationshipState": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RelationshipState"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "relationshipStrength": {
+            "anyOf": [
+              {
+                "maximum": 1.0,
+                "minimum": 0.0,
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Relationshipstrength"
+          },
+          "sourcePersonId": {
+            "format": "uuid",
+            "title": "Sourcepersonid",
+            "type": "string"
+          },
+          "style": {
+            "$ref": "#/components/schemas/GraphEdgeStyle"
+          },
+          "targetPersonId": {
+            "format": "uuid",
+            "title": "Targetpersonid",
+            "type": "string"
+          },
+          "width": {
+            "$ref": "#/components/schemas/GraphEdgeWidth"
+          }
+        },
+        "required": [
+          "sourcePersonId",
+          "targetPersonId",
+          "edgeType",
+          "width",
+          "opacity",
+          "style"
+        ],
+        "title": "GraphRelationshipEdgeSchema",
+        "type": "object"
+      },
+      "HealthResponse": {
+        "properties": {
+          "status": {
+            "const": "ok",
+            "default": "ok",
+            "title": "Status",
+            "type": "string"
+          }
+        },
+        "title": "HealthResponse",
+        "type": "object"
+      },
+      "NamedContextSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "format": "uuid",
+            "title": "Id",
+            "type": "string"
+          },
+          "name": {
+            "title": "Name",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ],
+        "title": "NamedContextSchema",
+        "type": "object"
+      },
+      "PersonDetailSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "commonContext": {
+            "$ref": "#/components/schemas/CommonContextSchema"
+          },
+          "connectionPaths": {
+            "items": {
+              "items": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "title": "Connectionpaths",
+            "type": "array"
+          },
+          "person": {
+            "$ref": "#/components/schemas/PersonIdentitySchema"
+          },
+          "relationship": {
+            "$ref": "#/components/schemas/RelationshipSummarySchema"
+          },
+          "timeline": {
+            "items": {
+              "$ref": "#/components/schemas/TimelineItemSchema"
+            },
+            "title": "Timeline",
+            "type": "array"
+          }
+        },
+        "required": [
+          "person",
+          "relationship",
+          "timeline",
+          "commonContext",
+          "connectionPaths"
+        ],
+        "title": "PersonDetailSchema",
+        "type": "object"
+      },
+      "PersonIdentitySchema": {
+        "additionalProperties": false,
+        "properties": {
+          "avatarUrl": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Avatarurl"
+          },
+          "displayName": {
+            "title": "Displayname",
+            "type": "string"
+          },
+          "location": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Location"
+          },
+          "organization": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/NamedContextSchema"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "personId": {
+            "format": "uuid",
+            "title": "Personid",
+            "type": "string"
+          },
+          "role": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Role"
+          }
+        },
+        "required": [
+          "personId",
+          "displayName",
+          "role",
+          "organization",
+          "location",
+          "avatarUrl"
+        ],
+        "title": "PersonIdentitySchema",
+        "type": "object"
+      },
+      "PersonSearchPageSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/PersonSearchResultSchema"
+            },
+            "title": "Items",
+            "type": "array"
+          },
+          "nextCursor": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Nextcursor"
+          }
+        },
+        "required": [
+          "items",
+          "nextCursor"
+        ],
+        "title": "PersonSearchPageSchema",
+        "type": "object"
+      },
+      "PersonSearchResultSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "commonContext": {
+            "$ref": "#/components/schemas/CommonContextSchema"
+          },
+          "connectionPath": {
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "title": "Connectionpath",
+            "type": "array"
+          },
+          "connectionType": {
+            "$ref": "#/components/schemas/ConnectionType"
+          },
+          "person": {
+            "$ref": "#/components/schemas/PersonIdentitySchema"
+          },
+          "relationshipLabel": {
+            "title": "Relationshiplabel",
+            "type": "string"
+          },
+          "relationshipState": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RelationshipState"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "person",
+          "connectionType",
+          "relationshipState",
+          "relationshipLabel",
+          "connectionPath",
+          "commonContext"
+        ],
+        "title": "PersonSearchResultSchema",
+        "type": "object"
+      },
+      "RelationshipState": {
+        "enum": [
+          "NEW",
+          "CLOSE",
+          "ACTIVE",
+          "WEAK",
+          "DORMANT",
+          "RECONNECTED"
+        ],
+        "title": "RelationshipState",
+        "type": "string"
+      },
+      "RelationshipSummarySchema": {
+        "additionalProperties": false,
+        "properties": {
+          "connectionType": {
+            "$ref": "#/components/schemas/ConnectionType"
+          },
+          "historyNote": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Historynote"
+          },
+          "knownDurationDays": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Knowndurationdays"
+          },
+          "knownSince": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Knownsince"
+          },
+          "label": {
+            "title": "Label",
+            "type": "string"
+          },
+          "lastContactAt": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Lastcontactat"
+          },
+          "state": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/RelationshipState"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "connectionType",
+          "state",
+          "label",
+          "lastContactAt",
+          "knownSince",
+          "knownDurationDays",
+          "historyNote"
+        ],
+        "title": "RelationshipSummarySchema",
+        "type": "object"
+      },
+      "TimelineItemSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "context": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/NamedContextSchema"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "endedAt": {
+            "anyOf": [
+              {
+                "format": "date-time",
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Endedat"
+          },
+          "itemType": {
+            "$ref": "#/components/schemas/TimelineItemType"
+          },
+          "occurredAt": {
+            "format": "date-time",
+            "title": "Occurredat",
+            "type": "string"
+          },
+          "title": {
+            "title": "Title",
+            "type": "string"
+          }
+        },
+        "required": [
+          "itemType",
+          "title",
+          "occurredAt"
+        ],
+        "title": "TimelineItemSchema",
+        "type": "object"
+      },
+      "TimelineItemType": {
+        "enum": [
+          "INTERACTION",
+          "SHARED_PROJECT"
+        ],
+        "title": "TimelineItemType",
+        "type": "string"
+      }
+    }
+  },
+  "info": {
+    "description": "Person-first Network Compass API for Vertical Slice 001.",
+    "title": "Network Compass API",
+    "version": "0.1.0"
+  },
+  "openapi": "3.1.0",
+  "paths": {
+    "/api/v1/me/network": {
+      "get": {
+        "operationId": "get_current_network_api_v1_me_network_get",
+        "parameters": [
+          {
+            "description": "Development/test-only synthetic persona external ID, for example P001.",
+            "in": "header",
+            "name": "X-Network-Compass-Persona",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 32,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Development/test-only synthetic persona external ID, for example P001.",
+              "title": "X-Network-Compass-Persona"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GraphProjectionSchema"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseSchema"
+                }
+              }
+            },
+            "description": "Authentication or development persona is unavailable."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseSchema"
+                }
+              }
+            },
+            "description": "The development persona header is invalid."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseSchema"
+                }
+              }
+            },
+            "description": "Unexpected safe server error."
+          }
+        },
+        "summary": "Get the current person's network projection",
+        "tags": [
+          "network"
+        ]
+      }
+    },
+    "/api/v1/people/search": {
+      "get": {
+        "operationId": "search_people_api_v1_people_search_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q",
+            "required": true,
+            "schema": {
+              "maxLength": 100,
+              "minLength": 1,
+              "title": "Q",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 20,
+              "maximum": 50,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "cursor",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 2048,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Cursor"
+            }
+          },
+          {
+            "in": "query",
+            "name": "organizationId",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Organizationid"
+            }
+          },
+          {
+            "in": "query",
+            "name": "communityId",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Communityid"
+            }
+          },
+          {
+            "in": "query",
+            "name": "activityId",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Activityid"
+            }
+          },
+          {
+            "in": "query",
+            "name": "skillId",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Skillid"
+            }
+          },
+          {
+            "description": "Development/test-only synthetic persona external ID, for example P001.",
+            "in": "header",
+            "name": "X-Network-Compass-Persona",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 32,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Development/test-only synthetic persona external ID, for example P001.",
+              "title": "X-Network-Compass-Persona"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonSearchPageSchema"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseSchema"
+                }
+              }
+            },
+            "description": "The cursor or search request is invalid."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseSchema"
+                }
+              }
+            },
+            "description": "Authentication or development persona is unavailable."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseSchema"
+                }
+              }
+            },
+            "description": "The requested person was not found."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseSchema"
+                }
+              }
+            },
+            "description": "A path or query parameter is invalid."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseSchema"
+                }
+              }
+            },
+            "description": "Unexpected safe server error."
+          }
+        },
+        "summary": "Search people with current-person-relative context",
+        "tags": [
+          "people"
+        ]
+      }
+    },
+    "/api/v1/people/{personId}": {
+      "get": {
+        "operationId": "get_person_detail_api_v1_people__personId__get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "personId",
+            "required": true,
+            "schema": {
+              "format": "uuid",
+              "title": "Personid",
+              "type": "string"
+            }
+          },
+          {
+            "description": "Development/test-only synthetic persona external ID, for example P001.",
+            "in": "header",
+            "name": "X-Network-Compass-Persona",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 32,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Development/test-only synthetic persona external ID, for example P001.",
+              "title": "X-Network-Compass-Persona"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PersonDetailSchema"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseSchema"
+                }
+              }
+            },
+            "description": "The cursor or search request is invalid."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseSchema"
+                }
+              }
+            },
+            "description": "Authentication or development persona is unavailable."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseSchema"
+                }
+              }
+            },
+            "description": "The requested person was not found."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseSchema"
+                }
+              }
+            },
+            "description": "A path or query parameter is invalid."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseSchema"
+                }
+              }
+            },
+            "description": "Unexpected safe server error."
+          }
+        },
+        "summary": "Get person detail relative to the current person",
+        "tags": [
+          "people"
+        ]
+      }
+    },
+    "/health": {
+      "get": {
+        "operationId": "health_health_get",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                }
+              }
+            },
+            "description": "Successful Response"
+          }
+        },
+        "summary": "Check API liveness",
+        "tags": [
+          "health"
+        ]
+      }
+    }
+  }
+}
