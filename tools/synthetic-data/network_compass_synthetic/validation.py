@@ -403,6 +403,33 @@ def validate_dataset(dataset: SyntheticDataset) -> ValidationReport:
         )
     )
 
+    p018 = people_by_code["P018"]
+    p001_project_ids = {
+        participation.project_id
+        for participation in dataset.project_participations
+        if participation.person_id == p001.id
+    }
+    p018_project_ids = {
+        participation.project_id
+        for participation in dataset.project_participations
+        if participation.person_id == p018.id
+    }
+    shared_p018_project_ids = p001_project_ids & p018_project_ids
+    p018_event_project_ids = {
+        event.project_id for event in p018_events if event.project_id is not None
+    }
+    checks.append(
+        _check(
+            "P018_SHARED_PROJECT_FACTS",
+            bool(shared_p018_project_ids)
+            and bool(p018_event_project_ids)
+            and p018_event_project_ids <= shared_p018_project_ids,
+            "P001 and P018 have factual shared-project participation linked to old interactions.",
+            shared_project_ids=sorted(str(project_id) for project_id in shared_p018_project_ids),
+            linked_event_count=sum(event.project_id is not None for event in p018_events),
+        )
+    )
+
     p102_events = _pair_events(dataset, p001.id, people_by_code["P102"].id)
     p102_old_events = [
         event for event in p102_events if REFERENCE_TIME - event.occurred_at > timedelta(days=180)

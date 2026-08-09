@@ -20,6 +20,7 @@ class DomainSchema(BaseModel):
     model_config = ConfigDict(
         alias_generator=to_camel,
         extra="forbid",
+        from_attributes=True,
         frozen=True,
         populate_by_name=True,
     )

@@ -33,7 +33,7 @@
 
 **Completed:** NC-006 Network Projection Service — human-reviewed and accepted at Review Gate B.
 
-**Next:** NC-007 API v0.1. No NC-007 implementation has started.
+**Awaiting review:** NC-007 API v0.1 — implemented and fully verified on `feat/nc-007-api-v01`. The active execution plan and evidence are in `docs/exec-plans/active/NC-007.md`. Do not start NC-008 before NC-007 review acceptance.
 
 Issues NC-007 through NC-010 must not be implemented ahead of their issue unless the active issue requires a minimal boundary explicitly described in its scope.
 

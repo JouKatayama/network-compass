@@ -3,7 +3,7 @@
 Network Compass is a person-first internal networking product. The repository contains one Next.js
 web application, one FastAPI modular monolith, and one PostgreSQL database. Canonical domain facts,
 the versioned Relationship Engine, deterministic synthetic fixtures, their persistence/reset
-workflow, and the internal personal GraphProjection service are implemented; product graph APIs/UI,
+workflow, the personal GraphProjection service, and the VS001 read API are implemented; graph UI,
 recommendations, and production authentication remain later scope.
 
 ## Runtime baseline
@@ -32,7 +32,7 @@ The local services are:
 | Service | URL or port | Purpose |
 |---|---|---|
 | Web | <http://localhost:3000> | Minimal NC-001 foundation page |
-| API | <http://localhost:8000/health> | FastAPI liveness endpoint |
+| API | <http://localhost:8000/api/v1/me/network> | Development-persona personal network endpoint |
 | API docs | <http://localhost:8000/docs> | FastAPI-generated OpenAPI UI |
 | PostgreSQL | `localhost:5432` | Local application database |
 
@@ -65,6 +65,12 @@ file automatically. For host-run API commands, export `DATABASE_URL` in the shel
 local URL is not suitable. The checked-in example contains local-only values and no production
 secrets.
 
+In development/test, the API resolves `P001` by default. Send
+`X-Network-Compass-Persona: P201` (or another persisted synthetic external ID) to switch the current
+persona. This mechanism is disabled when `NETWORK_COMPASS_ENVIRONMENT=production`; it never accepts
+an arbitrary current-person UUID. Available product reads are `/api/v1/me/network`,
+`/api/v1/people/{personId}`, and `/api/v1/people/search`.
+
 ## Quality commands
 
 The root `Makefile` provides the common entry points:
@@ -80,10 +86,11 @@ The root `Makefile` provides the common entry points:
 | `make test` | Run Vitest and pytest |
 | `make build` | Build the production Next.js application |
 | `make e2e` | Run Playwright smoke tests with local web/API servers |
-| `make check` | Run format, lint, typecheck, unit tests, and web build |
+| `make check` | Run format, lint, typecheck, tests, OpenAPI drift check, and web build |
 | `make synthetic-demo` / `make synthetic-edge-cases` | Generate deterministic fact datasets and validation reports |
 | `make demo-reset` | Start the local DB, replace demo facts, and rebuild relationship profiles |
 | `make projection-review-p001` | Reset demo data and write the deterministic P001 Review Gate B JSON |
+| `make openapi` / `make openapi-check` | Generate or verify the canonical FastAPI OpenAPI artifact |
 | `make db-check` | Run `SELECT 1` inside the started API container |
 | `make migrate` / `make migrate-current` | Upgrade or report the Alembic revision |
 
@@ -94,7 +101,8 @@ counts without duplicate rows.
 
 `make projection-review-p001` performs that reset and then writes the bounded personal projection to
 `docs/review-artifacts/NC-006-p001-graph-projection.json`. The command is intentionally a review
-workflow, not an HTTP product endpoint; NC-007 owns the authenticated API contract.
+workflow; `/api/v1/me/network` uses the same application projection service behind the current-person
+authorization boundary.
 
 To run the Playwright smoke directly, install Chromium once and then execute the test:
 
@@ -111,13 +119,14 @@ The test runner starts the local web and API development servers unless
 ```text
 apps/web/          Next.js application and frontend unit tests
 services/api/      FastAPI application, Alembic, and backend tests
-packages/contracts Future generated OpenAPI contracts (no handwritten duplicate contract)
+packages/contracts Canonical generated OpenAPI contract (no handwritten duplicate contract)
 tools/synthetic-data Deterministic demo/edge-case fact generator and tests
 tests/e2e/         Playwright smoke tests
 docs/              Product and architecture system of record
 ```
 
-FastAPI's generated OpenAPI document is the implemented API-contract source. Later issues may
-generate frontend types from it; NC-001 does not add product API schemas.
+FastAPI's generated OpenAPI document is the implemented API-contract source. The checked-in
+`packages/contracts/openapi.json` is generated from the application and verified in CI; frontend API
+types should be generated from it when NC-008 begins rather than handwritten separately.
 
 Read `AGENTS.md`, `PROJECT_STATUS.md`, and the relevant issue specification before implementation.

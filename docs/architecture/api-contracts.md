@@ -6,15 +6,35 @@ Base path: `/api/v1`. Current-user operations use `/me`; normal clients do not p
 
 ### GET `/api/v1/me/network`
 
-Returns `GraphProjection`. Default projection <=24 1-hop and <=12 2-hop teaser. Optional later-compatible query inputs may include lens/hops/selected/expand/filter fields, but NC-007 owns the final implementation.
+Returns `GraphProjection`. The final v0.1 endpoint has no query inputs and returns the accepted default
+projection: <=24 1-hop and <=12 2-hop teaser people. Potential-path edges omit relationship state,
+strength, and activation.
 
 ### GET `/api/v1/people/{personId}`
 
-Returns `PersonDetail` relative to the current user. Does not expose arbitrary third-party relationship strengths.
+Returns `PersonDetail` relative to the current user: identity, natural-language relationship summary,
+factual timeline, permitted common context, and a bounded connection path. It does not expose numeric
+relationship scores or arbitrary third-party relationship metrics. Potential/none detail has no
+fabricated interaction timeline.
 
 ### GET `/api/v1/people/search`
 
-Structured search with query, limit/cursor and optional organization/community/activity/skill filters. Returns person summary plus direct/two-hop/none relationship context and permitted common context.
+Structured search with `q` (1..100), `limit` (1..50), opaque criteria-bound `cursor`, and optional
+`organizationId`, `communityId`, `activityId`, and `skillId` UUID filters. Returns person summary plus
+direct/two-hop/none relationship context and bounded permitted common context. Ordering is
+deterministic and does not use seniority, career level, centrality, degree, or relationship count.
+
+## Current person and visibility
+
+Development/test uses the optional `X-Network-Compass-Persona` synthetic external-ID header with a
+configured `P001` default. The header resolves only persisted synthetic identities and is disabled in
+production; arbitrary current-person UUIDs are never accepted. Production returns
+`AUTHENTICATION_REQUIRED` until SSO integration is implemented.
+
+Visibility is enforced before serialization. A private activity declaration is visible only to its
+declaring person, network visibility requires a direct relationship, and organization visibility
+requires a shared primary organization. The rule applies equally to detail, search text/filtering,
+and common context.
 
 ## Later endpoints
 
@@ -32,4 +52,6 @@ Structured search with query, limit/cursor and optional organization/community/a
 }
 ```
 
-API contract source of truth is FastAPI OpenAPI once implementation begins. Frontend types should be generated from OpenAPI rather than maintained as drifting duplicates.
+API contract source of truth is FastAPI OpenAPI. The canonical generated artifact is
+`packages/contracts/openapi.json`; `make openapi-check` and CI reject drift. Frontend types should be
+generated from OpenAPI rather than maintained as drifting duplicates.

@@ -261,7 +261,7 @@
         "edgeType": "DIRECT",
         "opacity": "LOW",
         "relationshipState": "DORMANT",
-        "relationshipStrength": 0.21355930230635756,
+        "relationshipStrength": 0.22451068470415736,
         "sourcePersonId": "81f756dc-7afd-56b9-80d7-378231cb4c0f",
         "style": "DASHED",
         "targetPersonId": "f42f3352-e442-56e0-96b2-e36dfa908cf2",
@@ -649,7 +649,7 @@
         "isPotential": false,
         "personId": "f42f3352-e442-56e0-96b2-e36dfa908cf2",
         "relationshipState": "DORMANT",
-        "relevance": 0.401075,
+        "relevance": 0.4065,
         "shortRole": "Data Consultant"
       },
       {

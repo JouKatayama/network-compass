@@ -1,4 +1,4 @@
-.PHONY: build check db-check demo-reset demo-reset-host dev-api dev-web e2e format format-check install lint migrate migrate-current projection-review-p001 start stop synthetic-demo synthetic-edge-cases test typecheck
+.PHONY: build check db-check demo-reset demo-reset-host dev-api dev-web e2e format format-check install lint migrate migrate-current openapi openapi-check projection-review-p001 start stop synthetic-demo synthetic-edge-cases test typecheck
 
 install:
 	corepack pnpm install --frozen-lockfile
@@ -64,10 +64,16 @@ projection-review-p001: demo-reset
 	mkdir -p docs/review-artifacts
 	docker compose run --rm --no-deps -T api python -m app.commands.projection_review --source-system synthetic --external-id P001 > docs/review-artifacts/NC-006-p001-graph-projection.json
 
+openapi:
+	uv --directory services/api run python -m app.commands.export_openapi
+
+openapi-check:
+	uv --directory services/api run python -m app.commands.export_openapi --check
+
 migrate:
 	docker compose exec -T api alembic upgrade head
 
 migrate-current:
 	docker compose exec -T api alembic current
 
-check: format-check lint typecheck test build
+check: format-check lint typecheck test openapi-check build

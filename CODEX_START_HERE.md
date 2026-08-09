@@ -2,12 +2,13 @@
 
 Use this repository as a spec-driven implementation project. Do not infer future functionality from the product vision and implement it early.
 
-## Next task
+## Active task
 
-**NC-006 Network Projection Service is complete and human-reviewed at Review Gate B.** No
-implementation issue is currently active. The next issue is **NC-007 API v0.1**.
+**NC-007 API v0.1 is implemented and verified, awaiting human review** on
+`feat/nc-007-api-v01`. Follow the evidence in `docs/exec-plans/active/NC-007.md`; do not start NC-008
+until NC-007 is accepted.
 
-Before starting NC-007, read in order:
+For NC-007, read in order:
 
 1. `AGENTS.md`
 2. `PROJECT_STATUS.md`
@@ -20,9 +21,9 @@ Before starting NC-007, read in order:
 
 ## Required operating mode
 
-Before editing implementation code, create `docs/exec-plans/active/NC-007.md` and return a short
-plan covering endpoints/schemas, current-user authorization, search and PersonDetail reads, privacy,
-OpenAPI/contract strategy, tests, and unresolved assumptions. Do not implement NC-008 graph UI.
+The required plan exists at `docs/exec-plans/active/NC-007.md` and covers endpoints/schemas,
+current-user authorization, search and PersonDetail reads, privacy, OpenAPI/contract strategy, tests,
+and unresolved assumptions. Keep it current during implementation. Do not implement NC-008 graph UI.
 
 After implementation, report: commands run, acceptance criteria satisfied/not satisfied, files changed, and remaining risks/technical debt.
 

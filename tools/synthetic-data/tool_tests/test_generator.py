@@ -5,7 +5,12 @@ from pathlib import Path
 from uuid import UUID
 
 import pytest
-from network_compass_synthetic.generator import DEFAULT_SEED, REFERENCE_TIME, generate_dataset
+from network_compass_synthetic.generator import (
+    DEFAULT_SEED,
+    DEMO_VERSION,
+    REFERENCE_TIME,
+    generate_dataset,
+)
 from network_compass_synthetic.models import SyntheticDataset
 from network_compass_synthetic.serialization import canonical_json, write_outputs
 from network_compass_synthetic.validation import summarize_dataset, validate_dataset
@@ -43,6 +48,10 @@ def test_fixed_seed_is_byte_reproducible_and_seed_changes_output() -> None:
 
     assert first == second
     assert first != changed
+    assert generate_dataset("demo").dataset_version == DEMO_VERSION == "demo-v0.1.1"
+    assert person_by_code(generate_dataset("demo"), "P001").id == UUID(
+        "81f756dc-7afd-56b9-80d7-378231cb4c0f"
+    )
 
 
 def test_demo_has_exact_composition_and_primary_personas(
@@ -128,11 +137,32 @@ def test_structural_and_relationship_engine_validation_passes(
         "P201_GRADUATE_PERSONA",
         "P202_EXPERIENCED_PERSONA",
         "P018_DORMANT_FACT_PATTERN",
+        "P018_SHARED_PROJECT_FACTS",
         "P102_RECONNECTED_FACT_PATTERN",
         "SAME_ACTIVITY_NO_INTERACTION",
         "SAME_COMMUNITY_NO_INTERACTION",
         "SYNTHETIC_IDENTITIES",
     }.issubset(passed_codes)
+
+
+def test_p018_has_factual_shared_project_history(demo_dataset: SyntheticDataset) -> None:
+    p001 = person_by_code(demo_dataset, "P001")
+    p018 = person_by_code(demo_dataset, "P018")
+    p001_project_ids = {
+        item.project_id for item in demo_dataset.project_participations if item.person_id == p001.id
+    }
+    p018_project_ids = {
+        item.project_id for item in demo_dataset.project_participations if item.person_id == p018.id
+    }
+    shared_project_ids = p001_project_ids & p018_project_ids
+    pair_events = tuple(
+        event
+        for event in demo_dataset.interaction_events
+        if set(event.participant_ids) == {p001.id, p018.id}
+    )
+
+    assert shared_project_ids
+    assert {event.project_id for event in pair_events} == shared_project_ids
 
 
 def test_validator_rejects_interaction_before_joined_at(

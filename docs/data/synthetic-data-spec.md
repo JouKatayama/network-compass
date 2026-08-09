@@ -18,7 +18,9 @@ About 20–30 people joined within 180 days, containing both graduate and experi
 - P201 Graduate New Joiner: ~30 days, cohort/team-heavy network
 - P202 Experienced New Joiner: ~45 days, richer professional context but thin internal network
 
-Hero fixtures: P018 dormant reconnect context, P067 2-hop potential via a mutual path, P102 reconnected after a dormant interval.
+Hero fixtures: P018 dormant reconnect context with factual old P001/P018 shared-project participation
+and project-linked interactions, P067 2-hop potential via a mutual path, P102 reconnected after a
+dormant interval.
 
 ## Generation principles
 
@@ -33,7 +35,9 @@ Scenario expectations are validation metadata, never source facts. NC-003 report
 Beginning with NC-005, the local demo reset generates the fixed dataset in memory, persists only
 canonical facts, and rebuilds `RelationshipProfile` from those persisted facts. Scenario expectations
 and generated relationship states are never loaded into source tables. Repeating the same dataset
-version and seed must replace rows without duplicates or output drift.
+version and seed must replace rows without duplicates or output drift. Patch-level dataset versions
+may add facts while retaining the stable synthetic identity namespace; changing identity UUIDs
+requires an explicit identity-version change so graph tie-breaks do not churn accidentally.
 
 ## Required edge cases
 

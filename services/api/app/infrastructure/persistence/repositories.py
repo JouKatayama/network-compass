@@ -6,7 +6,18 @@ from uuid import UUID
 from sqlalchemy import delete, func, or_, select
 from sqlalchemy.orm import Session
 
-from app.domain.entities import OrganizationUnit, Person
+from app.domain.entities import (
+    Activity,
+    Community,
+    CommunityMembership,
+    OrganizationUnit,
+    Person,
+    PersonActivity,
+    PersonSkill,
+    ProjectContext,
+    ProjectParticipation,
+    Skill,
+)
 from app.domain.enums import Visibility
 from app.domain.facts import CanonicalFactSet
 from app.domain.interactions import InteractionEvent
@@ -248,6 +259,111 @@ class SqlAlchemyFactRepository:
             select(OrganizationUnitRecord).order_by(OrganizationUnitRecord.id)
         ).scalars()
         return tuple(OrganizationUnit(id=row.id, name=row.name) for row in rows)
+
+    def list_communities(self) -> tuple[Community, ...]:
+        rows = self._session.execute(select(CommunityRecord).order_by(CommunityRecord.id)).scalars()
+        return tuple(Community(id=row.id, name=row.name) for row in rows)
+
+    def list_community_memberships(self) -> tuple[CommunityMembership, ...]:
+        rows = self._session.execute(
+            select(CommunityMembershipRecord).order_by(
+                CommunityMembershipRecord.person_id,
+                CommunityMembershipRecord.community_id,
+            )
+        ).scalars()
+        return tuple(
+            CommunityMembership(
+                person_id=row.person_id,
+                community_id=row.community_id,
+                joined_at=_database_utc(row.joined_at, field_name="joined_at"),
+                left_at=(
+                    _database_utc(row.left_at, field_name="left_at")
+                    if row.left_at is not None
+                    else None
+                ),
+            )
+            for row in rows
+        )
+
+    def list_activities(self) -> tuple[Activity, ...]:
+        rows = self._session.execute(select(ActivityRecord).order_by(ActivityRecord.id)).scalars()
+        return tuple(Activity(id=row.id, name=row.name) for row in rows)
+
+    def list_person_activities(self) -> tuple[PersonActivity, ...]:
+        rows = self._session.execute(
+            select(PersonActivityRecord).order_by(
+                PersonActivityRecord.person_id,
+                PersonActivityRecord.activity_id,
+            )
+        ).scalars()
+        return tuple(
+            PersonActivity(
+                person_id=row.person_id,
+                activity_id=row.activity_id,
+                declared_at=_database_utc(row.declared_at, field_name="declared_at"),
+                visibility=row.visibility,
+            )
+            for row in rows
+        )
+
+    def list_skills(self) -> tuple[Skill, ...]:
+        rows = self._session.execute(select(SkillRecord).order_by(SkillRecord.id)).scalars()
+        return tuple(Skill(id=row.id, name=row.name) for row in rows)
+
+    def list_person_skills(self) -> tuple[PersonSkill, ...]:
+        rows = self._session.execute(
+            select(PersonSkillRecord).order_by(
+                PersonSkillRecord.person_id,
+                PersonSkillRecord.skill_id,
+            )
+        ).scalars()
+        return tuple(
+            PersonSkill(
+                person_id=row.person_id,
+                skill_id=row.skill_id,
+                declared_at=_database_utc(row.declared_at, field_name="declared_at"),
+            )
+            for row in rows
+        )
+
+    def list_projects(self) -> tuple[ProjectContext, ...]:
+        rows = self._session.execute(
+            select(ProjectContextRecord).order_by(ProjectContextRecord.id)
+        ).scalars()
+        return tuple(
+            ProjectContext(
+                id=row.id,
+                name=row.name,
+                started_at=_database_utc(row.started_at, field_name="started_at"),
+                ended_at=(
+                    _database_utc(row.ended_at, field_name="ended_at")
+                    if row.ended_at is not None
+                    else None
+                ),
+            )
+            for row in rows
+        )
+
+    def list_project_participations(self) -> tuple[ProjectParticipation, ...]:
+        rows = self._session.execute(
+            select(ProjectParticipationRecord).order_by(
+                ProjectParticipationRecord.person_id,
+                ProjectParticipationRecord.project_id,
+            )
+        ).scalars()
+        return tuple(
+            ProjectParticipation(
+                person_id=row.person_id,
+                project_id=row.project_id,
+                started_at=_database_utc(row.started_at, field_name="started_at"),
+                ended_at=(
+                    _database_utc(row.ended_at, field_name="ended_at")
+                    if row.ended_at is not None
+                    else None
+                ),
+            )
+            for row in rows
+        )
 
     def list_interaction_events(self) -> tuple[InteractionEvent, ...]:
         participant_rows = self._session.execute(
