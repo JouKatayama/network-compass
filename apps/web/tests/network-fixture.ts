@@ -1,4 +1,8 @@
-import type { GraphProjectionSchema } from "../lib/api/generated";
+import type {
+  GraphProjectionSchema,
+  PersonDetailSchema,
+  PersonSearchPageSchema,
+} from "../lib/api/generated";
 
 export const networkFixture: GraphProjectionSchema = {
   clusters: [
@@ -113,4 +117,128 @@ export const networkFixture: GraphProjectionSchema = {
       shortRole: null,
     },
   ],
+};
+
+export const expandedNetworkFixture: GraphProjectionSchema = {
+  ...networkFixture,
+  edges: [
+    ...networkFixture.edges,
+    {
+      edgeType: "POTENTIAL_PATH",
+      opacity: "MUTED",
+      sourcePersonId: "person-003",
+      style: "DOTTED",
+      targetPersonId: "person-006",
+      width: "MUTED",
+    },
+  ],
+  meta: {
+    ...networkFixture.meta,
+    expandedFromPersonIds: ["person-003"],
+    twoHopCount: 3,
+    visibleNodeCount: 6,
+  },
+  nodes: [
+    ...networkFixture.nodes,
+    {
+      avatarUrl: null,
+      clusterId: "organization:beta",
+      displayName: "Sora Kato",
+      hop: 2,
+      isPotential: true,
+      personId: "person-006",
+      relevance: 0.22,
+      relationshipState: null,
+      shortRole: "Analyst",
+    },
+  ],
+};
+
+export const dormantPersonDetail: PersonDetailSchema = {
+  commonContext: {
+    activities: [],
+    communities: [],
+    mutualConnections: [],
+    projects: [{ id: "project-001", name: "Aurora Project" }],
+    skills: [],
+  },
+  connectionPaths: [],
+  person: {
+    avatarUrl: null,
+    displayName: "Ren Ito",
+    location: "Tokyo",
+    organization: { id: "beta", name: "Beta" },
+    personId: "person-003",
+    role: "Engineer",
+  },
+  relationship: {
+    connectionType: "DIRECT",
+    historyNote: "以前のプロジェクトで一緒に取り組みました。",
+    knownDurationDays: 900,
+    knownSince: "2024-02-01T00:00:00Z",
+    label: "久しぶりのつながり",
+    lastContactAt: "2025-01-12T00:00:00Z",
+    state: "DORMANT",
+  },
+  timeline: [
+    {
+      context: { id: "project-001", name: "Aurora Project" },
+      endedAt: "2024-08-01T00:00:00Z",
+      itemType: "SHARED_PROJECT",
+      occurredAt: "2024-02-01T00:00:00Z",
+      title: "Aurora Projectで一緒に取り組みました",
+    },
+  ],
+};
+
+export const potentialPersonDetail: PersonDetailSchema = {
+  commonContext: {
+    activities: [],
+    communities: [],
+    mutualConnections: [
+      {
+        avatarUrl: null,
+        displayName: "Aoi Sato",
+        location: null,
+        organization: { id: "alpha", name: "Alpha" },
+        personId: "person-002",
+        role: "Designer",
+      },
+    ],
+    projects: [],
+    skills: [],
+  },
+  connectionPaths: [["person-001", "person-002", "person-004"]],
+  person: {
+    avatarUrl: null,
+    displayName: "Yui Mori",
+    location: "Osaka",
+    organization: { id: "alpha", name: "Alpha" },
+    personId: "person-004",
+    role: "Researcher",
+  },
+  relationship: {
+    connectionType: "TWO_HOP",
+    historyNote: null,
+    knownDurationDays: null,
+    knownSince: null,
+    label: "まだ直接話したことはありません",
+    lastContactAt: null,
+    state: null,
+  },
+  timeline: [],
+};
+
+export const potentialSearchPage: PersonSearchPageSchema = {
+  items: [
+    {
+      commonContext: potentialPersonDetail.commonContext,
+      connectionPath: potentialPersonDetail.connectionPaths[0],
+      connectionType: "TWO_HOP",
+      person: potentialPersonDetail.person,
+      relationshipLabel: potentialPersonDetail.relationship.label,
+      relationshipState: null,
+    },
+  ],
+  nextCursor: null,
 };

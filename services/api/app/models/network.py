@@ -73,8 +73,8 @@ class GraphProjectionMetaSchema(DomainSchema):
     hops: int = Field(ge=1, le=2)
     total_network_size: int = Field(ge=0)
     visible_node_count: int = Field(ge=1, le=80)
-    one_hop_count: int = Field(ge=0, le=24)
-    two_hop_count: int = Field(ge=0, le=12)
+    one_hop_count: int = Field(ge=0, le=79)
+    two_hop_count: int = Field(ge=0, le=79)
     projection_version: str
     generated_at: AwareDatetime
     expanded_from_person_ids: tuple[UUID, ...] = ()
@@ -107,3 +107,16 @@ class GraphProjectionSchema(DomainSchema):
             clusters=tuple(GraphClusterSchema.model_validate(item) for item in projection.clusters),
             meta=GraphProjectionMetaSchema.model_validate(projection.meta),
         )
+
+
+class GraphExpansionRequestSchema(DomainSchema):
+    selected_person_id: UUID
+    expanded_from_person_ids: tuple[UUID, ...] = Field(default=(), max_length=80)
+
+    @model_validator(mode="after")
+    def validate_expansion_history(self) -> Self:
+        if len(self.expanded_from_person_ids) != len(set(self.expanded_from_person_ids)):
+            raise ValueError("expanded person IDs must be unique")
+        if self.selected_person_id in self.expanded_from_person_ids:
+            raise ValueError("selected person must not already be expanded")
+        return self

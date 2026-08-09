@@ -75,6 +75,33 @@ class PersonalNetworkProjectionQueryService:
             relationship_profiles=self._profile_reader.list_all(),
         )
 
+    def expand_from_history_for_current_user(
+        self,
+        current_person_id: UUID,
+        *,
+        expanded_from_person_ids: tuple[UUID, ...],
+        selected_person_id: UUID,
+    ) -> GraphProjection:
+        people = self._fact_reader.list_people()
+        organizations = self._fact_reader.list_organization_units()
+        profiles = self._profile_reader.list_all()
+        projection = self._projection_service.build(
+            focal_person_id=current_person_id,
+            people=people,
+            organization_units=organizations,
+            relationship_profiles=profiles,
+            generated_at=self._calculation_time(profiles, None),
+        )
+        for person_id in (*expanded_from_person_ids, selected_person_id):
+            projection = self._projection_service.expand(
+                projection,
+                selected_person_id=person_id,
+                people=people,
+                organization_units=organizations,
+                relationship_profiles=profiles,
+            )
+        return projection
+
     def _calculation_time(
         self,
         profiles: tuple[RelationshipProfile, ...],

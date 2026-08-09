@@ -23,6 +23,9 @@ hero paths, bounds, and privacy shape were accepted for NC-007 consumption.
 
 Human UX review: does the graph feel like a human relationship memory rather than Neo4j/analytics? Does selection preserve mental map? Does P018 evoke relationship history and P067 feel naturally reachable?
 
+NC-008 Human UI Review completed on 2026-08-09. Its graph foundation was accepted as the baseline
+for NC-009; Gate C remains open until the full interaction flow is reviewed.
+
 ## NC-010 Go/No-Go
 
 Evaluate all VS001 acceptance criteria, hero E2E, performance/error states, and known technical debt. Future Home/Recommendation/Analog/Ramp work begins only after this slice is coherent.

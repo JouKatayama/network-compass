@@ -157,6 +157,31 @@
         "title": "GraphEdgeWidth",
         "type": "string"
       },
+      "GraphExpansionRequestSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "expandedFromPersonIds": {
+            "default": [],
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            },
+            "maxItems": 80,
+            "title": "Expandedfrompersonids",
+            "type": "array"
+          },
+          "selectedPersonId": {
+            "format": "uuid",
+            "title": "Selectedpersonid",
+            "type": "string"
+          }
+        },
+        "required": [
+          "selectedPersonId"
+        ],
+        "title": "GraphExpansionRequestSchema",
+        "type": "object"
+      },
       "GraphPersonNodeSchema": {
         "additionalProperties": false,
         "properties": {
@@ -296,7 +321,7 @@
             "type": "string"
           },
           "oneHopCount": {
-            "maximum": 24.0,
+            "maximum": 79.0,
             "minimum": 0.0,
             "title": "Onehopcount",
             "type": "integer"
@@ -316,7 +341,7 @@
             "type": "integer"
           },
           "twoHopCount": {
-            "maximum": 12.0,
+            "maximum": 79.0,
             "minimum": 0.0,
             "title": "Twohopcount",
             "type": "integer"
@@ -893,6 +918,98 @@
           }
         },
         "summary": "Get the current person's network projection",
+        "tags": [
+          "network"
+        ]
+      }
+    },
+    "/api/v1/me/network/expand": {
+      "post": {
+        "operationId": "expand_current_network_api_v1_me_network_expand_post",
+        "parameters": [
+          {
+            "description": "Development/test-only synthetic persona external ID, for example P001.",
+            "in": "header",
+            "name": "X-Network-Compass-Persona",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 32,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Development/test-only synthetic persona external ID, for example P001.",
+              "title": "X-Network-Compass-Persona"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GraphExpansionRequestSchema"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GraphProjectionSchema"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseSchema"
+                }
+              }
+            },
+            "description": "The expansion history or selected person is invalid."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseSchema"
+                }
+              }
+            },
+            "description": "Authentication or development persona is unavailable."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseSchema"
+                }
+              }
+            },
+            "description": "The development persona header is invalid."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseSchema"
+                }
+              }
+            },
+            "description": "Unexpected safe server error."
+          }
+        },
+        "summary": "Expand the current person's authorized network projection",
         "tags": [
           "network"
         ]

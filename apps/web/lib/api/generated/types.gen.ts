@@ -99,6 +99,20 @@ export type GraphEdgeType = "DIRECT" | "POTENTIAL_PATH";
 export type GraphEdgeWidth = "MUTED" | "THIN" | "MEDIUM" | "THICK";
 
 /**
+ * GraphExpansionRequestSchema
+ */
+export type GraphExpansionRequestSchema = {
+  /**
+   * Expandedfrompersonids
+   */
+  expandedFromPersonIds?: Array<string>;
+  /**
+   * Selectedpersonid
+   */
+  selectedPersonId: string;
+};
+
+/**
  * GraphPersonNodeSchema
  */
 export type GraphPersonNodeSchema = {
@@ -442,6 +456,53 @@ export type GetCurrentNetworkApiV1MeNetworkGetResponses = {
 
 export type GetCurrentNetworkApiV1MeNetworkGetResponse =
   GetCurrentNetworkApiV1MeNetworkGetResponses[keyof GetCurrentNetworkApiV1MeNetworkGetResponses];
+
+export type ExpandCurrentNetworkApiV1MeNetworkExpandPostData = {
+  body: GraphExpansionRequestSchema;
+  headers?: {
+    /**
+     * X-Network-Compass-Persona
+     *
+     * Development/test-only synthetic persona external ID, for example P001.
+     */
+    "X-Network-Compass-Persona"?: string | null;
+  };
+  path?: never;
+  query?: never;
+  url: "/api/v1/me/network/expand";
+};
+
+export type ExpandCurrentNetworkApiV1MeNetworkExpandPostErrors = {
+  /**
+   * The expansion history or selected person is invalid.
+   */
+  400: ErrorResponseSchema;
+  /**
+   * Authentication or development persona is unavailable.
+   */
+  401: ErrorResponseSchema;
+  /**
+   * The development persona header is invalid.
+   */
+  422: ErrorResponseSchema;
+  /**
+   * Unexpected safe server error.
+   */
+  500: ErrorResponseSchema;
+};
+
+export type ExpandCurrentNetworkApiV1MeNetworkExpandPostError =
+  ExpandCurrentNetworkApiV1MeNetworkExpandPostErrors[keyof ExpandCurrentNetworkApiV1MeNetworkExpandPostErrors];
+
+export type ExpandCurrentNetworkApiV1MeNetworkExpandPostResponses = {
+  /**
+   * Successful Response
+   */
+  200: GraphProjectionSchema;
+};
+
+export type ExpandCurrentNetworkApiV1MeNetworkExpandPostResponse =
+  ExpandCurrentNetworkApiV1MeNetworkExpandPostResponses[keyof ExpandCurrentNetworkApiV1MeNetworkExpandPostResponses];
 
 export type SearchPeopleApiV1PeopleSearchGetData = {
   body?: never;

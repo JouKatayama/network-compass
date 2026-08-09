@@ -10,6 +10,14 @@ Returns `GraphProjection`. The final v0.1 endpoint has no query inputs and retur
 projection: <=24 1-hop and <=12 2-hop teaser people. Potential-path edges omit relationship state,
 strength, and activation.
 
+### POST `/api/v1/me/network/expand`
+
+Accepts one selected visible person ID plus the ordered IDs of people already expanded in the
+current session. The server rebuilds the authenticated current person's projection, safely replays
+that history, and adds at most eight newly authorized adjacent people for the selected person. The
+client never submits a focal-person ID or projection payload; invalid/non-visible histories are
+rejected. The hard visible limit remains 80 and third-party path metrics remain omitted.
+
 ### GET `/api/v1/people/{personId}`
 
 Returns `PersonDetail` relative to the current user: identity, natural-language relationship summary,

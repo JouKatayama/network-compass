@@ -1,4 +1,8 @@
-import { createCameraController } from "../features/network/graph/camera-controller";
+import {
+  captureCameraState,
+  createCameraController,
+  restoreCameraState,
+} from "../features/network/graph/camera-controller";
 
 describe("camera controller", () => {
   it("delegates zoom, fit, and focal centering to Sigma's camera", () => {
@@ -38,5 +42,17 @@ describe("camera controller", () => {
       { angle: 0, ratio: 0.82, x: 0.5, y: 0.5 },
       { duration: 280 },
     );
+  });
+
+  it("captures and restores the exact Sigma camera state across graph replacement", () => {
+    const state = { angle: 0.12, ratio: 0.74, x: 0.42, y: 0.61 };
+    const camera = { getState: vi.fn(() => state), setState: vi.fn() };
+    const renderer = {
+      getCamera: () => camera,
+    } as unknown as Parameters<typeof captureCameraState>[0];
+
+    expect(captureCameraState(renderer)).toEqual(state);
+    restoreCameraState(renderer, state);
+    expect(camera.setState).toHaveBeenCalledWith(state);
   });
 });
