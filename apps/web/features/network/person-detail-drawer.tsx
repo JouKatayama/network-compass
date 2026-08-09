@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 
 import type {
   NamedContextSchema,
@@ -12,6 +12,7 @@ import { fetchPersonDetail } from "../../lib/api/people";
 
 type PersonDetailDrawerProps = {
   expanded: boolean;
+  expansionError: boolean;
   expanding: boolean;
   onClose(): void;
   onDetail(detail: PersonDetailSchema | null): void;
@@ -80,6 +81,7 @@ function ContextList({
 
 export function PersonDetailDrawer({
   expanded,
+  expansionError,
   expanding,
   onClose,
   onDetail,
@@ -87,10 +89,15 @@ export function PersonDetailDrawer({
   personId,
   personNameById,
 }: PersonDetailDrawerProps) {
+  const drawerRef = useRef<HTMLElement>(null);
   const detailQuery = useQuery({
     queryFn: ({ signal }) => fetchPersonDetail(personId, signal),
     queryKey: ["person-detail", personId],
   });
+
+  useEffect(() => {
+    drawerRef.current?.focus();
+  }, [personId]);
 
   useEffect(() => {
     onDetail(detailQuery.data ?? null);
@@ -118,7 +125,14 @@ export function PersonDetailDrawer({
   );
 
   return (
-    <aside aria-labelledby="person-detail-title" className="person-drawer">
+    <aside
+      aria-label={detailQuery.data ? undefined : "人物詳細"}
+      aria-labelledby={detailQuery.data ? "person-detail-title" : undefined}
+      className="person-drawer"
+      ref={drawerRef}
+      role="dialog"
+      tabIndex={-1}
+    >
       <button
         aria-label="詳細を閉じる"
         className="drawer-close"
@@ -250,6 +264,12 @@ export function PersonDetailDrawer({
             items={detailQuery.data.commonContext.skills}
             title="共通のスキル"
           />
+
+          {expansionError ? (
+            <p className="expansion-error" role="alert">
+              つながりを広げられませんでした。もう一度お試しください。
+            </p>
+          ) : null}
 
           <button
             className="expand-connections-button"

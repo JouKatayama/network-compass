@@ -242,3 +242,101 @@ export const potentialSearchPage: PersonSearchPageSchema = {
   ],
   nextCursor: null,
 };
+
+export const emptyNetworkFixture: GraphProjectionSchema = {
+  clusters: [{ id: "organization:alpha", label: "Alpha", memberCount: 1 }],
+  edges: [],
+  focalPersonId: networkFixture.focalPersonId,
+  meta: {
+    ...networkFixture.meta,
+    oneHopCount: 0,
+    totalNetworkSize: 1,
+    twoHopCount: 0,
+    visibleNodeCount: 1,
+  },
+  nodes: [networkFixture.nodes[0]],
+};
+
+export function createLargeNetworkFixture(
+  nodeCount = 60,
+): GraphProjectionSchema {
+  if (nodeCount < 25 || nodeCount > 80) {
+    throw new Error("large network fixture must contain 25 to 80 nodes");
+  }
+  const personId = (index: number) =>
+    `large-person-${index.toString().padStart(3, "0")}`;
+  const nodes: GraphProjectionSchema["nodes"] = Array.from(
+    { length: nodeCount },
+    (_, index) => {
+      const hop = index === 0 ? 0 : index <= 24 ? 1 : 2;
+      return {
+        avatarUrl: null,
+        clusterId: `organization:${index % 4}`,
+        displayName:
+          index === 59
+            ? "Very Long Synthetic Person Name For Responsive Validation P060"
+            : `Synthetic Large Person P${(index + 1).toString().padStart(3, "0")}`,
+        hop,
+        isPotential: hop === 2,
+        personId: personId(index),
+        relevance: Math.max(0.1, 1 - index / 80),
+        relationshipState:
+          hop === 1 ? (index % 5 === 0 ? "DORMANT" : "ACTIVE") : null,
+        shortRole: index % 11 === 0 && index > 0 ? null : "Synthetic role",
+      };
+    },
+  );
+  const edges: GraphProjectionSchema["edges"] = nodes
+    .slice(1)
+    .map((node, offset) => {
+      const index = offset + 1;
+      if (index <= 24) {
+        const dormant = index % 5 === 0;
+        return {
+          currentActivation: dormant ? 0.2 : 0.75,
+          edgeType: "DIRECT" as const,
+          opacity: dormant ? ("LOW" as const) : ("HIGH" as const),
+          relationshipState: dormant
+            ? ("DORMANT" as const)
+            : ("ACTIVE" as const),
+          relationshipStrength: dormant ? 0.4 : 0.72,
+          sourcePersonId: personId(0),
+          style: dormant ? ("DASHED" as const) : ("SOLID" as const),
+          targetPersonId: node.personId,
+          width: dormant ? ("THIN" as const) : ("MEDIUM" as const),
+        };
+      }
+      return {
+        edgeType: "POTENTIAL_PATH" as const,
+        opacity: "MUTED" as const,
+        sourcePersonId: personId(((index - 25) % 24) + 1),
+        style: "DOTTED" as const,
+        targetPersonId: node.personId,
+        width: "MUTED" as const,
+      };
+    });
+
+  return {
+    clusters: Array.from({ length: 4 }, (_, index) => ({
+      id: `organization:${index}`,
+      label: `Organization ${index + 1}`,
+      memberCount: nodes.filter(
+        (node) => node.clusterId === `organization:${index}`,
+      ).length,
+    })),
+    edges,
+    focalPersonId: personId(0),
+    meta: {
+      expandedFromPersonIds: [personId(1), personId(2), personId(3)],
+      generatedAt: "2026-08-09T00:00:00Z",
+      hops: 2,
+      lens: "DEFAULT",
+      oneHopCount: 24,
+      projectionVersion: "graph-projection-v0.1.0",
+      totalNetworkSize: 92,
+      twoHopCount: nodeCount - 25,
+      visibleNodeCount: nodeCount,
+    },
+    nodes,
+  };
+}

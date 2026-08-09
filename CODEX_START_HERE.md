@@ -4,26 +4,26 @@ Use this repository as a spec-driven implementation project. Do not infer future
 
 ## Active task
 
-**NC-009 Person Detail + Graph Interaction is implemented and verified, awaiting Review Gate C** on
-`feat/nc-009-person-detail-graph-interaction`. Follow `docs/exec-plans/active/NC-009.md`; do not
-start NC-010 until the P001→P018→P067 interaction is accepted.
+**NC-010 VS001 E2E + Hardening is implemented and verified, awaiting Go/No-Go review** on
+`feat/nc-010-vs001-e2e-hardening`. Follow `docs/exec-plans/active/NC-010.md` and the final VS001
+acceptance matrix; Review Gate C is accepted and NC-009 is merged.
 
-For NC-009, read in order:
+For NC-010, read in order:
 
 1. `AGENTS.md`
 2. `PROJECT_STATUS.md`
-3. `docs/issues/NC-009-person-detail-graph-interaction.md`
-4. `docs/exec-plans/completed/NC-008.md`
-5. the graph interaction, My Network, Person Detail, screen-state, user-journey, API contract,
-   projection, accessibility, privacy, and testing specifications
+3. `docs/issues/NC-010-e2e-hardening.md`
+4. `docs/exec-plans/completed/NC-009.md`
+5. the VS001 acceptance, hero E2E, testing strategy, graph interaction, My Network, Person Detail,
+   screen-state, accessibility, and privacy specifications
 6. ADR-002 and the accepted frontend/modular-monolith architecture decisions
 7. `apps/web/AGENTS.md`
 8. `tests/e2e/AGENTS.md`
 
 ## Required operating mode
 
-Record implementation and review evidence at `docs/exec-plans/active/NC-009.md`. Keep that plan
-active until Review Gate C is accepted. Do not implement NC-010 or later product areas.
+Record implementation and review evidence at `docs/exec-plans/active/NC-010.md`. Keep that plan
+active until the human VS001 Go/No-Go decision. Do not implement later product areas.
 
 After implementation, report: commands run, acceptance criteria satisfied/not satisfied, files changed, and remaining risks/technical debt.
 

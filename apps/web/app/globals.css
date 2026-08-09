@@ -321,14 +321,13 @@ a:focus-visible {
   padding: 0;
 }
 
-.search-popover li[aria-selected="true"] button {
+.search-popover li[aria-selected="true"] {
   background: rgba(141, 123, 240, 0.14);
 }
 
-.search-popover button {
+.search-popover li {
   align-items: center;
   background: transparent;
-  border: 0;
   border-radius: 9px;
   cursor: pointer;
   display: flex;
@@ -339,7 +338,7 @@ a:focus-visible {
   width: 100%;
 }
 
-.search-popover button:hover {
+.search-popover li:hover {
   background: var(--surface-soft);
 }
 
@@ -417,6 +416,31 @@ a:focus-visible {
   flex: 1;
   grid-template-columns: minmax(0, 1fr) clamp(320px, 29vw, 420px);
   min-height: 0;
+}
+
+.network-notices {
+  display: grid;
+  gap: 0.45rem;
+  max-width: min(440px, calc(100% - 2.8rem));
+  position: absolute;
+  right: 1.4rem;
+  top: 1.25rem;
+  z-index: 11;
+}
+
+.network-notice {
+  background: rgba(12, 23, 34, 0.92);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  color: var(--text-soft);
+  font-size: 0.61rem;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0.48rem 0.65rem;
+}
+
+.large-network-notice {
+  border-color: rgba(180, 156, 255, 0.28);
 }
 
 .graph-hover-summary {
@@ -600,6 +624,10 @@ a:focus-visible {
   position: relative;
 }
 
+.person-drawer:focus {
+  outline: none;
+}
+
 .drawer-close {
   align-items: center;
   background: rgba(255, 255, 255, 0.025);
@@ -710,6 +738,7 @@ a:focus-visible {
   font-size: 1.05rem;
   line-height: 1.25;
   margin: 0;
+  overflow-wrap: anywhere;
 }
 
 .detail-identity > div > span {
@@ -899,6 +928,17 @@ a:focus-visible {
   margin-top: 1.2rem;
   padding: 0.7rem 0.8rem;
   width: 100%;
+}
+
+.expansion-error {
+  background: rgba(232, 140, 155, 0.08);
+  border: 1px solid rgba(232, 140, 155, 0.28);
+  border-radius: 9px;
+  color: var(--text-soft);
+  font-size: 0.62rem;
+  line-height: 1.5;
+  margin: 1rem 0 0;
+  padding: 0.6rem 0.7rem;
 }
 
 .expand-connections-button:disabled {

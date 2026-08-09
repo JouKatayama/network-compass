@@ -66,6 +66,7 @@ export type NetworkGraphModel = {
 export type NetworkGraphController = {
   centerOnFocal(): void;
   fit(): void;
+  focusCanvas?(): void;
   focusPerson(personId: string): void;
   zoomIn(): void;
   zoomOut(): void;

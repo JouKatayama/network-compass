@@ -99,8 +99,8 @@ function NetworkEmpty({ retry }: { retry(): void }) {
   return (
     <div className="graph-state empty-state">
       <div className="state-icon">◌</div>
-      <h2>表示できるつながりがまだありません</h2>
-      <p>データが利用可能になると、ここに人とのつながりが表示されます。</p>
+      <h2>あなたのNetworkはここから始まります</h2>
+      <p>表示できるつながりが増えると、ここに人との関係が広がります。</p>
       <button className="secondary-button" onClick={retry} type="button">
         更新する
       </button>
@@ -272,6 +272,7 @@ function NetworkReady({
   >(new Set());
   const [announcement, setAnnouncement] = useState("");
   const graphController = useRef<NetworkGraphController>(null);
+  const focusBeforeDrawer = useRef<HTMLElement | null>(null);
   const model = useMemo(
     () => buildNetworkGraph(projection, hopMode, positions),
     [hopMode, positions, projection],
@@ -292,6 +293,14 @@ function NetworkReady({
   const selectPerson = useCallback(
     (personId: string) => {
       if (personId === projection.focalPersonId) return;
+      const focusedElement = document.activeElement;
+      if (
+        !selectedPersonId &&
+        focusedElement instanceof HTMLElement &&
+        focusedElement !== document.body
+      ) {
+        focusBeforeDrawer.current = focusedElement;
+      }
       setSelectedPersonId(personId);
       setHoveredPersonId(null);
       setEmphasizedPathPersonIds(new Set());
@@ -299,7 +308,7 @@ function NetworkReady({
         `${personNameById.get(personId) ?? "選択した人"}の詳細を開きました`,
       );
     },
-    [personNameById, projection.focalPersonId],
+    [personNameById, projection.focalPersonId, selectedPersonId],
   );
 
   const handleDetail = useCallback((detail: PersonDetailSchema | null) => {
@@ -372,6 +381,22 @@ function NetworkReady({
   const expandedPersonIds = new Set(
     projection.meta.expandedFromPersonIds ?? [],
   );
+  const limitedProfileCount = projection.nodes.filter(
+    (node) =>
+      node.personId !== projection.focalPersonId && node.shortRole === null,
+  ).length;
+
+  const closeDetail = () => {
+    setSelectedPersonId(null);
+    setEmphasizedPathPersonIds(new Set());
+    setAnnouncement("詳細を閉じました。グラフの位置は変わっていません。");
+    window.setTimeout(() => {
+      const previous = focusBeforeDrawer.current;
+      if (previous?.isConnected) previous.focus();
+      else graphController.current?.focusCanvas?.();
+      focusBeforeDrawer.current = null;
+    }, 0);
+  };
 
   return (
     <>
@@ -421,6 +446,19 @@ function NetworkReady({
             ref={graphController}
             selectedPersonId={graphSelectedPersonId}
           />
+          <div className="network-notices">
+            {limitedProfileCount > 0 ? (
+              <p className="network-notice" role="status">
+                一部のプロフィール情報は限定的です。分かっている事実だけを表示しています。
+              </p>
+            ) : null}
+            {visibleCount >= 60 ? (
+              <p className="network-notice large-network-notice" role="status">
+                {visibleCount}
+                人を表示しています。必要に応じて1-hop表示で見通しを整えられます。
+              </p>
+            ) : null}
+          </div>
           {hoveredNode && !hoveredNode.isPotential ? (
             <HoverSummary node={hoveredNode} />
           ) : hoveredNode ? (
@@ -435,17 +473,15 @@ function NetworkReady({
         {selectedPersonId ? (
           <PersonDetailDrawer
             expanded={expandedPersonIds.has(selectedPersonId)}
+            expansionError={
+              expansionMutation.isError &&
+              expansionMutation.variables === selectedPersonId
+            }
             expanding={
               expansionMutation.isPending &&
               expansionMutation.variables === selectedPersonId
             }
-            onClose={() => {
-              setSelectedPersonId(null);
-              setEmphasizedPathPersonIds(new Set());
-              setAnnouncement(
-                "詳細を閉じました。グラフの位置は変わっていません。",
-              );
-            }}
+            onClose={closeDetail}
             onDetail={handleDetail}
             onExpand={() => expansionMutation.mutate(selectedPersonId)}
             personId={selectedPersonId}
@@ -505,10 +541,16 @@ export function NetworkScreen() {
         {networkQuery.isError ? (
           <NetworkError retry={() => void networkQuery.refetch()} />
         ) : null}
-        {networkQuery.data && networkQuery.data.nodes.length === 0 ? (
+        {networkQuery.data &&
+        !networkQuery.data.nodes.some(
+          (node) => node.personId !== networkQuery.data.focalPersonId,
+        ) ? (
           <NetworkEmpty retry={() => void networkQuery.refetch()} />
         ) : null}
-        {networkQuery.data && networkQuery.data.nodes.length > 0 ? (
+        {networkQuery.data &&
+        networkQuery.data.nodes.some(
+          (node) => node.personId !== networkQuery.data.focalPersonId,
+        ) ? (
           <NetworkReady
             key={`${networkQuery.data.meta.generatedAt}:${networkQuery.data.nodes.length}`}
             projection={networkQuery.data}
