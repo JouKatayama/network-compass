@@ -31,7 +31,7 @@ Do not store message/email body, transcript, audio, GPS, or Bluetooth proximity.
 
 The intended later UX is <=10 seconds: select person(s) -> type/context -> rough depth -> save. Manual confirmation may strengthen an inferred event rather than creating a duplicate.
 
-The NC-011 draft narrows its first write slice to the authenticated current user plus exactly one
-other person and is specified in `analog-interaction-capture.md`. It permits no inferred source, so
-inferred/self-reported consolidation remains blocked until a later immutable-linkage specification
-exists.
+The frozen NC-011 slice narrows its first write boundary to the authenticated current user plus
+exactly one other person and is specified in `analog-interaction-capture.md`. It permits no inferred
+source, so inferred/self-reported consolidation remains blocked until a later immutable-linkage
+specification exists.

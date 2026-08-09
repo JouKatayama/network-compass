@@ -12,4 +12,4 @@ Execute in order unless a reviewed dependency change is documented.
 8. NC-008 Frontend Shell + Graph Foundation
 9. NC-009 Person Detail + Graph Interaction — Review Gate C
 10. NC-010 E2E + Hardening / VS001 Go-No-Go
-11. NC-011 Analog Interaction Capture v0.1 — Draft; pre-implementation Review Gate required
+11. NC-011 Analog Interaction Capture v0.1 — Frozen; active plan

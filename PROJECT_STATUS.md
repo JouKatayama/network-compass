@@ -18,7 +18,7 @@
 | Synthetic data specification | Frozen v0.1      |
 | System architecture          | Frozen v0.1      |
 | ADR set                      | Accepted for MVP |
-| Analog Interaction Capture   | Draft NC-011     |
+| Analog Interaction Capture   | Frozen v0.1      |
 
 ## Implementation status
 
@@ -45,11 +45,9 @@ and merged as PR #8.
 **Completed:** NC-010 VS001 E2E + Hardening — all acceptance evidence was approved with a human GO
 decision on 2026-08-09. VS001 is complete; PR #9 was CI-verified and merged.
 
-**Specification review:** NC-011 Analog Interaction Capture v0.1 is drafted for a human
-pre-implementation Review Gate. It is not frozen and has no active execution plan.
-
-**No active implementation issue.** NC-011 implementation must not begin until its UX/domain/API and
-VS002 acceptance specifications are approved as Frozen v0.1.
+**Active:** NC-011 Analog Interaction Capture v0.1 — UX/domain/API and VS002 acceptance
+specifications were approved as Frozen v0.1 on 2026-08-09. The active execution plan is ready;
+implementation has not started.
 
 ## Review gates
 

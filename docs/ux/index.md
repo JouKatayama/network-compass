@@ -7,5 +7,5 @@
 - `my-network.md` — primary graph surface
 - `person-detail.md` — relationship-memory drawer
 - `home.md` — recommendation/insight entry point for later slice
-- `analog-interaction.md` — NC-011 draft fast factual 1:1 interaction capture
+- `analog-interaction.md` — frozen NC-011 fast factual 1:1 interaction capture
 - `network-ramp.md` — later graduate/experienced new-joiner surface

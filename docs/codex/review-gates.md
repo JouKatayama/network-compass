@@ -53,5 +53,7 @@ Review the draft Analog Interaction Capture specification before any implementat
 - `また話したい`, user correction, multi-person capture, inferred reconciliation, recommendations,
   and later product/production scope are correctly deferred
 
-**Decision:** Pending human review. Approval freezes the NC-011 UX/domain/API/acceptance documents
-as v0.1 and permits creation of an active execution plan. It does not itself start implementation.
+**Decision:** Approved on 2026-08-09. The human reviewer accepted the 1:1 boundary, exact input
+vocabulary, time/authority rules, server-owned confidence, atomic idempotent write/recalculation,
+drawer UX, and explicit deferrals. The NC-011 UX/domain/API/VS002 acceptance documents are Frozen
+v0.1 and an active execution plan may be created. This decision does not authorize later slices.

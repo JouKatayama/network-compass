@@ -1,7 +1,6 @@
-# Vertical Slice 002 / NC-011 Acceptance Criteria — Draft for Freeze
+# Vertical Slice 002 / NC-011 Acceptance Criteria — Frozen v0.1
 
-**Status:** Draft for pre-implementation review. No criterion authorizes implementation before the
-NC-011 specification is approved.
+**Status:** Frozen v0.1 — NC-011 pre-implementation Review Gate approved on 2026-08-09.
 
 ## Domain and application
 

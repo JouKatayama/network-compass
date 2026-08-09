@@ -1,7 +1,6 @@
-# Analog Interaction Capture v0.1 — NC-011 Draft for Freeze
+# Analog Interaction Capture v0.1 — Frozen
 
-**Status:** Draft for the NC-011 pre-implementation Review Gate. This document is not frozen and
-does not authorize implementation until the human reviewer records approval.
+**Status:** Frozen v0.1 — NC-011 pre-implementation Review Gate approved on 2026-08-09.
 
 ## Product goal
 
@@ -25,7 +24,7 @@ The form is rendered inside the existing Person Detail drawer rather than as a n
 returns to the unchanged detail state. Save success returns to refreshed Person Detail while keeping
 the selected graph node and existing node coordinates stable.
 
-## Frozen candidate inputs
+## Frozen inputs
 
 The UI sends only user-entered facts; it never sends source, confidence, current-person ID,
 relationship state, strength, or evidence weight.
@@ -115,8 +114,7 @@ change, and save.
 
 ## Review Gate decisions required
 
-The human reviewer must explicitly approve or revise: the 1:1-only boundary, seven types, required
-duration, 30-day occurrence window, confidence `1.0`, drawer-contained flow, idempotency behavior,
-and the deferral of intent/feedback and inferred-event reconciliation. Approval changes this document
-from Draft to Frozen v0.1 and authorizes creation of the NC-011 execution plan, not implementation of
-later slices.
+The human reviewer approved the 1:1-only boundary, seven types, required duration, 30-day occurrence
+window, confidence `1.0`, drawer-contained flow, idempotency behavior, and the deferral of
+intent/feedback and inferred-event reconciliation on 2026-08-09. This approval authorizes the NC-011
+execution plan only; it does not authorize later slices.

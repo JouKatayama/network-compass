@@ -1,7 +1,7 @@
-# Self-Reported Analog Interaction v0.1 — NC-011 Draft for Freeze
+# Self-Reported Analog Interaction v0.1 — Frozen
 
-**Status:** Draft. The accepted `InteractionEvent` and `relationship-v0.1.0` specifications remain
-unchanged until the NC-011 pre-implementation Review Gate is approved.
+**Status:** Frozen v0.1 — NC-011 pre-implementation Review Gate approved on 2026-08-09. The accepted
+`InteractionEvent` and `relationship-v0.1.0` specifications remain unchanged.
 
 ## Command boundary
 

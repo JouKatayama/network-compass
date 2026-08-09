@@ -24,13 +24,13 @@ This directory is the repository system of record. When documents conflict, use 
 
 ## Testing
 
-`testing/` defines accepted Vertical Slice 001 evidence plus draft NC-011/VS002 acceptance criteria,
+`testing/` defines accepted Vertical Slice 001 evidence plus frozen NC-011/VS002 acceptance criteria,
 testing strategy, and hero E2E behavior.
 
 ## Issues
 
-`issues/` is the ordered implementation backlog. NC-001 through NC-010 are completed; NC-011 is a
-draft awaiting its pre-implementation specification Review Gate.
+`issues/` is the ordered implementation backlog. NC-001 through NC-010 are completed; NC-011 is the
+active frozen issue.
 
 ## Codex
 

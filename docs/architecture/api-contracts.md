@@ -48,10 +48,9 @@ and common context.
 
 `GET /me/recommendations`, recommendation feedback, `POST /interactions`, relationship feedback, `/me/network-ramp`, `/me/networking-profile`, `/me/home` are specified for later slices and must not be implemented during NC-001.
 
-### NC-011 draft for freeze: POST `/api/v1/interactions`
+### NC-011 Frozen v0.1: POST `/api/v1/interactions`
 
-**Status:** Draft only. This contract is not authorized for implementation until the NC-011
-pre-implementation Review Gate is approved.
+**Status:** Frozen v0.1 — NC-011 pre-implementation Review Gate approved on 2026-08-09.
 
 The authenticated current person records one self-reported 1:1 analog interaction. The client does
 not submit the current-person ID, participant list, channel, source, confidence, initiator, or any
