@@ -215,6 +215,65 @@ def test_person_detail_has_factual_dormant_project_history_and_potential_path(
     assert potential["connectionPaths"] == [[str(p001.id), str(p010.id), str(p067.id)]]
 
 
+def test_network_expansion_is_bounded_replayable_and_current_person_relative(
+    api_fixture: ApiFixture,
+) -> None:
+    initial = api_fixture.client.get("/api/v1/me/network").json()
+    visible_ids = {node["personId"] for node in initial["nodes"]}
+    selected_id = next(
+        node["personId"]
+        for node in initial["nodes"]
+        if node["hop"] == 1 and node["personId"] != initial["focalPersonId"]
+    )
+
+    response = api_fixture.client.post(
+        "/api/v1/me/network/expand",
+        json={"selectedPersonId": selected_id, "expandedFromPersonIds": []},
+    )
+    assert response.status_code == 200
+    expanded = response.json()
+    assert expanded["focalPersonId"] == initial["focalPersonId"]
+    assert expanded["meta"]["expandedFromPersonIds"] == [selected_id]
+    assert len(expanded["nodes"]) - len(initial["nodes"]) <= 8
+    assert visible_ids <= {node["personId"] for node in expanded["nodes"]}
+    assert expanded["meta"]["visibleNodeCount"] <= 80
+
+    next_selected_id = next(
+        node["personId"]
+        for node in expanded["nodes"]
+        if node["personId"] not in {selected_id, expanded["focalPersonId"]}
+    )
+    replayed = api_fixture.client.post(
+        "/api/v1/me/network/expand",
+        json={
+            "selectedPersonId": next_selected_id,
+            "expandedFromPersonIds": [selected_id],
+        },
+    )
+    assert replayed.status_code == 200
+    assert replayed.json()["meta"]["expandedFromPersonIds"] == [
+        selected_id,
+        next_selected_id,
+    ]
+
+    invalid = api_fixture.client.post(
+        "/api/v1/me/network/expand",
+        json={"selectedPersonId": str(UUID(int=0)), "expandedFromPersonIds": []},
+    )
+    assert invalid.status_code == 400
+    _assert_error_envelope(invalid.status_code, invalid.json())
+    assert invalid.json()["error"]["code"] == "INVALID_NETWORK_EXPANSION"
+
+    p201 = _person(api_fixture.dataset, "P201")
+    switched = api_fixture.client.post(
+        "/api/v1/me/network/expand",
+        headers={"X-Network-Compass-Persona": "P201"},
+        json={"selectedPersonId": str(p201.id), "expandedFromPersonIds": []},
+    )
+    assert switched.status_code == 200
+    assert switched.json()["focalPersonId"] == str(p201.id)
+
+
 def test_search_supports_cursor_filters_paths_and_private_activity_visibility(
     api_fixture: ApiFixture,
 ) -> None:

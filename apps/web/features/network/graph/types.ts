@@ -16,6 +16,7 @@ export type NetworkNodeAttributes = {
   displayName: string;
   forceLabel: boolean;
   hidden: boolean;
+  highlighted: boolean;
   hop: number;
   isFocal: boolean;
   isPotential: boolean;
@@ -65,6 +66,20 @@ export type NetworkGraphModel = {
 export type NetworkGraphController = {
   centerOnFocal(): void;
   fit(): void;
+  focusPerson(personId: string): void;
   zoomIn(): void;
   zoomOut(): void;
+};
+
+export type NetworkGraphInteraction = {
+  emphasizedPathPersonIds: ReadonlySet<string>;
+  hoveredPersonId: string | null;
+  selectedPersonId: string | null;
+};
+
+export type NetworkCameraState = {
+  angle: number;
+  ratio: number;
+  x: number;
+  y: number;
 };

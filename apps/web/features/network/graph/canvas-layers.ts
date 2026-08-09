@@ -9,6 +9,7 @@ import {
 import type {
   NetworkEdgeAttributes,
   NetworkGraphAttributes,
+  NetworkGraphInteraction,
   NetworkNodeAttributes,
 } from "./types";
 
@@ -116,6 +117,7 @@ function drawOrganizationRegions(
 function drawRelationshipEdges(
   renderer: NetworkSigma,
   canvas: HTMLCanvasElement,
+  interaction: NetworkGraphInteraction,
 ): void {
   const context = prepareCanvas(renderer, canvas);
   if (!context) return;
@@ -130,9 +132,18 @@ function drawRelationshipEdges(
     context.beginPath();
     context.moveTo(sourcePoint.x, sourcePoint.y);
     context.lineTo(targetPoint.x, targetPoint.y);
-    context.strokeStyle = attributes.color;
-    context.globalAlpha = edgeOpacity(attributes.opacity);
-    context.lineWidth = attributes.size;
+    const path = interaction.emphasizedPathPersonIds;
+    const isPathEdge = path.has(source) && path.has(target);
+    const isSelectedEdge =
+      interaction.selectedPersonId === source ||
+      interaction.selectedPersonId === target;
+    const hasSelection = interaction.selectedPersonId !== null;
+    context.strokeStyle = isPathEdge ? "#b59cff" : attributes.color;
+    context.globalAlpha = isPathEdge
+      ? 0.92
+      : edgeOpacity(attributes.opacity) *
+        (hasSelection && !isSelectedEdge ? 0.14 : 1);
+    context.lineWidth = attributes.size + (isPathEdge ? 1.15 : 0);
     context.lineCap = attributes.style === "DOTTED" ? "round" : "butt";
     context.setLineDash([...edgeDash(attributes.style)]);
     context.stroke();
@@ -144,6 +155,7 @@ function drawRelationshipEdges(
 export function attachCanvasLayers(
   renderer: NetworkSigma,
   clusterLabels: ReadonlyMap<string, string>,
+  getInteraction: () => NetworkGraphInteraction,
 ): () => void {
   const organizationCanvas = renderer.createCanvas("organization-regions", {
     beforeLayer: "edges",
@@ -156,7 +168,7 @@ export function attachCanvasLayers(
 
   const draw = () => {
     drawOrganizationRegions(renderer, organizationCanvas, clusterLabels);
-    drawRelationshipEdges(renderer, relationshipCanvas);
+    drawRelationshipEdges(renderer, relationshipCanvas, getInteraction());
   };
   renderer.on("afterRender", draw);
   renderer.on("resize", draw);

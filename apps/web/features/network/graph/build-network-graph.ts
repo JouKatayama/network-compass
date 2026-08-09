@@ -77,12 +77,17 @@ function selectLabelNodeIds(
 export function buildNetworkGraph(
   projection: GraphProjectionSchema,
   hopMode: VisibleHopMode,
+  preservedPositions?: ReadonlyMap<string, { x: number; y: number }>,
 ): NetworkGraphModel {
-  const positions = calculateDeterministicLayout(
-    projection.nodes,
-    projection.edges,
-    projection.focalPersonId,
-  );
+  const positions =
+    preservedPositions &&
+    projection.nodes.every((node) => preservedPositions.has(node.personId))
+      ? preservedPositions
+      : calculateDeterministicLayout(
+          projection.nodes,
+          projection.edges,
+          projection.focalPersonId,
+        );
   const visibleNodes = projection.nodes.filter(
     (node) => hopMode === "TWO_HOP" || node.hop <= 1,
   );
@@ -108,6 +113,7 @@ export function buildNetworkGraph(
       displayName: node.displayName,
       forceLabel: isFocal,
       hidden: false,
+      highlighted: false,
       hop: node.hop,
       isFocal,
       isPotential: node.isPotential,

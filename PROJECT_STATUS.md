@@ -35,9 +35,12 @@
 
 **Completed:** NC-007 API v0.1 — human-reviewed, CI-verified, and merged as PR #6.
 
-**Awaiting review:** NC-008 Frontend Shell + Graph Foundation — implemented and fully verified on
-`feat/nc-008-frontend-graph-foundation`. Review the P001 screenshot and `/network` interaction using
-`docs/exec-plans/active/NC-008.md`; do not start NC-009 before Human UI Review acceptance.
+**Completed:** NC-008 Frontend Shell + Graph Foundation — human-reviewed, CI-verified, and merged as
+PR #7.
+
+**Awaiting review:** NC-009 Person Detail + Graph Interaction — implemented and fully verified on
+`feat/nc-009-person-detail-graph-interaction`. Review the P001→P018→P067 interaction and artifacts
+using `docs/exec-plans/active/NC-009.md`; do not start NC-010 before Review Gate C acceptance.
 
 Issues NC-008 through NC-010 must not be implemented ahead of their issue unless the active issue requires a minimal boundary explicitly described in its scope.
 

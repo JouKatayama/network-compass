@@ -1,13 +1,26 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
-import { useMemo, useRef, useState, type ReactNode } from "react";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useCallback, useMemo, useRef, useState, type ReactNode } from "react";
 
-import type { GraphProjectionSchema } from "../../lib/api/generated";
-import { fetchNetworkProjection } from "../../lib/api/network";
+import type {
+  GraphPersonNodeSchema,
+  GraphProjectionSchema,
+  PersonDetailSchema,
+  PersonSearchResultSchema,
+} from "../../lib/api/generated";
+import {
+  expandNetworkProjection,
+  fetchNetworkProjection,
+} from "../../lib/api/network";
 import { buildNetworkGraph } from "./graph/build-network-graph";
+import { calculateDeterministicLayout } from "./graph/deterministic-layout";
+import { calculateExpandedLayout } from "./graph/expanded-layout";
 import { NetworkGraphCanvas } from "./graph/network-graph-canvas";
+import { addSearchResultToProjection } from "./graph/search-projection";
 import type { NetworkGraphController, VisibleHopMode } from "./graph/types";
+import { PeopleSearch } from "./people-search";
+import { PersonDetailDrawer } from "./person-detail-drawer";
 
 function CompassMark() {
   return (
@@ -213,18 +226,157 @@ function CameraControls({
   );
 }
 
-function NetworkReady({ projection }: { projection: GraphProjectionSchema }) {
+const RELATIONSHIP_STATE_LABELS: Record<string, string> = {
+  ACTIVE: "今もつながっている",
+  CLOSE: "近いつながり",
+  DORMANT: "久しぶりのつながり",
+  NEW: "新しいつながり",
+  RECONNECTED: "再びつながった",
+  WEAK: "ときどき思い出すつながり",
+};
+
+function HoverSummary({ node }: { node: GraphPersonNodeSchema }) {
+  return (
+    <div aria-live="polite" className="graph-hover-summary">
+      <p>{node.isPotential ? "2-hop先の人" : "あなたのつながり"}</p>
+      <b>{node.displayName}</b>
+      <span>{node.shortRole ?? "役割情報は限定的です"}</span>
+      <small>
+        {node.relationshipState
+          ? RELATIONSHIP_STATE_LABELS[node.relationshipState]
+          : "つながり方を確認できます"}
+        ・クリックで詳細
+      </small>
+    </div>
+  );
+}
+
+function NetworkReady({
+  projection: initialProjection,
+}: {
+  projection: GraphProjectionSchema;
+}) {
   const [hopMode, setHopMode] = useState<VisibleHopMode>("TWO_HOP");
+  const [projection, setProjection] = useState(initialProjection);
+  const [positions, setPositions] = useState(() =>
+    calculateDeterministicLayout(
+      initialProjection.nodes,
+      initialProjection.edges,
+      initialProjection.focalPersonId,
+    ),
+  );
+  const [hoveredPersonId, setHoveredPersonId] = useState<string | null>(null);
+  const [selectedPersonId, setSelectedPersonId] = useState<string | null>(null);
+  const [emphasizedPathPersonIds, setEmphasizedPathPersonIds] = useState<
+    ReadonlySet<string>
+  >(new Set());
+  const [announcement, setAnnouncement] = useState("");
   const graphController = useRef<NetworkGraphController>(null);
   const model = useMemo(
-    () => buildNetworkGraph(projection, hopMode),
-    [hopMode, projection],
+    () => buildNetworkGraph(projection, hopMode, positions),
+    [hopMode, positions, projection],
   );
   const visibleCount = model.graph.order;
+  const nodeById = useMemo(
+    () => new Map(projection.nodes.map((node) => [node.personId, node])),
+    [projection.nodes],
+  );
+  const personNameById = useMemo(
+    () =>
+      new Map(
+        projection.nodes.map((node) => [node.personId, node.displayName]),
+      ),
+    [projection.nodes],
+  );
+
+  const selectPerson = useCallback(
+    (personId: string) => {
+      if (personId === projection.focalPersonId) return;
+      setSelectedPersonId(personId);
+      setHoveredPersonId(null);
+      setEmphasizedPathPersonIds(new Set());
+      setAnnouncement(
+        `${personNameById.get(personId) ?? "選択した人"}の詳細を開きました`,
+      );
+    },
+    [personNameById, projection.focalPersonId],
+  );
+
+  const handleDetail = useCallback((detail: PersonDetailSchema | null) => {
+    setEmphasizedPathPersonIds(new Set(detail?.connectionPaths[0] ?? []));
+  }, []);
+
+  const expansionMutation = useMutation({
+    mutationFn: (personId: string) =>
+      expandNetworkProjection({
+        expandedFromPersonIds: projection.meta.expandedFromPersonIds ?? [],
+        selectedPersonId: personId,
+      }),
+    onError: () => {
+      setAnnouncement(
+        "つながりを広げられませんでした。もう一度お試しください。",
+      );
+    },
+    onSuccess: (expandedProjection, personId) => {
+      const addedCount =
+        expandedProjection.nodes.length - projection.nodes.length;
+      setPositions((current) =>
+        calculateExpandedLayout(
+          current,
+          expandedProjection.nodes,
+          expandedProjection.edges,
+          personId,
+        ),
+      );
+      setProjection(expandedProjection);
+      setHopMode("TWO_HOP");
+      setAnnouncement(
+        addedCount > 0
+          ? `${addedCount}人のつながりを追加しました。既存の位置は維持されています。`
+          : "この人から追加できる新しいつながりはありませんでした。",
+      );
+    },
+  });
+
+  const selectSearchResult = useCallback(
+    (result: PersonSearchResultSchema) => {
+      const augmented = addSearchResultToProjection(projection, result);
+      if (augmented.projection !== projection) {
+        setPositions((current) =>
+          calculateExpandedLayout(
+            current,
+            augmented.projection.nodes,
+            augmented.projection.edges,
+            augmented.anchorPersonId,
+          ),
+        );
+        setProjection(augmented.projection);
+        setHopMode("TWO_HOP");
+      }
+      selectPerson(result.person.personId);
+      window.setTimeout(
+        () => graphController.current?.focusPerson(result.person.personId),
+        60,
+      );
+    },
+    [projection, selectPerson],
+  );
+
+  const graphSelectedPersonId =
+    selectedPersonId && model.graph.hasNode(selectedPersonId)
+      ? selectedPersonId
+      : null;
+  const hoveredNode = hoveredPersonId
+    ? nodeById.get(hoveredPersonId)
+    : undefined;
+  const expandedPersonIds = new Set(
+    projection.meta.expandedFromPersonIds ?? [],
+  );
 
   return (
     <>
       <div className="network-toolbar">
+        <PeopleSearch onSelect={selectSearchResult} />
         <div
           className="hop-switch"
           role="group"
@@ -260,28 +412,65 @@ function NetworkReady({ projection }: { projection: GraphProjectionSchema }) {
             つながりのグラフ
           </h2>
           <div className="graph-atmosphere" />
-          <NetworkGraphCanvas model={model} ref={graphController} />
+          <NetworkGraphCanvas
+            emphasizedPathPersonIds={emphasizedPathPersonIds}
+            hoveredPersonId={hoveredPersonId}
+            model={model}
+            onHoverPerson={setHoveredPersonId}
+            onSelectPerson={selectPerson}
+            ref={graphController}
+            selectedPersonId={graphSelectedPersonId}
+          />
+          {hoveredNode && !hoveredNode.isPotential ? (
+            <HoverSummary node={hoveredNode} />
+          ) : hoveredNode ? (
+            <HoverSummary node={hoveredNode} />
+          ) : null}
           <CameraControls controller={graphController} />
           <div className="canvas-hint">
             <span />
             ドラッグで移動 ・ スクロールで拡大縮小
           </div>
         </section>
-        <aside aria-label="グラフの補足情報" className="network-context">
-          <RelationshipLegend />
-          <ClusterContext projection={projection} />
-          <div className="privacy-note">
-            <Icon>
-              <path d="M6 10V8a6 6 0 0 1 12 0v2m-13 0h14v11H5V10Z" />
-              <path d="M12 14v3" />
-            </Icon>
-            <span>
-              <b>あなただけのネットワーク</b>
-              <small>関係性の表示は他の人には見えません</small>
-            </span>
-          </div>
-        </aside>
+        {selectedPersonId ? (
+          <PersonDetailDrawer
+            expanded={expandedPersonIds.has(selectedPersonId)}
+            expanding={
+              expansionMutation.isPending &&
+              expansionMutation.variables === selectedPersonId
+            }
+            onClose={() => {
+              setSelectedPersonId(null);
+              setEmphasizedPathPersonIds(new Set());
+              setAnnouncement(
+                "詳細を閉じました。グラフの位置は変わっていません。",
+              );
+            }}
+            onDetail={handleDetail}
+            onExpand={() => expansionMutation.mutate(selectedPersonId)}
+            personId={selectedPersonId}
+            personNameById={personNameById}
+          />
+        ) : (
+          <aside aria-label="グラフの補足情報" className="network-context">
+            <RelationshipLegend />
+            <ClusterContext projection={projection} />
+            <div className="privacy-note">
+              <Icon>
+                <path d="M6 10V8a6 6 0 0 1 12 0v2m-13 0h14v11H5V10Z" />
+                <path d="M12 14v3" />
+              </Icon>
+              <span>
+                <b>あなただけのネットワーク</b>
+                <small>関係性の表示は他の人には見えません</small>
+              </span>
+            </div>
+          </aside>
+        )}
       </div>
+      <p aria-live="polite" className="sr-only">
+        {announcement}
+      </p>
       <p className="sr-only">
         あなたを含む{visibleCount}人を表示しています。1-hopは
         {projection.meta.oneHopCount}人、2-hopは{projection.meta.twoHopCount}
@@ -320,7 +509,10 @@ export function NetworkScreen() {
           <NetworkEmpty retry={() => void networkQuery.refetch()} />
         ) : null}
         {networkQuery.data && networkQuery.data.nodes.length > 0 ? (
-          <NetworkReady projection={networkQuery.data} />
+          <NetworkReady
+            key={`${networkQuery.data.meta.generatedAt}:${networkQuery.data.nodes.length}`}
+            projection={networkQuery.data}
+          />
         ) : null}
       </main>
     </div>
