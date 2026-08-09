@@ -38,9 +38,14 @@
 **Completed:** NC-008 Frontend Shell + Graph Foundation — human-reviewed, CI-verified, and merged as
 PR #7.
 
-**Awaiting review:** NC-009 Person Detail + Graph Interaction — implemented and fully verified on
-`feat/nc-009-person-detail-graph-interaction`. Review the P001→P018→P067 interaction and artifacts
-using `docs/exec-plans/active/NC-009.md`; do not start NC-010 before Review Gate C acceptance.
+**Completed:** NC-009 Person Detail + Graph Interaction — accepted at Review Gate C, CI-verified,
+and merged as PR #8.
+
+**Completed:** NC-010 VS001 E2E + Hardening — all acceptance evidence was approved with a human GO
+decision on 2026-08-09. VS001 is complete; PR #9 is approved for merge.
+
+**No active implementation issue.** Future work requires a new frozen issue/specification and must
+not be inferred from later product vision.
 
 Issues NC-008 through NC-010 must not be implemented ahead of their issue unless the active issue requires a minimal boundary explicitly described in its scope.
 

@@ -88,6 +88,7 @@ export const NetworkGraphCanvas = forwardRef<
     () => ({
       centerOnFocal: () => controllerRef.current?.centerOnFocal(),
       fit: () => controllerRef.current?.fit(),
+      focusCanvas: () => containerRef.current?.focus(),
       focusPerson: (personId) => controllerRef.current?.focusPerson(personId),
       zoomIn: () => controllerRef.current?.zoomIn(),
       zoomOut: () => controllerRef.current?.zoomOut(),
@@ -201,6 +202,7 @@ export const NetworkGraphCanvas = forwardRef<
       ref={containerRef}
       role="img"
       style={containerStyle}
+      tabIndex={0}
     />
   );
 });

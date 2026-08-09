@@ -1,6 +1,6 @@
 import { buildNetworkGraph } from "../features/network/graph/build-network-graph";
 import { calculateDeterministicLayout } from "../features/network/graph/deterministic-layout";
-import { networkFixture } from "./network-fixture";
+import { createLargeNetworkFixture, networkFixture } from "./network-fixture";
 
 describe("graph foundation", () => {
   it("produces deterministic, input-order-independent coordinates centered on the focal person", () => {
@@ -83,5 +83,26 @@ describe("graph foundation", () => {
       4;
 
     expect(withinCluster).toBeLessThan(crossCluster);
+  });
+
+  it("keeps a deterministic 60-person projection practical and preserves coordinates across hop views", () => {
+    const projection = createLargeNetworkFixture();
+    const startedAt = performance.now();
+    const positions = calculateDeterministicLayout(
+      projection.nodes,
+      projection.edges,
+      projection.focalPersonId,
+    );
+    const complete = buildNetworkGraph(projection, "TWO_HOP", positions);
+    const oneHop = buildNetworkGraph(projection, "ONE_HOP", positions);
+    const durationMs = performance.now() - startedAt;
+
+    expect(complete.graph.order).toBe(60);
+    expect(complete.graph.size).toBe(59);
+    expect(oneHop.graph.order).toBe(25);
+    expect(complete.positions).toBe(positions);
+    expect(oneHop.positions).toBe(positions);
+    expect(positions.get(projection.focalPersonId)).toEqual({ x: 0, y: 0 });
+    expect(durationMs).toBeLessThan(1_500);
   });
 });

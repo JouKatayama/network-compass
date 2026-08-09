@@ -4,26 +4,26 @@ Use this repository as a spec-driven implementation project. Do not infer future
 
 ## Active task
 
-**NC-009 Person Detail + Graph Interaction is implemented and verified, awaiting Review Gate C** on
-`feat/nc-009-person-detail-graph-interaction`. Follow `docs/exec-plans/active/NC-009.md`; do not
-start NC-010 until the P001→P018→P067 interaction is accepted.
+**No implementation task is active.** NC-010 received a human GO decision on 2026-08-09 and VS001
+is complete. The final plan is `docs/exec-plans/completed/NC-010.md` and the accepted evidence is
+`docs/testing/vs001-acceptance-matrix.md`.
 
-For NC-009, read in order:
+Before any future implementation, read in order:
 
 1. `AGENTS.md`
 2. `PROJECT_STATUS.md`
-3. `docs/issues/NC-009-person-detail-graph-interaction.md`
-4. `docs/exec-plans/completed/NC-008.md`
-5. the graph interaction, My Network, Person Detail, screen-state, user-journey, API contract,
-   projection, accessibility, privacy, and testing specifications
+3. the new frozen issue/specification supplied for that work
+4. `docs/exec-plans/completed/NC-010.md`
+5. the accepted VS001 matrix and every product/domain/UX/architecture specification referenced by
+   the new issue
 6. ADR-002 and the accepted frontend/modular-monolith architecture decisions
 7. `apps/web/AGENTS.md`
 8. `tests/e2e/AGENTS.md`
 
 ## Required operating mode
 
-Record implementation and review evidence at `docs/exec-plans/active/NC-009.md`. Keep that plan
-active until Review Gate C is accepted. Do not implement NC-010 or later product areas.
+Do not begin future product areas from the vision alone. Create a new active execution plan only
+after a concrete frozen issue exists, and keep its implementation within that issue's boundaries.
 
 After implementation, report: commands run, acceptance criteria satisfied/not satisfied, files changed, and remaining risks/technical debt.
 

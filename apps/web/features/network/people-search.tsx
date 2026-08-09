@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 
 import type { PersonSearchResultSchema } from "../../lib/api/generated";
 import { searchPeople } from "../../lib/api/people";
@@ -12,9 +12,10 @@ type PeopleSearchProps = {
 
 export function PeopleSearch({ onSelect }: PeopleSearchProps) {
   const listboxId = useId();
+  const inputRef = useRef<HTMLInputElement>(null);
   const [input, setInput] = useState("");
   const [query, setQuery] = useState("");
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(-1);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -29,16 +30,17 @@ export function PeopleSearch({ onSelect }: PeopleSearchProps) {
     staleTime: 30_000,
   });
   const results = searchQuery.data?.items ?? [];
-  const clampedActiveIndex = Math.min(
-    activeIndex,
-    Math.max(0, results.length - 1),
-  );
+  const clampedActiveIndex =
+    results.length > 0
+      ? Math.max(0, Math.min(activeIndex, results.length - 1))
+      : -1;
   const activeOptionId = results[clampedActiveIndex]
     ? `${listboxId}-${clampedActiveIndex}`
     : undefined;
 
   const select = (result: PersonSearchResultSchema) => {
     setInput(result.person.displayName);
+    inputRef.current?.focus();
     setOpen(false);
     onSelect(result);
   };
@@ -57,7 +59,7 @@ export function PeopleSearch({ onSelect }: PeopleSearchProps) {
           id={`${listboxId}-input`}
           onChange={(event) => {
             setInput(event.target.value);
-            setActiveIndex(0);
+            setActiveIndex(-1);
             setOpen(true);
           }}
           onFocus={() => setOpen(true)}
@@ -79,6 +81,7 @@ export function PeopleSearch({ onSelect }: PeopleSearchProps) {
             }
           }}
           placeholder="名前・役割・スキルで検索"
+          ref={inputRef}
           role="combobox"
           type="search"
           value={input}
@@ -104,23 +107,20 @@ export function PeopleSearch({ onSelect }: PeopleSearchProps) {
                   aria-selected={index === clampedActiveIndex}
                   id={`${listboxId}-${index}`}
                   key={result.person.personId}
+                  onClick={() => select(result)}
+                  onMouseDown={(event) => event.preventDefault()}
+                  onMouseEnter={() => setActiveIndex(index)}
                   role="option"
                 >
-                  <button
-                    onClick={() => select(result)}
-                    onMouseEnter={() => setActiveIndex(index)}
-                    type="button"
-                  >
-                    <span>
-                      <b>{result.person.displayName}</b>
-                      <small>
-                        {[result.person.role, result.person.organization?.name]
-                          .filter(Boolean)
-                          .join(" · ") || "プロフィール情報は限定的です"}
-                      </small>
-                    </span>
-                    <em>{result.relationshipLabel}</em>
-                  </button>
+                  <span>
+                    <b>{result.person.displayName}</b>
+                    <small>
+                      {[result.person.role, result.person.organization?.name]
+                        .filter(Boolean)
+                        .join(" · ") || "プロフィール情報は限定的です"}
+                    </small>
+                  </span>
+                  <em>{result.relationshipLabel}</em>
                 </li>
               ))}
             </ul>
