@@ -31,8 +31,9 @@
 
 **Completed:** NC-005 Persistence + Demo Reset — human-reviewed, migration/reset verified, and accepted.
 
-**Awaiting Review Gate B:** NC-006 Network Projection Service — implementation and P001 review JSON
-are complete. Do not begin NC-007 until the projection composition is human-reviewed and accepted.
+**Completed:** NC-006 Network Projection Service — human-reviewed and accepted at Review Gate B.
+
+**Next:** NC-007 API v0.1. No NC-007 implementation has started.
 
 Issues NC-007 through NC-010 must not be implemented ahead of their issue unless the active issue requires a minimal boundary explicitly described in its scope.
 
