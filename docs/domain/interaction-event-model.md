@@ -14,9 +14,12 @@
 - optional activityId/communityId/projectId
 - source
 - confidence
+- optional initiatorPersonId for directional evidence when the source provides it
 - createdByPersonId for self-reported analog events
 - sourceSystem / externalEventId when applicable
 - createdAt
+
+When `initiatorPersonId` is present it must be one of `participantIds`. It records event direction only; absence means direction is unknown rather than reciprocal.
 
 ## Evidence principles
 

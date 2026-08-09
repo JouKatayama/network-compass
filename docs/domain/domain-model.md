@@ -44,3 +44,7 @@ InteractionSource: `SYSTEM | SELF_REPORTED | MUTUAL_CONFIRMED | INFERRED`
 - one normalized relationship pair per person pair
 - user-declared Activity visibility is enforced server-side
 - project/skill/community are relationship context, not primary graph protagonists
+
+## Person fact attributes
+
+In addition to canonical UUID, display name, join timestamp, hire type, organization mapping, and external identifiers, `Person` may carry optional `role`, `careerLevel`, `location`, and `avatarUrl` facts. These attributes support synthetic composition and UI identity states; career level must never be used as relationship value, node importance, or recommendation rank.

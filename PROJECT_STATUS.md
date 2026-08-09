@@ -23,9 +23,11 @@
 
 **Completed:** NC-001 Repository Foundation — implemented, published, and accepted to proceed.
 
-**Current:** NC-002 Canonical Domain Models — human-reviewed and approved for integration.
+**Completed:** NC-002 Canonical Domain Models — human-reviewed, CI-verified, and merged.
 
-Issues NC-003 through NC-010 must not be implemented ahead of their issue unless NC-002 requires a minimal boundary explicitly described in its scope.
+**Current:** NC-003 Synthetic Data Generator — implemented locally, fully validated, and ready for human review.
+
+Issues NC-004 through NC-010 must not be implemented ahead of their issue unless NC-003 requires a minimal boundary explicitly described in its scope.
 
 ## Review gates
 

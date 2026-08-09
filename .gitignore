@@ -32,3 +32,4 @@ __pycache__/
 *.log
 dist/
 build/
+tools/synthetic-data/output/

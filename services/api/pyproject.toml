@@ -25,7 +25,8 @@ package = false
 
 [tool.pytest.ini_options]
 addopts = "-ra --strict-markers"
-testpaths = ["tests"]
+pythonpath = [".", "../../tools/synthetic-data"]
+testpaths = ["tests", "../../tools/synthetic-data/tool_tests"]
 
 [tool.ruff]
 line-length = 100

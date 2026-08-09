@@ -80,6 +80,7 @@ The root `Makefile` provides the common entry points:
 | `make build` | Build the production Next.js application |
 | `make e2e` | Run Playwright smoke tests with local web/API servers |
 | `make check` | Run format, lint, typecheck, unit tests, and web build |
+| `make synthetic-demo` / `make synthetic-edge-cases` | Generate deterministic fact datasets and validation reports |
 | `make db-check` | Run `SELECT 1` inside the started API container |
 | `make migrate` / `make migrate-current` | Upgrade or report the Alembic revision |
 
@@ -99,6 +100,7 @@ The test runner starts the local web and API development servers unless
 apps/web/          Next.js application and frontend unit tests
 services/api/      FastAPI application, Alembic, and backend tests
 packages/contracts Future generated OpenAPI contracts (no handwritten duplicate contract)
+tools/synthetic-data Deterministic demo/edge-case fact generator and tests
 tests/e2e/         Playwright smoke tests
 docs/              Product and architecture system of record
 ```

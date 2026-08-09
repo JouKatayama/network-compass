@@ -43,6 +43,10 @@ class PersonSchema(DomainSchema):
     hire_type: HireType
     primary_organization_unit_id: UUID | None = None
     external_identifiers: tuple[ExternalIdentifierSchema, ...] = ()
+    role: str | None = None
+    career_level: str | None = None
+    location: str | None = None
+    avatar_url: str | None = None
 
     @model_validator(mode="after")
     def validate_domain_invariants(self) -> Self:
@@ -59,6 +63,10 @@ class PersonSchema(DomainSchema):
             external_identifiers=tuple(
                 identifier.to_domain() for identifier in self.external_identifiers
             ),
+            role=self.role,
+            career_level=self.career_level,
+            location=self.location,
+            avatar_url=self.avatar_url,
         )
 
 
@@ -76,6 +84,7 @@ class InteractionEventSchema(DomainSchema):
     activity_id: UUID | None = None
     community_id: UUID | None = None
     project_id: UUID | None = None
+    initiator_person_id: UUID | None = None
     created_by_person_id: UUID | None = None
     source_system: str | None = None
     external_event_id: str | None = None
@@ -100,6 +109,7 @@ class InteractionEventSchema(DomainSchema):
             activity_id=self.activity_id,
             community_id=self.community_id,
             project_id=self.project_id,
+            initiator_person_id=self.initiator_person_id,
             created_by_person_id=self.created_by_person_id,
             source_system=self.source_system,
             external_event_id=self.external_event_id,
