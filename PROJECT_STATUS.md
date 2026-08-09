@@ -25,9 +25,11 @@
 
 **Completed:** NC-002 Canonical Domain Models — human-reviewed, CI-verified, and merged.
 
-**Current:** NC-003 Synthetic Data Generator — implemented locally, fully validated, and ready for human review.
+**Completed:** NC-003 Synthetic Data Generator — human-reviewed, CI-verified, and merged.
 
-Issues NC-004 through NC-010 must not be implemented ahead of their issue unless NC-003 requires a minimal boundary explicitly described in its scope.
+**Current:** NC-004 Relationship Engine v0.1 — implemented and ready for Review Gate A.
+
+Issues NC-005 through NC-010 must not be implemented ahead of their issue unless NC-004 requires a minimal boundary explicitly described in its scope.
 
 ## Review gates
 
