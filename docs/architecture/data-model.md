@@ -4,6 +4,8 @@
 
 Person, OrganizationUnit, Community/Membership, Activity/PersonActivity, Skill/PersonSkill, ProjectContext/Participation, InteractionEvent, UserRelationshipFeedback.
 
+Person identity facts may include optional role, career level, location, and avatar URL. InteractionEvent may include an optional participant initiator for directional evidence. These attributes are facts and do not imply relationship strength, state, or rank.
+
 ## Derived
 
 RelationshipProfile, Recommendation(+feature breakdown/feedback), NetworkingProfile, NetworkRampProfile, NetworkHealthProfile.

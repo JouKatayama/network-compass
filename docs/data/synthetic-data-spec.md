@@ -28,6 +28,8 @@ Include digital-heavy, hybrid, analog-heavy, group-size variation, large-event c
 
 Use deterministic seed and datasetVersion. Generator and Relationship Engine must be separate. Generate a validation report comparing expected scenarios to derived outputs.
 
+Scenario expectations are validation metadata, never source facts. Until NC-004 exists, relationship-state comparisons are reported as `PENDING_NC_004`; structural fact checks must still pass in NC-003.
+
 ## Required edge cases
 
 Digital-only close; analog-only close; dormant; reconnected; same community/no interaction; same activity/no interaction; large event only; 1:1 lunch; one-sided digital; reciprocal; old project; missing analog; new joiner; no network; multiple org context; duplicate analog entry; long names; missing avatar.

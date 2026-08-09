@@ -26,6 +26,7 @@ class InteractionEvent:
     activity_id: UUID | None = None
     community_id: UUID | None = None
     project_id: UUID | None = None
+    initiator_person_id: UUID | None = None
     created_by_person_id: UUID | None = None
     source_system: str | None = None
     external_event_id: str | None = None
@@ -56,6 +57,8 @@ class InteractionEvent:
 
         if self.created_by_person_id is not None and self.created_by_person_id not in participants:
             raise ValueError("created_by_person_id must be an interaction participant")
+        if self.initiator_person_id is not None and self.initiator_person_id not in participants:
+            raise ValueError("initiator_person_id must be an interaction participant")
         if (
             self.channel is InteractionChannel.ANALOG
             and self.source is InteractionSource.SELF_REPORTED

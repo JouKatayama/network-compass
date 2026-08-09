@@ -19,6 +19,7 @@ def valid_interaction_payload() -> dict[str, object]:
         "confidence": 0.9,
         "createdAt": "2026-08-08T01:05:00Z",
         "conversationParticipantCount": 2,
+        "initiatorPersonId": str(UUID(int=1)),
         "createdByPersonId": str(UUID(int=1)),
     }
 
@@ -60,6 +61,10 @@ def test_person_schema_keeps_external_ids_separate_and_rejects_duplicates() -> N
         "displayName": "  Nao  ",
         "joinedAt": "2026-08-08T00:00:00Z",
         "hireType": "EXPERIENCED",
+        "role": "Data Architect",
+        "careerLevel": "Manager",
+        "location": "Tokyo",
+        "avatarUrl": None,
         "externalIdentifiers": [
             {"sourceSystem": " HR ", "externalId": " employee-1 "},
         ],
@@ -70,6 +75,10 @@ def test_person_schema_keeps_external_ids_separate_and_rejects_duplicates() -> N
     assert person.display_name == "Nao"
     assert person.hire_type is HireType.EXPERIENCED
     assert person.external_identifiers[0].source_system == "hr"
+    assert person.role == "Data Architect"
+    assert person.career_level == "Manager"
+    assert person.location == "Tokyo"
+    assert person.avatar_url is None
 
     payload["externalIdentifiers"] = [
         {"sourceSystem": "HR", "externalId": "employee-1"},

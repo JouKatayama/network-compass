@@ -1,4 +1,4 @@
-.PHONY: build check db-check dev-api dev-web e2e format format-check install lint migrate migrate-current start stop test typecheck
+.PHONY: build check db-check dev-api dev-web e2e format format-check install lint migrate migrate-current start stop synthetic-demo synthetic-edge-cases test typecheck
 
 install:
 	corepack pnpm install --frozen-lockfile
@@ -18,23 +18,29 @@ dev-api:
 
 format:
 	corepack pnpm format:js
-	uv --directory services/api run ruff format .
+	uv --directory services/api run ruff format . ../../tools/synthetic-data
 
 format-check:
 	corepack pnpm format:check:js
-	uv --directory services/api run ruff format --check .
+	uv --directory services/api run ruff format --check . ../../tools/synthetic-data
 
 lint:
 	corepack pnpm lint:web
-	uv --directory services/api run ruff check .
+	uv --directory services/api run ruff check . ../../tools/synthetic-data
 
 typecheck:
 	corepack pnpm typecheck:web
-	uv --directory services/api run mypy app tests
+	uv --directory services/api run mypy app tests ../../tools/synthetic-data/network_compass_synthetic ../../tools/synthetic-data/tool_tests
 
 test:
 	corepack pnpm test:web
 	uv --directory services/api run pytest
+
+synthetic-demo:
+	PYTHONPATH=$(CURDIR)/services/api:$(CURDIR)/tools/synthetic-data uv --directory services/api run python -m network_compass_synthetic --family demo --output $(CURDIR)/tools/synthetic-data/output/demo
+
+synthetic-edge-cases:
+	PYTHONPATH=$(CURDIR)/services/api:$(CURDIR)/tools/synthetic-data uv --directory services/api run python -m network_compass_synthetic --family edge_cases --output $(CURDIR)/tools/synthetic-data/output/edge_cases
 
 build:
 	corepack pnpm build:web

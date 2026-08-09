@@ -20,6 +20,7 @@ def make_event(
     channel: InteractionChannel = InteractionChannel.DIGITAL,
     source: InteractionSource = InteractionSource.SYSTEM,
     created_by_person_id: UUID | None = None,
+    initiator_person_id: UUID | None = None,
     conversation_participant_count: int | None = None,
     source_system: str | None = None,
     external_event_id: str | None = None,
@@ -36,6 +37,7 @@ def make_event(
         confidence=Confidence(0.8),
         created_at=created_at,
         conversation_participant_count=conversation_participant_count,
+        initiator_person_id=initiator_person_id,
         created_by_person_id=created_by_person_id,
         source_system=source_system,
         external_event_id=external_event_id,
@@ -80,6 +82,14 @@ def test_self_reported_analog_event_requires_reporting_participant() -> None:
             channel=InteractionChannel.ANALOG,
             source=InteractionSource.SELF_REPORTED,
         )
+
+
+def test_interaction_initiator_must_be_a_participant() -> None:
+    event = make_event(initiator_person_id=PERSON_A)
+
+    assert event.initiator_person_id == PERSON_A
+    with pytest.raises(ValueError, match="initiator_person_id must be an interaction participant"):
+        make_event(initiator_person_id=PERSON_C)
 
     with pytest.raises(ValueError, match="must be an interaction participant"):
         make_event(

@@ -30,11 +30,19 @@ def test_person_normalizes_text_and_joined_at_to_utc() -> None:
         joined_at=joined_in_tokyo,
         hire_type=HireType.EXPERIENCED,
         external_identifiers=(ExternalIdentifier(" HR ", " 001 "),),
+        role="  Data Architect  ",
+        career_level="  Manager  ",
+        location="  Tokyo  ",
+        avatar_url="  https://example.invalid/avatar.svg  ",
     )
 
     assert person.display_name == "Nao Katayama"
     assert person.joined_at == datetime(2026, 8, 8, tzinfo=UTC)
     assert person.external_identifiers[0].source_system == "hr"
+    assert person.role == "Data Architect"
+    assert person.career_level == "Manager"
+    assert person.location == "Tokyo"
+    assert person.avatar_url == "https://example.invalid/avatar.svg"
 
 
 def test_person_rejects_duplicate_external_identifier_mappings() -> None:

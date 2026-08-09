@@ -6,6 +6,7 @@ from app.domain.enums import HireType, Visibility
 from app.domain.value_objects import (
     ExternalIdentifier,
     PersonPair,
+    normalize_optional_text,
     normalize_text,
     normalize_utc,
 )
@@ -35,6 +36,10 @@ class Person:
     hire_type: HireType
     primary_organization_unit_id: UUID | None = None
     external_identifiers: tuple[ExternalIdentifier, ...] = ()
+    role: str | None = None
+    career_level: str | None = None
+    location: str | None = None
+    avatar_url: str | None = None
 
     def __post_init__(self) -> None:
         object.__setattr__(
@@ -51,6 +56,12 @@ class Person:
         if len(identifiers) != len(set(identifiers)):
             raise ValueError("external identifiers must be unique per person")
         object.__setattr__(self, "external_identifiers", identifiers)
+        for field_name in ("role", "career_level", "location", "avatar_url"):
+            object.__setattr__(
+                self,
+                field_name,
+                normalize_optional_text(getattr(self, field_name), field_name=field_name),
+            )
 
 
 @dataclass(frozen=True, slots=True)

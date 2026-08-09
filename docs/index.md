@@ -36,4 +36,4 @@ This directory is the repository system of record. When documents conflict, use 
 
 ## Execution plans
 
-`exec-plans/` contains active/completed implementation plans. NC-001 starts in `exec-plans/active/NC-001.md`.
+`exec-plans/` contains active/completed implementation plans. Follow the active plan named in `AGENTS.md`.

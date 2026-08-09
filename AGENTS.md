@@ -77,4 +77,4 @@ A task is complete only when acceptance criteria are satisfied, tests/lint/typec
 - Testing: `docs/testing/index.md`
 - Issues: `docs/issues/index.md`
 - Codex workflow: `docs/codex/index.md`
-- Current execution plan: `docs/exec-plans/active/NC-002.md`
+- Current execution plan: `docs/exec-plans/active/NC-003.md`
