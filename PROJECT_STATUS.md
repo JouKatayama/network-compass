@@ -27,9 +27,11 @@
 
 **Completed:** NC-003 Synthetic Data Generator — human-reviewed, CI-verified, and merged.
 
-**Current:** NC-004 Relationship Engine v0.1 — implemented and ready for Review Gate A.
+**Completed:** NC-004 Relationship Engine v0.1 — human-reviewed and accepted at Review Gate A; user-correction semantics are deferred to a later frozen specification.
 
-Issues NC-005 through NC-010 must not be implemented ahead of their issue unless NC-004 requires a minimal boundary explicitly described in its scope.
+**Next:** NC-005 Persistence + Demo Reset — not started.
+
+Issues NC-006 through NC-010 must not be implemented ahead of their issue unless the active issue requires a minimal boundary explicitly described in its scope.
 
 ## Review gates
 
