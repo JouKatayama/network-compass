@@ -24,6 +24,14 @@ GraphPersonNode: personId/displayName/shortRole/avatar, hop 0|1|2, clusterId, op
 
 GraphRelationshipEdge: source/target, optional relationship state/strength/currentActivation, edgeType DIRECT|POTENTIAL_PATH, and presentation buckets for width/opacity/style.
 
+### Implemented projection boundary
+
+NC-006 implements the internal `graph-projection-v0.1.0` read model and deterministic NetworkX
+projection service. Two-hop nodes carry at most three mutual-person IDs and shortest paths. Direct
+edges may carry focal-relative relationship metrics; `POTENTIAL_PATH` edges omit all third-party
+relationship metrics. Organization clusters remain soft metadata and all primary nodes are people.
+The HTTP/Pydantic contract remains owned by NC-007.
+
 ## PersonDetail
 
 Aggregates current-user-relative connection summary, mutual connections, common visible activities/communities/skills/shared projects, fact-based timeline, and optional recommendation/path context.

@@ -66,6 +66,12 @@ jobs:
       - run: uv --directory services/api run alembic upgrade head
       - run: make demo-reset-host
       - run: make demo-reset-host
+      - run: >-
+          PYTHONPATH=${{ github.workspace }}/services/api:${{ github.workspace }}/tools/synthetic-data
+          uv --directory services/api run python -m app.commands.projection_review
+          --source-system synthetic --external-id P001
+          > /tmp/NC-006-p001-graph-projection.json
+      - run: diff -u docs/review-artifacts/NC-006-p001-graph-projection.json /tmp/NC-006-p001-graph-projection.json
       - run: uv --directory services/api run alembic check
       - run: uv --directory services/api run alembic current
       - run: uv --directory services/api run python -m app.infrastructure.database

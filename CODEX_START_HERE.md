@@ -4,9 +4,11 @@ Use this repository as a spec-driven implementation project. Do not infer future
 
 ## Next task
 
-**NC-005 Persistence + Demo Reset is complete and human-reviewed.** No implementation issue is currently active. The next issue is **NC-006 Network Projection Service**, which stops at Review Gate B.
+**NC-005 Persistence + Demo Reset is complete and human-reviewed.** **NC-006 Network Projection
+Service** is implemented and awaiting Review Gate B. Follow `docs/exec-plans/active/NC-006.md` and
+do not start NC-007 before human acceptance.
 
-Before starting NC-006, read in order:
+For NC-006, read in order:
 
 1. `AGENTS.md`
 2. `PROJECT_STATUS.md`
@@ -19,7 +21,8 @@ Before starting NC-006, read in order:
 
 ## Required operating mode
 
-Before editing implementation code, create `docs/exec-plans/active/NC-006.md` and return a short plan containing: files/directories to create or modify, projection/candidate/sampling choices within approved constraints, privacy boundary, P001 review JSON strategy, test strategy, and any unresolved assumption. Do not implement unrelated later issues or continue past Review Gate B.
+Follow `docs/exec-plans/active/NC-006.md`. Do not implement unrelated later issues or continue past
+Review Gate B.
 
 After implementation, report: commands run, acceptance criteria satisfied/not satisfied, files changed, and remaining risks/technical debt.
 

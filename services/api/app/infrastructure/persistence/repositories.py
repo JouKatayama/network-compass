@@ -6,7 +6,7 @@ from uuid import UUID
 from sqlalchemy import delete, func, or_, select
 from sqlalchemy.orm import Session
 
-from app.domain.entities import Person
+from app.domain.entities import OrganizationUnit, Person
 from app.domain.enums import Visibility
 from app.domain.facts import CanonicalFactSet
 from app.domain.interactions import InteractionEvent
@@ -242,6 +242,12 @@ class SqlAlchemyFactRepository:
             )
             for row in person_rows
         )
+
+    def list_organization_units(self) -> tuple[OrganizationUnit, ...]:
+        rows = self._session.execute(
+            select(OrganizationUnitRecord).order_by(OrganizationUnitRecord.id)
+        ).scalars()
+        return tuple(OrganizationUnit(id=row.id, name=row.name) for row in rows)
 
     def list_interaction_events(self) -> tuple[InteractionEvent, ...]:
         participant_rows = self._session.execute(
