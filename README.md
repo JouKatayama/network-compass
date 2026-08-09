@@ -2,9 +2,9 @@
 
 Network Compass is a person-first internal networking product. The repository contains one Next.js
 web application, one FastAPI modular monolith, and one PostgreSQL database. Canonical domain facts,
-the versioned Relationship Engine, deterministic synthetic fixtures, and their persistence/reset
-workflow are implemented; product graph APIs/UI, recommendations, and production authentication
-remain later scope.
+the versioned Relationship Engine, deterministic synthetic fixtures, their persistence/reset
+workflow, and the internal personal GraphProjection service are implemented; product graph APIs/UI,
+recommendations, and production authentication remain later scope.
 
 ## Runtime baseline
 
@@ -83,6 +83,7 @@ The root `Makefile` provides the common entry points:
 | `make check` | Run format, lint, typecheck, unit tests, and web build |
 | `make synthetic-demo` / `make synthetic-edge-cases` | Generate deterministic fact datasets and validation reports |
 | `make demo-reset` | Start the local DB, replace demo facts, and rebuild relationship profiles |
+| `make projection-review-p001` | Reset demo data and write the deterministic P001 Review Gate B JSON |
 | `make db-check` | Run `SELECT 1` inside the started API container |
 | `make migrate` / `make migrate-current` | Upgrade or report the Alembic revision |
 
@@ -90,6 +91,10 @@ The root `Makefile` provides the common entry points:
 synthetic seed in one transaction, replaces canonical source facts, and rebuilds the recalculable
 `relationship-v0.1.0` materialization. Running it repeatedly produces the same source/profile
 counts without duplicate rows.
+
+`make projection-review-p001` performs that reset and then writes the bounded personal projection to
+`docs/review-artifacts/NC-006-p001-graph-projection.json`. The command is intentionally a review
+workflow, not an HTTP product endpoint; NC-007 owns the authenticated API contract.
 
 To run the Playwright smoke directly, install Chromium once and then execute the test:
 

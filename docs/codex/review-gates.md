@@ -12,6 +12,13 @@ Review relationship formulas/configuration and fixture outputs before persistenc
 
 Inspect P001 GraphProjection JSON: composition, diversity, dormant/active mix, 2-hop path availability, bounds, and privacy. Do not proceed to UI if the projection is product-wrong.
 
+NC-006 review artifact: `docs/review-artifacts/NC-006-p001-graph-projection.json`. Review the
+`graphProjection` as the production-shaped read model and use the sibling `review` summary/synthetic
+ID lookup to identify P018, P067, state/cluster counts, bound checks, and privacy checks.
+
+**Decision:** Review Gate B completed on 2026-08-09. The P001 projection composition, diversity,
+hero paths, bounds, and privacy shape were accepted for NC-007 consumption.
+
 ## Gate C — after NC-009
 
 Human UX review: does the graph feel like a human relationship memory rather than Neo4j/analytics? Does selection preserve mental map? Does P018 evoke relationship history and P067 feel naturally reachable?

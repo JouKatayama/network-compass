@@ -90,12 +90,14 @@ def test_fact_repository_round_trips_people_and_relational_interactions(
         repository = SqlAlchemyFactRepository(session)
         repository.replace_all(_canonical_facts(dataset))
         people = repository.list_people()
+        organization_units = repository.list_organization_units()
         events = repository.list_interaction_events()
         counts = repository.counts()
 
     assert {person.id: person for person in people} == {
         person.id: person for person in dataset.people
     }
+    assert organization_units == tuple(sorted(dataset.organization_units, key=lambda item: item.id))
     assert {event.id: event for event in events} == {
         event.id: event for event in dataset.interaction_events
     }

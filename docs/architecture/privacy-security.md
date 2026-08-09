@@ -8,6 +8,11 @@ An individual user's relationship graph is personal; no MVP admin endpoint may f
 
 For 2-hop navigation, return only the minimal path/context required. Do not expose arbitrary A↔B private relationship metrics between two third parties.
 
+NC-006 enforces this in the internal projection serializer: a two-hop node contains only selected
+person identity plus at most three mutual-person/shortest-path IDs, and a third-party path edge never
+contains relationship state, strength, activation, or evidence decomposition. Numeric path quality is
+used only inside bounded candidate generation and is not serialized.
+
 ## Data minimization
 
 Never ingest/store message/email bodies, transcripts, private audio, GPS, or Bluetooth proximity for this product. Use metadata/evidence events only.

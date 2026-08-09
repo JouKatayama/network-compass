@@ -25,6 +25,22 @@ from app.domain.enums import (
 )
 from app.domain.facts import CanonicalFactSet
 from app.domain.interactions import InteractionEvent
+from app.domain.network_projection import (
+    PROJECTION_MODEL_VERSION,
+    NetworkProjectionConfig,
+    NetworkProjectionService,
+)
+from app.domain.projections import (
+    GraphCluster,
+    GraphEdgeOpacity,
+    GraphEdgeStyle,
+    GraphEdgeType,
+    GraphEdgeWidth,
+    GraphPersonNode,
+    GraphProjection,
+    GraphProjectionMeta,
+    GraphRelationshipEdge,
+)
 from app.domain.relationship_config import RELATIONSHIP_MODEL_V1, RelationshipModelConfig
 from app.domain.relationship_engine import RelationshipEngine
 from app.domain.relationships import EvidenceCoverage, RelationshipContext, RelationshipProfile
@@ -39,11 +55,22 @@ __all__ = [
     "DurationBucket",
     "EvidenceCoverage",
     "ExternalIdentifier",
+    "GraphCluster",
+    "GraphEdgeOpacity",
+    "GraphEdgeStyle",
+    "GraphEdgeType",
+    "GraphEdgeWidth",
+    "GraphPersonNode",
+    "GraphProjection",
+    "GraphProjectionMeta",
+    "GraphRelationshipEdge",
     "HireType",
     "InteractionChannel",
     "InteractionEvent",
     "InteractionSource",
     "InteractionType",
+    "NetworkProjectionConfig",
+    "NetworkProjectionService",
     "OrganizationUnit",
     "Person",
     "PersonActivity",
@@ -51,6 +78,7 @@ __all__ = [
     "PersonSkill",
     "ProjectContext",
     "ProjectParticipation",
+    "PROJECTION_MODEL_VERSION",
     "RELATIONSHIP_MODEL_V1",
     "RecommendationType",
     "RelationshipContext",

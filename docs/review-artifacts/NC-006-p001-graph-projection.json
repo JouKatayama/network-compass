@@ -1,0 +1,1002 @@
+{
+  "artifactVersion": "nc006-gate-b-v1",
+  "graphProjection": {
+    "clusters": [
+      {
+        "id": "organization:a85442c4-b647-555f-99f8-11f85d073590",
+        "label": "Strategy",
+        "memberCount": 6
+      },
+      {
+        "id": "organization:da766a5d-df8a-5b5f-bd63-74a231c43db3",
+        "label": "Technology / AI & Data",
+        "memberCount": 31
+      }
+    ],
+    "edges": [
+      {
+        "currentActivation": 0.9238766922943659,
+        "edgeType": "DIRECT",
+        "opacity": "HIGH",
+        "relationshipState": "CLOSE",
+        "relationshipStrength": 0.8399141039099515,
+        "sourcePersonId": "81f756dc-7afd-56b9-80d7-378231cb4c0f",
+        "style": "SOLID",
+        "targetPersonId": "c3a03270-d526-5461-9786-ae9abd088142",
+        "width": "THICK"
+      },
+      {
+        "currentActivation": 0.9043719673885742,
+        "edgeType": "DIRECT",
+        "opacity": "HIGH",
+        "relationshipState": "CLOSE",
+        "relationshipStrength": 0.827147972682627,
+        "sourcePersonId": "81f756dc-7afd-56b9-80d7-378231cb4c0f",
+        "style": "SOLID",
+        "targetPersonId": "4546cfcd-dc20-55eb-b7ed-dc3848ced967",
+        "width": "THICK"
+      },
+      {
+        "currentActivation": 0.9043719673885742,
+        "edgeType": "DIRECT",
+        "opacity": "HIGH",
+        "relationshipState": "CLOSE",
+        "relationshipStrength": 0.827147972682627,
+        "sourcePersonId": "81f756dc-7afd-56b9-80d7-378231cb4c0f",
+        "style": "SOLID",
+        "targetPersonId": "87f371f0-cf66-585e-9542-a25a388f341f",
+        "width": "THICK"
+      },
+      {
+        "currentActivation": 0.9043719673885742,
+        "edgeType": "DIRECT",
+        "opacity": "HIGH",
+        "relationshipState": "CLOSE",
+        "relationshipStrength": 0.827147972682627,
+        "sourcePersonId": "81f756dc-7afd-56b9-80d7-378231cb4c0f",
+        "style": "SOLID",
+        "targetPersonId": "ca1646b9-a430-5ca7-95d1-172864d6233f",
+        "width": "THICK"
+      },
+      {
+        "currentActivation": 0.9043719673885742,
+        "edgeType": "DIRECT",
+        "opacity": "HIGH",
+        "relationshipState": "CLOSE",
+        "relationshipStrength": 0.8178442798484683,
+        "sourcePersonId": "81f756dc-7afd-56b9-80d7-378231cb4c0f",
+        "style": "SOLID",
+        "targetPersonId": "7408123a-b0ef-5d52-8e35-564ac8ef4139",
+        "width": "THICK"
+      },
+      {
+        "currentActivation": 0.9043719673885742,
+        "edgeType": "DIRECT",
+        "opacity": "HIGH",
+        "relationshipState": "CLOSE",
+        "relationshipStrength": 0.8178442798484683,
+        "sourcePersonId": "81f756dc-7afd-56b9-80d7-378231cb4c0f",
+        "style": "SOLID",
+        "targetPersonId": "9e43230f-b969-5011-a337-e5d3841ff9d9",
+        "width": "THICK"
+      },
+      {
+        "currentActivation": 0.9043719673885742,
+        "edgeType": "DIRECT",
+        "opacity": "HIGH",
+        "relationshipState": "CLOSE",
+        "relationshipStrength": 0.8178442798484683,
+        "sourcePersonId": "81f756dc-7afd-56b9-80d7-378231cb4c0f",
+        "style": "SOLID",
+        "targetPersonId": "ca91651d-17aa-5d4f-84a2-0c498e63e5bb",
+        "width": "THICK"
+      },
+      {
+        "currentActivation": 0.9043719673885742,
+        "edgeType": "DIRECT",
+        "opacity": "HIGH",
+        "relationshipState": "CLOSE",
+        "relationshipStrength": 0.8178442798484683,
+        "sourcePersonId": "81f756dc-7afd-56b9-80d7-378231cb4c0f",
+        "style": "SOLID",
+        "targetPersonId": "e9b642e9-2753-5078-9e8c-37e831c53a26",
+        "width": "THICK"
+      },
+      {
+        "currentActivation": 0.5806534828937755,
+        "edgeType": "DIRECT",
+        "opacity": "MEDIUM",
+        "relationshipState": "RECONNECTED",
+        "relationshipStrength": 0.5697431003873603,
+        "sourcePersonId": "81f756dc-7afd-56b9-80d7-378231cb4c0f",
+        "style": "SOLID",
+        "targetPersonId": "859704fb-39aa-59dc-8907-bcc2dae8eb5b",
+        "width": "MEDIUM"
+      },
+      {
+        "currentActivation": 0.5716287611099705,
+        "edgeType": "DIRECT",
+        "opacity": "MEDIUM",
+        "relationshipState": "ACTIVE",
+        "relationshipStrength": 0.5329491280836645,
+        "sourcePersonId": "81f756dc-7afd-56b9-80d7-378231cb4c0f",
+        "style": "SOLID",
+        "targetPersonId": "df81aebb-c5ce-5d09-9c31-e2d0bd6b7bad",
+        "width": "MEDIUM"
+      },
+      {
+        "currentActivation": 0.5716287611099705,
+        "edgeType": "DIRECT",
+        "opacity": "MEDIUM",
+        "relationshipState": "ACTIVE",
+        "relationshipStrength": 0.52838366663459,
+        "sourcePersonId": "81f756dc-7afd-56b9-80d7-378231cb4c0f",
+        "style": "SOLID",
+        "targetPersonId": "41157e03-6714-5d32-b367-ef1c8a7f4d90",
+        "width": "MEDIUM"
+      },
+      {
+        "currentActivation": 0.5716287611099705,
+        "edgeType": "DIRECT",
+        "opacity": "MEDIUM",
+        "relationshipState": "ACTIVE",
+        "relationshipStrength": 0.5267359770709489,
+        "sourcePersonId": "81f756dc-7afd-56b9-80d7-378231cb4c0f",
+        "style": "SOLID",
+        "targetPersonId": "170f46d6-2693-5b9b-ba9f-0c8c2deee5fe",
+        "width": "MEDIUM"
+      },
+      {
+        "currentActivation": 0.5716287611099705,
+        "edgeType": "DIRECT",
+        "opacity": "MEDIUM",
+        "relationshipState": "ACTIVE",
+        "relationshipStrength": 0.5267359770709489,
+        "sourcePersonId": "81f756dc-7afd-56b9-80d7-378231cb4c0f",
+        "style": "SOLID",
+        "targetPersonId": "6d5623e8-9cd8-5ade-8ce9-f3e79e26c7aa",
+        "width": "MEDIUM"
+      },
+      {
+        "currentActivation": 0.5716287611099705,
+        "edgeType": "DIRECT",
+        "opacity": "MEDIUM",
+        "relationshipState": "ACTIVE",
+        "relationshipStrength": 0.5267359770709489,
+        "sourcePersonId": "81f756dc-7afd-56b9-80d7-378231cb4c0f",
+        "style": "SOLID",
+        "targetPersonId": "7d4bfeb2-41de-5f63-a77d-cdc853fc3a47",
+        "width": "MEDIUM"
+      },
+      {
+        "currentActivation": 0.5716287611099705,
+        "edgeType": "DIRECT",
+        "opacity": "MEDIUM",
+        "relationshipState": "ACTIVE",
+        "relationshipStrength": 0.5174322842367902,
+        "sourcePersonId": "81f756dc-7afd-56b9-80d7-378231cb4c0f",
+        "style": "SOLID",
+        "targetPersonId": "036adc91-9be0-50bf-8416-c2c446380480",
+        "width": "MEDIUM"
+      },
+      {
+        "currentActivation": 0.5716287611099705,
+        "edgeType": "DIRECT",
+        "opacity": "MEDIUM",
+        "relationshipState": "ACTIVE",
+        "relationshipStrength": 0.5174322842367902,
+        "sourcePersonId": "81f756dc-7afd-56b9-80d7-378231cb4c0f",
+        "style": "SOLID",
+        "targetPersonId": "3d2f95ce-45c4-59be-a2fc-962236ba83f8",
+        "width": "MEDIUM"
+      },
+      {
+        "currentActivation": 0.5716287611099705,
+        "edgeType": "DIRECT",
+        "opacity": "MEDIUM",
+        "relationshipState": "ACTIVE",
+        "relationshipStrength": 0.5174322842367902,
+        "sourcePersonId": "81f756dc-7afd-56b9-80d7-378231cb4c0f",
+        "style": "SOLID",
+        "targetPersonId": "48d5d038-f565-5a17-8976-7d550cabe549",
+        "width": "MEDIUM"
+      },
+      {
+        "currentActivation": 0.5716287611099705,
+        "edgeType": "DIRECT",
+        "opacity": "MEDIUM",
+        "relationshipState": "ACTIVE",
+        "relationshipStrength": 0.5174322842367902,
+        "sourcePersonId": "81f756dc-7afd-56b9-80d7-378231cb4c0f",
+        "style": "SOLID",
+        "targetPersonId": "7038dcda-626d-5cfd-8af9-d708a224fec4",
+        "width": "MEDIUM"
+      },
+      {
+        "currentActivation": 0.5716287611099705,
+        "edgeType": "DIRECT",
+        "opacity": "MEDIUM",
+        "relationshipState": "ACTIVE",
+        "relationshipStrength": 0.5174322842367902,
+        "sourcePersonId": "81f756dc-7afd-56b9-80d7-378231cb4c0f",
+        "style": "SOLID",
+        "targetPersonId": "913d103d-c0e5-5658-8a6a-5bd8902b5798",
+        "width": "MEDIUM"
+      },
+      {
+        "currentActivation": 0.5716287611099705,
+        "edgeType": "DIRECT",
+        "opacity": "MEDIUM",
+        "relationshipState": "ACTIVE",
+        "relationshipStrength": 0.5174322842367902,
+        "sourcePersonId": "81f756dc-7afd-56b9-80d7-378231cb4c0f",
+        "style": "SOLID",
+        "targetPersonId": "96a4806a-0f1d-522b-888e-b043d86050ce",
+        "width": "MEDIUM"
+      },
+      {
+        "currentActivation": 0.5716287611099705,
+        "edgeType": "DIRECT",
+        "opacity": "MEDIUM",
+        "relationshipState": "ACTIVE",
+        "relationshipStrength": 0.5174322842367902,
+        "sourcePersonId": "81f756dc-7afd-56b9-80d7-378231cb4c0f",
+        "style": "SOLID",
+        "targetPersonId": "a4feffee-d4b9-5317-83e7-6b74054c02ed",
+        "width": "MEDIUM"
+      },
+      {
+        "currentActivation": 0.5716287611099705,
+        "edgeType": "DIRECT",
+        "opacity": "MEDIUM",
+        "relationshipState": "ACTIVE",
+        "relationshipStrength": 0.5174322842367902,
+        "sourcePersonId": "81f756dc-7afd-56b9-80d7-378231cb4c0f",
+        "style": "SOLID",
+        "targetPersonId": "a78009dc-006f-52aa-bf45-e1cc00b39c6c",
+        "width": "MEDIUM"
+      },
+      {
+        "currentActivation": 0.09042088410598682,
+        "edgeType": "DIRECT",
+        "opacity": "LOW",
+        "relationshipState": "DORMANT",
+        "relationshipStrength": 0.21355930230635756,
+        "sourcePersonId": "81f756dc-7afd-56b9-80d7-378231cb4c0f",
+        "style": "DASHED",
+        "targetPersonId": "f42f3352-e442-56e0-96b2-e36dfa908cf2",
+        "width": "THIN"
+      },
+      {
+        "currentActivation": 0.020336238729099176,
+        "edgeType": "DIRECT",
+        "opacity": "LOW",
+        "relationshipState": "WEAK",
+        "relationshipStrength": 0.057288191327955026,
+        "sourcePersonId": "81f756dc-7afd-56b9-80d7-378231cb4c0f",
+        "style": "SOLID",
+        "targetPersonId": "ad428284-ce1b-5002-9949-df07433f7bb4",
+        "width": "THIN"
+      },
+      {
+        "edgeType": "POTENTIAL_PATH",
+        "opacity": "MUTED",
+        "sourcePersonId": "170f46d6-2693-5b9b-ba9f-0c8c2deee5fe",
+        "style": "DOTTED",
+        "targetPersonId": "0996d22b-d504-5728-bc53-bea84ac64302",
+        "width": "MUTED"
+      },
+      {
+        "edgeType": "POTENTIAL_PATH",
+        "opacity": "MUTED",
+        "sourcePersonId": "87f371f0-cf66-585e-9542-a25a388f341f",
+        "style": "DOTTED",
+        "targetPersonId": "18969ab9-16e0-5e56-b15a-5c3c42e3e42c",
+        "width": "MUTED"
+      },
+      {
+        "edgeType": "POTENTIAL_PATH",
+        "opacity": "MUTED",
+        "sourcePersonId": "e9b642e9-2753-5078-9e8c-37e831c53a26",
+        "style": "DOTTED",
+        "targetPersonId": "550ea5fd-cdd6-5e9f-94b0-8af7e1d4cf9b",
+        "width": "MUTED"
+      },
+      {
+        "edgeType": "POTENTIAL_PATH",
+        "opacity": "MUTED",
+        "sourcePersonId": "7408123a-b0ef-5d52-8e35-564ac8ef4139",
+        "style": "DOTTED",
+        "targetPersonId": "912b3d86-a6d4-5533-a71f-2ef96cb1c595",
+        "width": "MUTED"
+      },
+      {
+        "edgeType": "POTENTIAL_PATH",
+        "opacity": "MUTED",
+        "sourcePersonId": "87f371f0-cf66-585e-9542-a25a388f341f",
+        "style": "DOTTED",
+        "targetPersonId": "e6d46d98-95a1-58c0-ae85-09a3f0c25fff",
+        "width": "MUTED"
+      },
+      {
+        "edgeType": "POTENTIAL_PATH",
+        "opacity": "MUTED",
+        "sourcePersonId": "ca91651d-17aa-5d4f-84a2-0c498e63e5bb",
+        "style": "DOTTED",
+        "targetPersonId": "902fa6e8-5936-58d9-9b3b-f5dbf9ea8899",
+        "width": "MUTED"
+      },
+      {
+        "edgeType": "POTENTIAL_PATH",
+        "opacity": "MUTED",
+        "sourcePersonId": "c3a03270-d526-5461-9786-ae9abd088142",
+        "style": "DOTTED",
+        "targetPersonId": "9a00eef1-5e0c-578e-a11b-501f74c59906",
+        "width": "MUTED"
+      },
+      {
+        "edgeType": "POTENTIAL_PATH",
+        "opacity": "MUTED",
+        "sourcePersonId": "9e43230f-b969-5011-a337-e5d3841ff9d9",
+        "style": "DOTTED",
+        "targetPersonId": "32c5f23e-ebee-591a-873a-1ffa244aade9",
+        "width": "MUTED"
+      },
+      {
+        "edgeType": "POTENTIAL_PATH",
+        "opacity": "MUTED",
+        "sourcePersonId": "c3a03270-d526-5461-9786-ae9abd088142",
+        "style": "DOTTED",
+        "targetPersonId": "88f037a6-ce83-5a90-8ab8-320c6fb1758a",
+        "width": "MUTED"
+      },
+      {
+        "edgeType": "POTENTIAL_PATH",
+        "opacity": "MUTED",
+        "sourcePersonId": "ca1646b9-a430-5ca7-95d1-172864d6233f",
+        "style": "DOTTED",
+        "targetPersonId": "73a81bde-576b-5f44-aecd-0affb574bc71",
+        "width": "MUTED"
+      },
+      {
+        "edgeType": "POTENTIAL_PATH",
+        "opacity": "MUTED",
+        "sourcePersonId": "e9b642e9-2753-5078-9e8c-37e831c53a26",
+        "style": "DOTTED",
+        "targetPersonId": "43cb6cab-4357-5547-9abf-8f8d11cbcdda",
+        "width": "MUTED"
+      },
+      {
+        "edgeType": "POTENTIAL_PATH",
+        "opacity": "MUTED",
+        "sourcePersonId": "4546cfcd-dc20-55eb-b7ed-dc3848ced967",
+        "style": "DOTTED",
+        "targetPersonId": "ce2f423a-142e-558d-b884-fb1bb638756e",
+        "width": "MUTED"
+      }
+    ],
+    "focalPersonId": "81f756dc-7afd-56b9-80d7-378231cb4c0f",
+    "meta": {
+      "expandedFromPersonIds": [],
+      "generatedAt": "2026-08-09T12:00:00Z",
+      "hops": 2,
+      "lens": "RELATIONSHIP_RELEVANCE",
+      "oneHopCount": 24,
+      "projectionVersion": "graph-projection-v0.1.0",
+      "softLimitExceeded": false,
+      "totalNetworkSize": 92,
+      "twoHopCount": 12,
+      "visibleNodeCount": 37
+    },
+    "nodes": [
+      {
+        "avatarUrl": "https://avatars.example.invalid/p001.svg",
+        "clusterId": "organization:da766a5d-df8a-5b5f-bd63-74a231c43db3",
+        "displayName": "Synthetic Person P001",
+        "hop": 0,
+        "isPotential": false,
+        "personId": "81f756dc-7afd-56b9-80d7-378231cb4c0f",
+        "relevance": 1.0,
+        "shortRole": "Operations Consultant"
+      },
+      {
+        "avatarUrl": "https://avatars.example.invalid/p002.svg",
+        "clusterId": "organization:da766a5d-df8a-5b5f-bd63-74a231c43db3",
+        "displayName": "Synthetic Person P002",
+        "hop": 1,
+        "isPotential": false,
+        "personId": "c3a03270-d526-5461-9786-ae9abd088142",
+        "relationshipState": "CLOSE",
+        "relevance": 0.830867,
+        "shortRole": "Corporate Specialist"
+      },
+      {
+        "avatarUrl": "https://avatars.example.invalid/p009.svg",
+        "clusterId": "organization:da766a5d-df8a-5b5f-bd63-74a231c43db3",
+        "displayName": "Synthetic Person P009",
+        "hop": 1,
+        "isPotential": false,
+        "personId": "4546cfcd-dc20-55eb-b7ed-dc3848ced967",
+        "relationshipState": "CLOSE",
+        "relevance": 0.81975,
+        "shortRole": "Operations Consultant"
+      },
+      {
+        "avatarUrl": "https://avatars.example.invalid/p005.svg",
+        "clusterId": "organization:da766a5d-df8a-5b5f-bd63-74a231c43db3",
+        "displayName": "Synthetic Person P005",
+        "hop": 1,
+        "isPotential": false,
+        "personId": "87f371f0-cf66-585e-9542-a25a388f341f",
+        "relationshipState": "CLOSE",
+        "relevance": 0.81975,
+        "shortRole": "Operations Consultant"
+      },
+      {
+        "avatarUrl": "https://avatars.example.invalid/p003.svg",
+        "clusterId": "organization:da766a5d-df8a-5b5f-bd63-74a231c43db3",
+        "displayName": "Synthetic Person P003",
+        "hop": 1,
+        "isPotential": false,
+        "personId": "ca1646b9-a430-5ca7-95d1-172864d6233f",
+        "relationshipState": "CLOSE",
+        "relevance": 0.81975,
+        "shortRole": "Data Consultant"
+      },
+      {
+        "avatarUrl": "https://avatars.example.invalid/p004.svg",
+        "clusterId": "organization:da766a5d-df8a-5b5f-bd63-74a231c43db3",
+        "displayName": "Synthetic Person P004",
+        "hop": 1,
+        "isPotential": false,
+        "personId": "7408123a-b0ef-5d52-8e35-564ac8ef4139",
+        "relationshipState": "CLOSE",
+        "relevance": 0.815141,
+        "shortRole": "Industry Specialist"
+      },
+      {
+        "avatarUrl": "https://avatars.example.invalid/p006.svg",
+        "clusterId": "organization:da766a5d-df8a-5b5f-bd63-74a231c43db3",
+        "displayName": "Synthetic Person P006",
+        "hop": 1,
+        "isPotential": false,
+        "personId": "9e43230f-b969-5011-a337-e5d3841ff9d9",
+        "relationshipState": "CLOSE",
+        "relevance": 0.815141,
+        "shortRole": "Operations Consultant"
+      },
+      {
+        "avatarUrl": "https://avatars.example.invalid/p007.svg",
+        "clusterId": "organization:da766a5d-df8a-5b5f-bd63-74a231c43db3",
+        "displayName": "Synthetic Person P007",
+        "hop": 1,
+        "isPotential": false,
+        "personId": "ca91651d-17aa-5d4f-84a2-0c498e63e5bb",
+        "relationshipState": "CLOSE",
+        "relevance": 0.815141,
+        "shortRole": "Corporate Specialist"
+      },
+      {
+        "avatarUrl": "https://avatars.example.invalid/p008.svg",
+        "clusterId": "organization:da766a5d-df8a-5b5f-bd63-74a231c43db3",
+        "displayName": "Synthetic Person P008",
+        "hop": 1,
+        "isPotential": false,
+        "personId": "e9b642e9-2753-5078-9e8c-37e831c53a26",
+        "relationshipState": "CLOSE",
+        "relevance": 0.815141,
+        "shortRole": "Industry Specialist"
+      },
+      {
+        "avatarUrl": "https://avatars.example.invalid/p102.svg",
+        "clusterId": "organization:a85442c4-b647-555f-99f8-11f85d073590",
+        "displayName": "Synthetic Person P102",
+        "hop": 1,
+        "isPotential": false,
+        "personId": "859704fb-39aa-59dc-8907-bcc2dae8eb5b",
+        "relationshipState": "RECONNECTED",
+        "relevance": 0.703309,
+        "shortRole": "People Advisor"
+      },
+      {
+        "avatarUrl": "https://avatars.example.invalid/p022.svg",
+        "clusterId": "organization:da766a5d-df8a-5b5f-bd63-74a231c43db3",
+        "displayName": "Synthetic Person P022",
+        "hop": 1,
+        "isPotential": false,
+        "personId": "df81aebb-c5ce-5d09-9c31-e2d0bd6b7bad",
+        "relationshipState": "ACTIVE",
+        "relevance": 0.605104,
+        "shortRole": "Operations Consultant"
+      },
+      {
+        "avatarUrl": "https://avatars.example.invalid/p014.svg",
+        "clusterId": "organization:da766a5d-df8a-5b5f-bd63-74a231c43db3",
+        "displayName": "Synthetic Person P014",
+        "hop": 1,
+        "isPotential": false,
+        "personId": "41157e03-6714-5d32-b367-ef1c8a7f4d90",
+        "relationshipState": "ACTIVE",
+        "relevance": 0.602842,
+        "shortRole": "Industry Specialist"
+      },
+      {
+        "avatarUrl": "https://avatars.example.invalid/p010.svg",
+        "clusterId": "organization:da766a5d-df8a-5b5f-bd63-74a231c43db3",
+        "displayName": "Synthetic Person P010",
+        "hop": 1,
+        "isPotential": false,
+        "personId": "170f46d6-2693-5b9b-ba9f-0c8c2deee5fe",
+        "relationshipState": "ACTIVE",
+        "relevance": 0.602026,
+        "shortRole": "Regional Coordinator"
+      },
+      {
+        "avatarUrl": "https://avatars.example.invalid/p024.svg",
+        "clusterId": "organization:da766a5d-df8a-5b5f-bd63-74a231c43db3",
+        "displayName": "Synthetic Person P024",
+        "hop": 1,
+        "isPotential": false,
+        "personId": "6d5623e8-9cd8-5ade-8ce9-f3e79e26c7aa",
+        "relationshipState": "ACTIVE",
+        "relevance": 0.602026,
+        "shortRole": "People Advisor"
+      },
+      {
+        "avatarUrl": "https://avatars.example.invalid/p017.svg",
+        "clusterId": "organization:da766a5d-df8a-5b5f-bd63-74a231c43db3",
+        "displayName": "Synthetic Person P017",
+        "hop": 1,
+        "isPotential": false,
+        "personId": "7d4bfeb2-41de-5f63-a77d-cdc853fc3a47",
+        "relationshipState": "ACTIVE",
+        "relevance": 0.602026,
+        "shortRole": "Industry Specialist"
+      },
+      {
+        "avatarUrl": "https://avatars.example.invalid/p016.svg",
+        "clusterId": "organization:da766a5d-df8a-5b5f-bd63-74a231c43db3",
+        "displayName": "Synthetic Person P016",
+        "hop": 1,
+        "isPotential": false,
+        "personId": "036adc91-9be0-50bf-8416-c2c446380480",
+        "relationshipState": "ACTIVE",
+        "relevance": 0.597418,
+        "shortRole": "Industry Specialist"
+      },
+      {
+        "avatarUrl": "https://avatars.example.invalid/p019.svg",
+        "clusterId": "organization:da766a5d-df8a-5b5f-bd63-74a231c43db3",
+        "displayName": "Synthetic Person P019",
+        "hop": 1,
+        "isPotential": false,
+        "personId": "3d2f95ce-45c4-59be-a2fc-962236ba83f8",
+        "relationshipState": "ACTIVE",
+        "relevance": 0.597418,
+        "shortRole": "Regional Coordinator"
+      },
+      {
+        "avatarUrl": "https://avatars.example.invalid/p021.svg",
+        "clusterId": "organization:da766a5d-df8a-5b5f-bd63-74a231c43db3",
+        "displayName": "Synthetic Person P021",
+        "hop": 1,
+        "isPotential": false,
+        "personId": "48d5d038-f565-5a17-8976-7d550cabe549",
+        "relationshipState": "ACTIVE",
+        "relevance": 0.597418,
+        "shortRole": "Data Consultant"
+      },
+      {
+        "avatarUrl": "https://avatars.example.invalid/p025.svg",
+        "clusterId": "organization:da766a5d-df8a-5b5f-bd63-74a231c43db3",
+        "displayName": "Synthetic Person P025",
+        "hop": 1,
+        "isPotential": false,
+        "personId": "7038dcda-626d-5cfd-8af9-d708a224fec4",
+        "relationshipState": "ACTIVE",
+        "relevance": 0.597418,
+        "shortRole": "Data Consultant"
+      },
+      {
+        "avatarUrl": "https://avatars.example.invalid/p013.svg",
+        "clusterId": "organization:da766a5d-df8a-5b5f-bd63-74a231c43db3",
+        "displayName": "Synthetic Person P013",
+        "hop": 1,
+        "isPotential": false,
+        "personId": "913d103d-c0e5-5658-8a6a-5bd8902b5798",
+        "relationshipState": "ACTIVE",
+        "relevance": 0.597418,
+        "shortRole": "Corporate Specialist"
+      },
+      {
+        "avatarUrl": "https://avatars.example.invalid/p020.svg",
+        "clusterId": "organization:da766a5d-df8a-5b5f-bd63-74a231c43db3",
+        "displayName": "Synthetic Person P020",
+        "hop": 1,
+        "isPotential": false,
+        "personId": "96a4806a-0f1d-522b-888e-b043d86050ce",
+        "relationshipState": "ACTIVE",
+        "relevance": 0.597418,
+        "shortRole": "Corporate Specialist"
+      },
+      {
+        "avatarUrl": "https://avatars.example.invalid/p012.svg",
+        "clusterId": "organization:da766a5d-df8a-5b5f-bd63-74a231c43db3",
+        "displayName": "Synthetic Person P012",
+        "hop": 1,
+        "isPotential": false,
+        "personId": "a4feffee-d4b9-5317-83e7-6b74054c02ed",
+        "relationshipState": "ACTIVE",
+        "relevance": 0.597418,
+        "shortRole": "Regional Coordinator"
+      },
+      {
+        "avatarUrl": "https://avatars.example.invalid/p023.svg",
+        "clusterId": "organization:da766a5d-df8a-5b5f-bd63-74a231c43db3",
+        "displayName": "Synthetic Person P023",
+        "hop": 1,
+        "isPotential": false,
+        "personId": "a78009dc-006f-52aa-bf45-e1cc00b39c6c",
+        "relationshipState": "ACTIVE",
+        "relevance": 0.597418,
+        "shortRole": "Operations Consultant"
+      },
+      {
+        "avatarUrl": "https://avatars.example.invalid/p018.svg",
+        "clusterId": "organization:da766a5d-df8a-5b5f-bd63-74a231c43db3",
+        "displayName": "Synthetic Person P018",
+        "hop": 1,
+        "isPotential": false,
+        "personId": "f42f3352-e442-56e0-96b2-e36dfa908cf2",
+        "relationshipState": "DORMANT",
+        "relevance": 0.401075,
+        "shortRole": "Data Consultant"
+      },
+      {
+        "avatarUrl": "https://avatars.example.invalid/p026.svg",
+        "clusterId": "organization:da766a5d-df8a-5b5f-bd63-74a231c43db3",
+        "displayName": "Synthetic Person P026",
+        "hop": 1,
+        "isPotential": false,
+        "personId": "ad428284-ce1b-5002-9949-df07433f7bb4",
+        "relationshipState": "WEAK",
+        "relevance": 0.217506,
+        "shortRole": "Regional Coordinator"
+      },
+      {
+        "avatarUrl": "https://avatars.example.invalid/p067.svg",
+        "clusterId": "organization:da766a5d-df8a-5b5f-bd63-74a231c43db3",
+        "displayName": "Synthetic Person P067",
+        "hop": 2,
+        "isPotential": true,
+        "mutualConnectionIds": [
+          "170f46d6-2693-5b9b-ba9f-0c8c2deee5fe"
+        ],
+        "personId": "0996d22b-d504-5728-bc53-bea84ac64302",
+        "relevance": 0.512098,
+        "shortRole": "Regional Coordinator",
+        "shortestPaths": [
+          [
+            "81f756dc-7afd-56b9-80d7-378231cb4c0f",
+            "170f46d6-2693-5b9b-ba9f-0c8c2deee5fe",
+            "0996d22b-d504-5728-bc53-bea84ac64302"
+          ]
+        ]
+      },
+      {
+        "avatarUrl": "https://avatars.example.invalid/p083.svg",
+        "clusterId": "organization:a85442c4-b647-555f-99f8-11f85d073590",
+        "displayName": "Synthetic Person P083",
+        "hop": 2,
+        "isPotential": true,
+        "mutualConnectionIds": [
+          "87f371f0-cf66-585e-9542-a25a388f341f"
+        ],
+        "personId": "18969ab9-16e0-5e56-b15a-5c3c42e3e42c",
+        "relevance": 0.481146,
+        "shortRole": "People Advisor",
+        "shortestPaths": [
+          [
+            "81f756dc-7afd-56b9-80d7-378231cb4c0f",
+            "87f371f0-cf66-585e-9542-a25a388f341f",
+            "18969ab9-16e0-5e56-b15a-5c3c42e3e42c"
+          ]
+        ]
+      },
+      {
+        "avatarUrl": "https://avatars.example.invalid/p047.svg",
+        "clusterId": "organization:da766a5d-df8a-5b5f-bd63-74a231c43db3",
+        "displayName": "Synthetic Person P047",
+        "hop": 2,
+        "isPotential": true,
+        "mutualConnectionIds": [
+          "e9b642e9-2753-5078-9e8c-37e831c53a26"
+        ],
+        "personId": "550ea5fd-cdd6-5e9f-94b0-8af7e1d4cf9b",
+        "relevance": 0.481064,
+        "shortRole": "People Advisor",
+        "shortestPaths": [
+          [
+            "81f756dc-7afd-56b9-80d7-378231cb4c0f",
+            "e9b642e9-2753-5078-9e8c-37e831c53a26",
+            "550ea5fd-cdd6-5e9f-94b0-8af7e1d4cf9b"
+          ]
+        ]
+      },
+      {
+        "avatarUrl": "https://avatars.example.invalid/p043.svg",
+        "clusterId": "organization:da766a5d-df8a-5b5f-bd63-74a231c43db3",
+        "displayName": "Synthetic Person P043",
+        "hop": 2,
+        "isPotential": true,
+        "mutualConnectionIds": [
+          "7408123a-b0ef-5d52-8e35-564ac8ef4139"
+        ],
+        "personId": "912b3d86-a6d4-5533-a71f-2ef96cb1c595",
+        "relevance": 0.478651,
+        "shortRole": "People Advisor",
+        "shortestPaths": [
+          [
+            "81f756dc-7afd-56b9-80d7-378231cb4c0f",
+            "7408123a-b0ef-5d52-8e35-564ac8ef4139",
+            "912b3d86-a6d4-5533-a71f-2ef96cb1c595"
+          ]
+        ]
+      },
+      {
+        "avatarUrl": "https://avatars.example.invalid/p044.svg",
+        "clusterId": "organization:da766a5d-df8a-5b5f-bd63-74a231c43db3",
+        "displayName": "Synthetic Person P044",
+        "hop": 2,
+        "isPotential": true,
+        "mutualConnectionIds": [
+          "87f371f0-cf66-585e-9542-a25a388f341f"
+        ],
+        "personId": "e6d46d98-95a1-58c0-ae85-09a3f0c25fff",
+        "relevance": 0.474431,
+        "shortRole": "Regional Coordinator",
+        "shortestPaths": [
+          [
+            "81f756dc-7afd-56b9-80d7-378231cb4c0f",
+            "87f371f0-cf66-585e-9542-a25a388f341f",
+            "e6d46d98-95a1-58c0-ae85-09a3f0c25fff"
+          ]
+        ]
+      },
+      {
+        "avatarUrl": "https://avatars.example.invalid/p085.svg",
+        "clusterId": "organization:a85442c4-b647-555f-99f8-11f85d073590",
+        "displayName": "Synthetic Person P085",
+        "hop": 2,
+        "isPotential": true,
+        "mutualConnectionIds": [
+          "ca91651d-17aa-5d4f-84a2-0c498e63e5bb"
+        ],
+        "personId": "902fa6e8-5936-58d9-9b3b-f5dbf9ea8899",
+        "relevance": 0.472532,
+        "shortRole": "Data Consultant",
+        "shortestPaths": [
+          [
+            "81f756dc-7afd-56b9-80d7-378231cb4c0f",
+            "ca91651d-17aa-5d4f-84a2-0c498e63e5bb",
+            "902fa6e8-5936-58d9-9b3b-f5dbf9ea8899"
+          ]
+        ]
+      },
+      {
+        "avatarUrl": "https://avatars.example.invalid/p080.svg",
+        "clusterId": "organization:da766a5d-df8a-5b5f-bd63-74a231c43db3",
+        "displayName": "Synthetic Person P080",
+        "hop": 2,
+        "isPotential": true,
+        "mutualConnectionIds": [
+          "c3a03270-d526-5461-9786-ae9abd088142"
+        ],
+        "personId": "9a00eef1-5e0c-578e-a11b-501f74c59906",
+        "relevance": 0.462427,
+        "shortRole": "Regional Coordinator",
+        "shortestPaths": [
+          [
+            "81f756dc-7afd-56b9-80d7-378231cb4c0f",
+            "c3a03270-d526-5461-9786-ae9abd088142",
+            "9a00eef1-5e0c-578e-a11b-501f74c59906"
+          ]
+        ]
+      },
+      {
+        "avatarUrl": "https://avatars.example.invalid/p084.svg",
+        "clusterId": "organization:a85442c4-b647-555f-99f8-11f85d073590",
+        "displayName": "Synthetic Person P084",
+        "hop": 2,
+        "isPotential": true,
+        "mutualConnectionIds": [
+          "9e43230f-b969-5011-a337-e5d3841ff9d9"
+        ],
+        "personId": "32c5f23e-ebee-591a-873a-1ffa244aade9",
+        "relevance": 0.46135,
+        "shortRole": "Corporate Specialist",
+        "shortestPaths": [
+          [
+            "81f756dc-7afd-56b9-80d7-378231cb4c0f",
+            "9e43230f-b969-5011-a337-e5d3841ff9d9",
+            "32c5f23e-ebee-591a-873a-1ffa244aade9"
+          ]
+        ]
+      },
+      {
+        "avatarUrl": "https://avatars.example.invalid/p041.svg",
+        "clusterId": "organization:da766a5d-df8a-5b5f-bd63-74a231c43db3",
+        "displayName": "Synthetic Person P041",
+        "hop": 2,
+        "isPotential": true,
+        "mutualConnectionIds": [
+          "c3a03270-d526-5461-9786-ae9abd088142"
+        ],
+        "personId": "88f037a6-ce83-5a90-8ab8-320c6fb1758a",
+        "relevance": 0.461232,
+        "shortRole": "People Advisor",
+        "shortestPaths": [
+          [
+            "81f756dc-7afd-56b9-80d7-378231cb4c0f",
+            "c3a03270-d526-5461-9786-ae9abd088142",
+            "88f037a6-ce83-5a90-8ab8-320c6fb1758a"
+          ]
+        ]
+      },
+      {
+        "avatarUrl": "https://avatars.example.invalid/p042.svg",
+        "clusterId": "organization:da766a5d-df8a-5b5f-bd63-74a231c43db3",
+        "displayName": "Synthetic Person P042",
+        "hop": 2,
+        "isPotential": true,
+        "mutualConnectionIds": [
+          "ca1646b9-a430-5ca7-95d1-172864d6233f"
+        ],
+        "personId": "73a81bde-576b-5f44-aecd-0affb574bc71",
+        "relevance": 0.447991,
+        "shortRole": "Industry Specialist",
+        "shortestPaths": [
+          [
+            "81f756dc-7afd-56b9-80d7-378231cb4c0f",
+            "ca1646b9-a430-5ca7-95d1-172864d6233f",
+            "73a81bde-576b-5f44-aecd-0affb574bc71"
+          ]
+        ]
+      },
+      {
+        "avatarUrl": "https://avatars.example.invalid/p086.svg",
+        "clusterId": "organization:a85442c4-b647-555f-99f8-11f85d073590",
+        "displayName": "Synthetic Person P086",
+        "hop": 2,
+        "isPotential": true,
+        "mutualConnectionIds": [
+          "e9b642e9-2753-5078-9e8c-37e831c53a26"
+        ],
+        "personId": "43cb6cab-4357-5547-9abf-8f8d11cbcdda",
+        "relevance": 0.447544,
+        "shortRole": "Regional Coordinator",
+        "shortestPaths": [
+          [
+            "81f756dc-7afd-56b9-80d7-378231cb4c0f",
+            "e9b642e9-2753-5078-9e8c-37e831c53a26",
+            "43cb6cab-4357-5547-9abf-8f8d11cbcdda"
+          ]
+        ]
+      },
+      {
+        "avatarUrl": "https://avatars.example.invalid/p087.svg",
+        "clusterId": "organization:a85442c4-b647-555f-99f8-11f85d073590",
+        "displayName": "Synthetic Person P087",
+        "hop": 2,
+        "isPotential": true,
+        "mutualConnectionIds": [
+          "4546cfcd-dc20-55eb-b7ed-dc3848ced967"
+        ],
+        "personId": "ce2f423a-142e-558d-b884-fb1bb638756e",
+        "relevance": 0.444542,
+        "shortRole": "People Advisor",
+        "shortestPaths": [
+          [
+            "81f756dc-7afd-56b9-80d7-378231cb4c0f",
+            "4546cfcd-dc20-55eb-b7ed-dc3848ced967",
+            "ce2f423a-142e-558d-b884-fb1bb638756e"
+          ]
+        ]
+      }
+    ]
+  },
+  "persona": {
+    "externalId": "P001",
+    "personId": "81f756dc-7afd-56b9-80d7-378231cb4c0f",
+    "sourceSystem": "synthetic"
+  },
+  "review": {
+    "bounds": {
+      "defaultOneHopLimit": 24,
+      "defaultTeaserLimit": 12,
+      "hardVisibleLimit": 80,
+      "oneHopWithinLimit": true,
+      "teaserWithinLimit": true,
+      "visibleWithinHardLimit": true
+    },
+    "composition": {
+      "clusterCounts": {
+        "Strategy": 6,
+        "Technology / AI & Data": 31
+      },
+      "directRelationshipStateCounts": {
+        "ACTIVE": 13,
+        "CLOSE": 8,
+        "DORMANT": 1,
+        "RECONNECTED": 1,
+        "WEAK": 1
+      },
+      "oneHopCount": 24,
+      "twoHopCount": 12,
+      "visibleNodeCount": 37
+    },
+    "heroFixtures": {
+      "P018": {
+        "hop": 1,
+        "relationshipState": "DORMANT",
+        "visible": true
+      },
+      "P067": {
+        "hop": 2,
+        "shortestPaths": [
+          [
+            "P001",
+            "P010",
+            "P067"
+          ]
+        ],
+        "visible": true
+      }
+    },
+    "heroPathAvailable": true,
+    "privacy": {
+      "focalRelativeMetricsOnlyOnDirectEdges": true,
+      "potentialPathEdgeCount": 12,
+      "thirdPartyPathMetricsOmitted": true
+    },
+    "visibleExternalIdsByPersonId": {
+      "036adc91-9be0-50bf-8416-c2c446380480": "P016",
+      "0996d22b-d504-5728-bc53-bea84ac64302": "P067",
+      "170f46d6-2693-5b9b-ba9f-0c8c2deee5fe": "P010",
+      "18969ab9-16e0-5e56-b15a-5c3c42e3e42c": "P083",
+      "32c5f23e-ebee-591a-873a-1ffa244aade9": "P084",
+      "3d2f95ce-45c4-59be-a2fc-962236ba83f8": "P019",
+      "41157e03-6714-5d32-b367-ef1c8a7f4d90": "P014",
+      "43cb6cab-4357-5547-9abf-8f8d11cbcdda": "P086",
+      "4546cfcd-dc20-55eb-b7ed-dc3848ced967": "P009",
+      "48d5d038-f565-5a17-8976-7d550cabe549": "P021",
+      "550ea5fd-cdd6-5e9f-94b0-8af7e1d4cf9b": "P047",
+      "6d5623e8-9cd8-5ade-8ce9-f3e79e26c7aa": "P024",
+      "7038dcda-626d-5cfd-8af9-d708a224fec4": "P025",
+      "73a81bde-576b-5f44-aecd-0affb574bc71": "P042",
+      "7408123a-b0ef-5d52-8e35-564ac8ef4139": "P004",
+      "7d4bfeb2-41de-5f63-a77d-cdc853fc3a47": "P017",
+      "81f756dc-7afd-56b9-80d7-378231cb4c0f": "P001",
+      "859704fb-39aa-59dc-8907-bcc2dae8eb5b": "P102",
+      "87f371f0-cf66-585e-9542-a25a388f341f": "P005",
+      "88f037a6-ce83-5a90-8ab8-320c6fb1758a": "P041",
+      "902fa6e8-5936-58d9-9b3b-f5dbf9ea8899": "P085",
+      "912b3d86-a6d4-5533-a71f-2ef96cb1c595": "P043",
+      "913d103d-c0e5-5658-8a6a-5bd8902b5798": "P013",
+      "96a4806a-0f1d-522b-888e-b043d86050ce": "P020",
+      "9a00eef1-5e0c-578e-a11b-501f74c59906": "P080",
+      "9e43230f-b969-5011-a337-e5d3841ff9d9": "P006",
+      "a4feffee-d4b9-5317-83e7-6b74054c02ed": "P012",
+      "a78009dc-006f-52aa-bf45-e1cc00b39c6c": "P023",
+      "ad428284-ce1b-5002-9949-df07433f7bb4": "P026",
+      "c3a03270-d526-5461-9786-ae9abd088142": "P002",
+      "ca1646b9-a430-5ca7-95d1-172864d6233f": "P003",
+      "ca91651d-17aa-5d4f-84a2-0c498e63e5bb": "P007",
+      "ce2f423a-142e-558d-b884-fb1bb638756e": "P087",
+      "df81aebb-c5ce-5d09-9c31-e2d0bd6b7bad": "P022",
+      "e6d46d98-95a1-58c0-ae85-09a3f0c25fff": "P044",
+      "e9b642e9-2753-5078-9e8c-37e831c53a26": "P008",
+      "f42f3352-e442-56e0-96b2-e36dfa908cf2": "P018"
+    }
+  }
+}
