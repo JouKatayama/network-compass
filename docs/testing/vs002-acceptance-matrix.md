@@ -1,8 +1,7 @@
-# Vertical Slice 002 / NC-011 Implementation Acceptance Matrix
+# Vertical Slice 002 / NC-011 Final Acceptance Matrix
 
-**Recommendation:** GO for human NC-011/VS002 review. The implementation and automated gates are
-green as of 2026-08-10; NC-011 remains pending the required human GO/NO-GO and is not marked
-accepted or complete by this document.
+**Decision:** GO approved on 2026-08-10. NC-011/VS002 is accepted as the factual 1:1 analog-contact
+vertical slice. This does not approve any later slice or production boundary.
 
 ## Domain and application
 
@@ -51,7 +50,7 @@ accepted or complete by this document.
 | AC-E02 | PASS | The captured request is replayed through `/api/interactions`; response is `200`/`replayed: true` and the coffee-item count remains baseline + one. |
 | AC-E03 | PASS | `test_potential_capture_creates_only_the_current_person_pair` creates P001↔P067 as `NEW` and proves no other pair changed. |
 | AC-E04 | PASS | Docker Playwright passes seven serial tests covering success, validation/cancel, safe retry, keyboard/focus, 390 px, existing graph behavior, and API health. All repository gates listed below are green. |
-| AC-E05 | REVIEW | Automated semantics and browser inspection are factual/non-judgmental with no score UI; final product-feel approval remains intentionally reserved for the human NC-011 Review Gate. |
+| AC-E05 | PASS | Human NC-011 Review Gate approved the factual, non-judgmental product feel and approximately 10-second capture flow on 2026-08-10. |
 
 ## Gate results
 
@@ -64,9 +63,9 @@ accepted or complete by this document.
 - Browser review: desktop drawer and refreshed P018 state inspected with no console entries; 390×844
   interaction and overflow behavior verified by real Chromium.
 
-## Go/No-Go recommendation
+## Go/No-Go decision
 
-**GO recommended for human Review Gate.** AC-D01–D09, AC-A01–A07, AC-U01–U08, and
-AC-E01–E04 pass. AC-E05 is the sole human judgment and is deliberately not self-approved. No later
-slice, production SSO, correction semantics, inferred reconciliation, multi-person capture, or
-formula recalibration is included.
+**GO accepted.** AC-D01–D09, AC-A01–A07, AC-U01–U08, and AC-E01–E05 pass. The human reviewer
+confirmed the remaining product-feel criterion after all automated and browser gates were green. No
+later slice, production SSO, correction semantics, inferred reconciliation, multi-person capture,
+or formula recalibration is included.

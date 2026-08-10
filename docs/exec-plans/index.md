@@ -2,6 +2,5 @@
 
 `active/` contains the current issue plan; Codex should update it with concrete implementation decisions during the issue. Completed plans move to `completed/` after human acceptance.
 
-- Active: `active/NC-011.md` — Analog Interaction Capture v0.1; specifications frozen and ready for
-  implementation.
-- Completed: `completed/NC-001.md` through `completed/NC-010.md`
+- Active: none.
+- Completed: `completed/NC-001.md` through `completed/NC-011.md`
