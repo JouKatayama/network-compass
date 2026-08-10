@@ -2,22 +2,23 @@
 
 ## Product/design status
 
-| Area | Status |
-|---|---|
-| Product definition | Frozen v0.3 |
-| MVP scope | Frozen v0.1 |
-| User journeys | Frozen v0.1 |
-| Screen states | Frozen v0.1 |
-| Graph visualization | Frozen v0.1 |
-| Canonical data model | Frozen v0.1 |
-| API contract | Frozen v0.1 |
-| Relationship model | Frozen v0.1 |
-| Recommendation model | Frozen v0.1 |
-| Network Health model | Frozen v0.1 |
-| New Joiner Network Ramp | Frozen v0.1 |
-| Synthetic data specification | Frozen v0.1 |
-| System architecture | Frozen v0.1 |
-| ADR set | Accepted for MVP |
+| Area                         | Status           |
+| ---------------------------- | ---------------- |
+| Product definition           | Frozen v0.3      |
+| MVP scope                    | Frozen v0.1      |
+| User journeys                | Frozen v0.1      |
+| Screen states                | Frozen v0.1      |
+| Graph visualization          | Frozen v0.1      |
+| Canonical data model         | Frozen v0.1      |
+| API contract                 | Frozen v0.1      |
+| Relationship model           | Frozen v0.1      |
+| Recommendation model         | Frozen v0.1      |
+| Network Health model         | Frozen v0.1      |
+| New Joiner Network Ramp      | Frozen v0.1      |
+| Synthetic data specification | Frozen v0.1      |
+| System architecture          | Frozen v0.1      |
+| ADR set                      | Accepted for MVP |
+| Analog Interaction Capture   | Frozen v0.1      |
 
 ## Implementation status
 
@@ -42,12 +43,11 @@ PR #7.
 and merged as PR #8.
 
 **Completed:** NC-010 VS001 E2E + Hardening — all acceptance evidence was approved with a human GO
-decision on 2026-08-09. VS001 is complete; PR #9 is approved for merge.
+decision on 2026-08-09. VS001 is complete; PR #9 was CI-verified and merged.
 
-**No active implementation issue.** Future work requires a new frozen issue/specification and must
-not be inferred from later product vision.
-
-Issues NC-008 through NC-010 must not be implemented ahead of their issue unless the active issue requires a minimal boundary explicitly described in its scope.
+**Active:** NC-011 Analog Interaction Capture v0.1 — UX/domain/API and VS002 acceptance
+specifications were approved as Frozen v0.1 on 2026-08-09. The active execution plan is ready;
+implementation has not started.
 
 ## Review gates
 
@@ -55,3 +55,4 @@ Issues NC-008 through NC-010 must not be implemented ahead of their issue unless
 - Gate B after NC-006: Network Projection JSON/product review
 - Gate C after NC-009: Graph UX/human interaction review
 - NC-010: Vertical Slice 001 Go/No-Go
+- NC-011: Analog Interaction Capture pre-implementation specification freeze, then VS002 Go/No-Go

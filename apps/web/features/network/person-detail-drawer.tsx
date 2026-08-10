@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import type {
   NamedContextSchema,
@@ -9,6 +9,7 @@ import type {
   PersonIdentitySchema,
 } from "../../lib/api/generated";
 import { fetchPersonDetail } from "../../lib/api/people";
+import { AnalogInteractionForm } from "./analog-interaction-form";
 
 type PersonDetailDrawerProps = {
   expanded: boolean;
@@ -17,6 +18,7 @@ type PersonDetailDrawerProps = {
   onClose(): void;
   onDetail(detail: PersonDetailSchema | null): void;
   onExpand(): void;
+  onInteractionCaptured(): Promise<void>;
   personId: string;
   personNameById: ReadonlyMap<string, string>;
 };
@@ -86,10 +88,14 @@ export function PersonDetailDrawer({
   onClose,
   onDetail,
   onExpand,
+  onInteractionCaptured,
   personId,
   personNameById,
 }: PersonDetailDrawerProps) {
   const drawerRef = useRef<HTMLElement>(null);
+  const captureButtonRef = useRef<HTMLButtonElement>(null);
+  const [capturing, setCapturing] = useState(false);
+  const [captureStatus, setCaptureStatus] = useState("");
   const detailQuery = useQuery({
     queryFn: ({ signal }) => fetchPersonDetail(personId, signal),
     queryKey: ["person-detail", personId],
@@ -104,13 +110,30 @@ export function PersonDetailDrawer({
     return () => onDetail(null);
   }, [detailQuery.data, onDetail]);
 
+  const cancelCapture = useCallback(() => {
+    setCapturing(false);
+    setCaptureStatus("");
+    window.setTimeout(() => captureButtonRef.current?.focus(), 0);
+  }, []);
+
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
+      if (event.key !== "Escape") return;
+      if (capturing) cancelCapture();
+      else onClose();
     };
     window.addEventListener("keydown", closeOnEscape);
     return () => window.removeEventListener("keydown", closeOnEscape);
-  }, [onClose]);
+  }, [cancelCapture, capturing, onClose]);
+
+  const finishCapture = useCallback(async () => {
+    await onInteractionCaptured();
+    setCapturing(false);
+    setCaptureStatus(
+      `${detailQuery.data?.person.displayName ?? "選択した人"}との接点を保存しました。詳細とネットワークを更新しました。`,
+    );
+    window.setTimeout(() => drawerRef.current?.focus(), 0);
+  }, [detailQuery.data?.person.displayName, onInteractionCaptured]);
 
   const pathLabels = useMemo(
     () =>
@@ -156,7 +179,14 @@ export function PersonDetailDrawer({
           </button>
         </div>
       ) : null}
-      {detailQuery.data ? (
+      {detailQuery.data && capturing ? (
+        <AnalogInteractionForm
+          onCancel={cancelCapture}
+          onCaptured={finishCapture}
+          person={detailQuery.data.person}
+        />
+      ) : null}
+      {detailQuery.data && !capturing ? (
         <div className="detail-content">
           <header className="detail-identity">
             <IdentityAvatar person={detailQuery.data.person} />
@@ -272,6 +302,22 @@ export function PersonDetailDrawer({
           ) : null}
 
           <button
+            className="capture-interaction-button"
+            onClick={() => {
+              setCaptureStatus("");
+              setCapturing(true);
+            }}
+            ref={captureButtonRef}
+            type="button"
+          >
+            <span>
+              <b>接点を記録</b>
+              <small>実際に話したことを追加</small>
+            </span>
+            <span aria-hidden="true">＋</span>
+          </button>
+
+          <button
             className="expand-connections-button"
             disabled={expanded || expanding}
             onClick={onExpand}
@@ -286,6 +332,9 @@ export function PersonDetailDrawer({
           </button>
         </div>
       ) : null}
+      <p aria-live="polite" className="sr-only" role="status">
+        {captureStatus}
+      </p>
     </aside>
   );
 }

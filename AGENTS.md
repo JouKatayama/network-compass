@@ -77,5 +77,6 @@ A task is complete only when acceptance criteria are satisfied, tests/lint/typec
 - Testing: `docs/testing/index.md`
 - Issues: `docs/issues/index.md`
 - Codex workflow: `docs/codex/index.md`
-- No active plan: NC-001 through NC-010 and VS001 are completed. Future work requires a new frozen
-  issue/specification; the final plan is `docs/exec-plans/completed/NC-010.md`.
+- Active plan: `docs/exec-plans/active/NC-011.md`. Its Analog Interaction Capture UX/domain/API and
+  VS002 acceptance specifications are Frozen v0.1; implement only that boundary and do not begin
+  later product slices.

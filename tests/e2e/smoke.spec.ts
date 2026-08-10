@@ -7,6 +7,8 @@ import {
 
 const apiBaseUrl = process.env.E2E_API_BASE_URL ?? "http://127.0.0.1:8000";
 
+test.describe.configure({ mode: "serial" });
+
 test("My Network graph foundation is available", async ({ page }) => {
   await page.goto("/");
 
@@ -161,6 +163,134 @@ test("60-person partial projection remains usable", async ({
   await page.getByRole("button", { name: "拡大" }).focus();
   await page.keyboard.press("Enter");
   await expect(page.getByRole("button", { name: "拡大" })).toBeFocused();
+});
+
+test("analog capture validates, cancels, restores focus, and fits 390 CSS pixels", async ({
+  page,
+}) => {
+  await page.setViewportSize({ height: 844, width: 390 });
+  await page.goto("/network");
+
+  const search = page.getByRole("combobox", { name: "人を検索" });
+  await search.fill("P018");
+  await page.getByRole("option", { name: /Synthetic Person P018/ }).click();
+  await expect(
+    page.getByRole("heading", { level: 2, name: "Synthetic Person P018" }),
+  ).toBeVisible();
+  const timelineCountBefore = await page.locator(".timeline-list li").count();
+  const captureButton = page.getByRole("button", { name: /接点を記録/ });
+  await captureButton.click();
+
+  await expect(
+    page.getByRole("heading", { level: 2, name: "接点を記録" }),
+  ).toBeFocused();
+  await expect(page.getByRole("radio", { name: "コーヒー" })).not.toBeChecked();
+  await expect(page.getByRole("radio", { name: "しっかり" })).not.toBeChecked();
+  await page.getByRole("button", { name: "この接点を保存" }).click();
+  await expect(page.getByText("接点の種類を選んでください。")).toBeVisible();
+  await expect(page.getByText("時間の長さを選んでください。")).toBeVisible();
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth,
+    ),
+  ).toBe(true);
+
+  await page.keyboard.press("Escape");
+  await expect(captureButton).toBeFocused();
+  await expect(
+    page.getByRole("heading", { level: 2, name: "Synthetic Person P018" }),
+  ).toBeVisible();
+  await expect(page.locator(".timeline-list li")).toHaveCount(
+    timelineCountBefore,
+  );
+});
+
+test("P001 records a retry-safe coffee with dormant P018 and sees RECONNECTED", async ({
+  page,
+}) => {
+  const captureBodies: Array<Record<string, unknown>> = [];
+  let captureAttempts = 0;
+  await page.route("**/api/interactions", async (route) => {
+    captureAttempts += 1;
+    captureBodies.push(
+      route.request().postDataJSON() as Record<string, unknown>,
+    );
+    if (captureAttempts === 1) {
+      await route.fulfill({
+        body: JSON.stringify({
+          error: {
+            code: "NETWORK_UNAVAILABLE",
+            message: "private upstream detail must not be rendered",
+            requestId: "req_nc011_retry",
+          },
+        }),
+        contentType: "application/json",
+        status: 502,
+      });
+      return;
+    }
+    await route.continue();
+  });
+
+  await page.goto("/network");
+  const search = page.getByRole("combobox", { name: "人を検索" });
+  await search.fill("P018");
+  await page.getByRole("option", { name: /Synthetic Person P018/ }).click();
+  await expect(
+    page.getByRole("heading", { level: 2, name: "Synthetic Person P018" }),
+  ).toBeVisible();
+  const coffeeTimelineCountBefore = await page
+    .getByText("コーヒーを飲みながら話しました")
+    .count();
+  await page.getByRole("button", { name: /接点を記録/ }).click();
+  await page.getByRole("radio", { name: "コーヒー" }).focus();
+  await page.keyboard.press("Space");
+  await page.getByRole("radio", { name: "しっかり" }).focus();
+  await page.keyboard.press("Space");
+  await page.getByRole("button", { name: "この接点を保存" }).click();
+
+  const safeError = page
+    .getByRole("alert")
+    .filter({ hasText: "保存できませんでした" });
+  await expect(safeError).toContainText("保存できませんでした");
+  await expect(safeError).not.toContainText(
+    "private upstream detail must not be rendered",
+  );
+  await expect(page.getByRole("radio", { name: "コーヒー" })).toBeChecked();
+  await expect(page.getByRole("radio", { name: "しっかり" })).toBeChecked();
+
+  await page.getByRole("button", { name: "この接点を保存" }).click();
+  await expect(page.locator(".relationship-badge")).toHaveText(
+    "再びつながった関係",
+  );
+  await expect(page.locator(".timeline-list")).toContainText(
+    "コーヒーを飲みながら話しました",
+  );
+  await expect(
+    page.getByRole("dialog", { name: /Synthetic Person P018/ }),
+  ).toBeFocused();
+  await expect(page.getByTestId("network-graph-canvas")).toBeVisible();
+
+  expect(captureBodies).toHaveLength(2);
+  expect(captureBodies[1]).toEqual(captureBodies[0]);
+  expect(captureBodies[0]).toMatchObject({
+    durationBucket: "MEDIUM",
+    type: "COFFEE",
+  });
+  expect(captureBodies[0]).not.toHaveProperty("confidence");
+  expect(captureBodies[0]).not.toHaveProperty("relationshipState");
+
+  const replay = await page.request.post("/api/interactions", {
+    data: captureBodies[0],
+  });
+  expect(replay.status()).toBe(200);
+  await expect(replay.json()).resolves.toMatchObject({
+    interactionId: expect.any(String),
+    replayed: true,
+  });
+  await expect(page.getByText("コーヒーを飲みながら話しました")).toHaveCount(
+    coffeeTimelineCountBefore + 1,
+  );
 });
 
 test("API health endpoint is available", async ({ request }) => {

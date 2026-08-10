@@ -48,6 +48,61 @@ and common context.
 
 `GET /me/recommendations`, recommendation feedback, `POST /interactions`, relationship feedback, `/me/network-ramp`, `/me/networking-profile`, `/me/home` are specified for later slices and must not be implemented during NC-001.
 
+### NC-011 Frozen v0.1: POST `/api/v1/interactions`
+
+**Status:** Frozen v0.1 — NC-011 pre-implementation Review Gate approved on 2026-08-09.
+
+The authenticated current person records one self-reported 1:1 analog interaction. The client does
+not submit the current-person ID, participant list, channel, source, confidence, initiator, or any
+relationship output.
+
+Request body:
+
+```json
+{
+  "clientRequestId": "8bd688d6-ec9e-4d4f-806d-a412a6fdbd2c",
+  "otherPersonId": "00000000-0000-0000-0000-000000000067",
+  "type": "COFFEE",
+  "durationBucket": "MEDIUM",
+  "occurredAt": "2026-08-09T12:30:00Z"
+}
+```
+
+`type` accepts only `OFFICE_CHAT | COFFEE | LUNCH | DINNER | COMMUNITY | ACTIVITY | OTHER`.
+`durationBucket` is required. `occurredAt` is required at the API boundary; the web client supplies
+its default current time. Extra fields are forbidden.
+
+First creation returns `201`:
+
+```json
+{
+  "interactionId": "a7d787d8-e2c3-44db-b818-13b5bb52503a",
+  "otherPersonId": "00000000-0000-0000-0000-000000000067",
+  "occurredAt": "2026-08-09T12:30:00Z",
+  "type": "COFFEE",
+  "durationBucket": "MEDIUM",
+  "replayed": false
+}
+```
+
+The same `(current person, clientRequestId)` and normalized payload returns `200` with the original
+interaction result and `replayed: true`. The response exposes no relationship state, numeric
+strength, activation, evidence decomposition, confidence, creator, or third-party metrics. Person
+Detail and network refetches are the display source of truth after commit.
+
+Errors use the standard envelope:
+
+- `400 INVALID_INTERACTION` for self-interaction, occurrence-time, or participant join-time
+  violations
+- `401 AUTHENTICATION_REQUIRED` at the existing production boundary
+- `404 PERSON_NOT_FOUND` for an unavailable other person
+- `409 IDEMPOTENCY_CONFLICT` when a key is reused with different normalized content
+- `422` for request-shape, type-enum, or duration-enum failures
+
+The server validates the occurrence time against its clock: no more than 30 days old and not in the
+future. Event write and pair-profile upsert are atomic. The client refetches Person Detail and the
+current network projection only after the response commits.
+
 ## Error envelope
 
 ```json

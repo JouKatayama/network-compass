@@ -3,6 +3,8 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { AppProviders } from "../app/providers";
 import { NetworkScreen } from "../features/network/network-screen";
 import {
+  capturedDormantPersonDetail,
+  capturedNetworkFixture,
   createLargeNetworkFixture,
   dormantPersonDetail,
   emptyNetworkFixture,
@@ -202,6 +204,156 @@ describe("NetworkScreen", () => {
     );
     expect(dormantNode).toHaveFocus();
     expect(screen.getByText("表示の見かた")).toBeVisible();
+  });
+
+  it("validates and cancels analog capture inside Person Detail without writing", async () => {
+    const fetchMock = vi.fn(
+      async (input: RequestInfo | URL, _init?: RequestInit) => {
+        void _init;
+        const url = String(input);
+        if (url === "/api/network") {
+          return new Response(JSON.stringify(networkFixture), { status: 200 });
+        }
+        if (url === "/api/people/person-003") {
+          return new Response(JSON.stringify(dormantPersonDetail), {
+            status: 200,
+          });
+        }
+        return new Response("not found", { status: 404 });
+      },
+    );
+    vi.stubGlobal("fetch", fetchMock);
+    renderScreen();
+
+    fireEvent.click(
+      await screen.findByRole("button", { name: "node:Ren Ito" }),
+    );
+    const captureButton = await screen.findByRole("button", {
+      name: /接点を記録/,
+    });
+    fireEvent.click(captureButton);
+
+    expect(
+      screen.getByRole("heading", { level: 2, name: "接点を記録" }),
+    ).toHaveFocus();
+    expect(screen.getByText("Ren Ito")).toBeVisible();
+    expect(screen.getByRole("radio", { name: "コーヒー" })).not.toBeChecked();
+    expect(screen.getByRole("radio", { name: "しっかり" })).not.toBeChecked();
+
+    fireEvent.click(screen.getByRole("button", { name: "この接点を保存" }));
+    expect(screen.getByText("接点の種類を選んでください。")).toBeVisible();
+    expect(screen.getByText("時間の長さを選んでください。")).toBeVisible();
+    expect(
+      fetchMock.mock.calls.some(([, init]) => init?.method === "POST"),
+    ).toBe(false);
+
+    fireEvent.keyDown(window, { key: "Escape" });
+    await waitFor(() =>
+      expect(screen.getByRole("button", { name: /接点を記録/ })).toHaveFocus(),
+    );
+    expect(
+      screen.getByRole("heading", { level: 2, name: "Ren Ito" }),
+    ).toBeVisible();
+  });
+
+  it("retains the factual capture and request identity across a safe retry, then refreshes detail and network", async () => {
+    const captureBodies: Array<Record<string, unknown>> = [];
+    let releaseFirstCapture: (() => void) | undefined;
+    const firstCaptureGate = new Promise<void>((resolve) => {
+      releaseFirstCapture = resolve;
+    });
+    let detailRequests = 0;
+    let networkRequests = 0;
+    let captureRequests = 0;
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async (input: RequestInfo | URL, init?: RequestInit) => {
+        const url = String(input);
+        if (url === "/api/network") {
+          networkRequests += 1;
+          return new Response(
+            JSON.stringify(
+              networkRequests === 1 ? networkFixture : capturedNetworkFixture,
+            ),
+            { status: 200 },
+          );
+        }
+        if (url === "/api/people/person-003") {
+          detailRequests += 1;
+          return new Response(
+            JSON.stringify(
+              detailRequests === 1
+                ? dormantPersonDetail
+                : capturedDormantPersonDetail,
+            ),
+            { status: 200 },
+          );
+        }
+        if (url === "/api/interactions" && init?.method === "POST") {
+          captureRequests += 1;
+          captureBodies.push(JSON.parse(String(init.body)));
+          if (captureRequests === 1) {
+            await firstCaptureGate;
+            return new Response("private database detail", { status: 502 });
+          }
+          return new Response(
+            JSON.stringify({
+              durationBucket: "MEDIUM",
+              interactionId: "interaction-001",
+              occurredAt: captureBodies[0].occurredAt,
+              otherPersonId: "person-003",
+              replayed: true,
+              type: "COFFEE",
+            }),
+            { status: 200 },
+          );
+        }
+        return new Response("not found", { status: 404 });
+      }),
+    );
+    renderScreen();
+
+    fireEvent.click(
+      await screen.findByRole("button", { name: "node:Ren Ito" }),
+    );
+    fireEvent.click(await screen.findByRole("button", { name: /接点を記録/ }));
+    fireEvent.click(screen.getByRole("radio", { name: "コーヒー" }));
+    fireEvent.click(screen.getByRole("radio", { name: "しっかり" }));
+    fireEvent.click(screen.getByRole("button", { name: "この接点を保存" }));
+
+    await waitFor(() =>
+      expect(
+        screen.getByRole("button", { name: "保存しています…" }),
+      ).toBeDisabled(),
+    );
+    releaseFirstCapture?.();
+
+    const safeError = await screen.findByRole("alert");
+    expect(safeError).toHaveTextContent("保存できませんでした");
+    expect(safeError).not.toHaveTextContent("private database detail");
+    expect(screen.getByRole("radio", { name: "コーヒー" })).toBeChecked();
+    expect(screen.getByRole("radio", { name: "しっかり" })).toBeChecked();
+
+    fireEvent.click(screen.getByRole("button", { name: "この接点を保存" }));
+    expect(await screen.findByText("再びつながった関係")).toBeVisible();
+    expect(screen.getByText("コーヒーを飲みながら話しました")).toBeVisible();
+    expect(
+      screen.getByRole("heading", { level: 2, name: "Ren Ito" }),
+    ).toBeVisible();
+    expect(screen.getByTestId("network-graph-canvas")).toHaveTextContent(
+      "graph:5",
+    );
+
+    expect(captureBodies).toHaveLength(2);
+    expect(captureBodies[1]).toEqual(captureBodies[0]);
+    expect(captureBodies[0]).toMatchObject({
+      durationBucket: "MEDIUM",
+      otherPersonId: "person-003",
+      type: "COFFEE",
+    });
+    expect(captureBodies[0]).not.toHaveProperty("confidence");
+    expect(captureBodies[0]).not.toHaveProperty("relationshipState");
+    expect(captureBodies[0]).not.toHaveProperty("currentPersonId");
   });
 
   it("expands at most the server result and selects a potential person through search", async () => {
