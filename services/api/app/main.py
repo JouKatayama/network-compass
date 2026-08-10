@@ -63,7 +63,7 @@ def create_app(
                 owned_engine.dispose()
 
     application = FastAPI(
-        description="Person-first Network Compass API for Vertical Slice 001.",
+        description="Person-first Network Compass API for accepted vertical slices.",
         title="Network Compass API",
         version="0.1.0",
         lifespan=lifespan,
@@ -74,7 +74,7 @@ def create_app(
         CORSMiddleware,
         allow_origins=list(active_settings.cors_origins),
         allow_credentials=True,
-        allow_methods=["GET", "OPTIONS"],
+        allow_methods=["GET", "POST", "OPTIONS"],
         allow_headers=["Accept", "Content-Type", "X-Network-Compass-Persona"],
     )
 

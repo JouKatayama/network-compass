@@ -36,6 +36,11 @@ export type CommonContextSchema = {
 export type ConnectionType = "SELF" | "DIRECT" | "TWO_HOP" | "NONE";
 
 /**
+ * DurationBucket
+ */
+export type DurationBucket = "SHORT" | "MEDIUM" | "LONG";
+
+/**
  * ErrorDetailSchema
  */
 export type ErrorDetailSchema = {
@@ -266,6 +271,70 @@ export type HealthResponse = {
 };
 
 /**
+ * InteractionCaptureRequestSchema
+ */
+export type InteractionCaptureRequestSchema = {
+  /**
+   * Clientrequestid
+   */
+  clientRequestId: string;
+  durationBucket: DurationBucket;
+  /**
+   * Occurredat
+   */
+  occurredAt: string;
+  /**
+   * Otherpersonid
+   */
+  otherPersonId: string;
+  /**
+   * Type
+   */
+  type:
+    | "OFFICE_CHAT"
+    | "COFFEE"
+    | "LUNCH"
+    | "DINNER"
+    | "COMMUNITY"
+    | "ACTIVITY"
+    | "OTHER";
+};
+
+/**
+ * InteractionCaptureResultSchema
+ */
+export type InteractionCaptureResultSchema = {
+  durationBucket: DurationBucket;
+  /**
+   * Interactionid
+   */
+  interactionId: string;
+  /**
+   * Occurredat
+   */
+  occurredAt: string;
+  /**
+   * Otherpersonid
+   */
+  otherPersonId: string;
+  /**
+   * Replayed
+   */
+  replayed: boolean;
+  /**
+   * Type
+   */
+  type:
+    | "OFFICE_CHAT"
+    | "COFFEE"
+    | "LUNCH"
+    | "DINNER"
+    | "COMMUNITY"
+    | "ACTIVITY"
+    | "OTHER";
+};
+
+/**
  * NamedContextSchema
  */
 export type NamedContextSchema = {
@@ -413,6 +482,65 @@ export type TimelineItemSchema = {
  * TimelineItemType
  */
 export type TimelineItemType = "INTERACTION" | "SHARED_PROJECT";
+
+export type CaptureInteractionApiV1InteractionsPostData = {
+  body: InteractionCaptureRequestSchema;
+  headers?: {
+    /**
+     * X-Network-Compass-Persona
+     *
+     * Development/test-only synthetic persona external ID, for example P001.
+     */
+    "X-Network-Compass-Persona"?: string | null;
+  };
+  path?: never;
+  query?: never;
+  url: "/api/v1/interactions";
+};
+
+export type CaptureInteractionApiV1InteractionsPostErrors = {
+  /**
+   * The interaction violates a frozen capture invariant.
+   */
+  400: ErrorResponseSchema;
+  /**
+   * Authentication or development persona is unavailable.
+   */
+  401: ErrorResponseSchema;
+  /**
+   * The other person is unavailable.
+   */
+  404: ErrorResponseSchema;
+  /**
+   * The idempotency identity was reused with different content.
+   */
+  409: ErrorResponseSchema;
+  /**
+   * The request shape or enum value is invalid.
+   */
+  422: ErrorResponseSchema;
+  /**
+   * Unexpected safe server error.
+   */
+  500: ErrorResponseSchema;
+};
+
+export type CaptureInteractionApiV1InteractionsPostError =
+  CaptureInteractionApiV1InteractionsPostErrors[keyof CaptureInteractionApiV1InteractionsPostErrors];
+
+export type CaptureInteractionApiV1InteractionsPostResponses = {
+  /**
+   * The same interaction request was replayed without another write.
+   */
+  200: InteractionCaptureResultSchema;
+  /**
+   * Successful Response
+   */
+  201: InteractionCaptureResultSchema;
+};
+
+export type CaptureInteractionApiV1InteractionsPostResponse =
+  CaptureInteractionApiV1InteractionsPostResponses[keyof CaptureInteractionApiV1InteractionsPostResponses];
 
 export type GetCurrentNetworkApiV1MeNetworkGetData = {
   body?: never;

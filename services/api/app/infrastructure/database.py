@@ -1,4 +1,6 @@
 import os
+from collections.abc import Iterator
+from contextlib import contextmanager
 
 from sqlalchemy import MetaData, create_engine, text
 from sqlalchemy.engine import Engine
@@ -38,6 +40,16 @@ def create_session_factory(engine: Engine) -> sessionmaker[Session]:
         class_=Session,
         expire_on_commit=False,
     )
+
+
+@contextmanager
+def transaction_boundary(session: Session) -> Iterator[object]:
+    try:
+        yield session
+        session.commit()
+    except Exception:
+        session.rollback()
+        raise
 
 
 def check_database_connection(engine: Engine | None = None) -> bool:

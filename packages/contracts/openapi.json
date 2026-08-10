@@ -58,6 +58,15 @@
         "title": "ConnectionType",
         "type": "string"
       },
+      "DurationBucket": {
+        "enum": [
+          "SHORT",
+          "MEDIUM",
+          "LONG"
+        ],
+        "title": "DurationBucket",
+        "type": "string"
+      },
       "ErrorDetailSchema": {
         "additionalProperties": false,
         "properties": {
@@ -494,6 +503,101 @@
         "title": "HealthResponse",
         "type": "object"
       },
+      "InteractionCaptureRequestSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "clientRequestId": {
+            "format": "uuid",
+            "title": "Clientrequestid",
+            "type": "string"
+          },
+          "durationBucket": {
+            "$ref": "#/components/schemas/DurationBucket"
+          },
+          "occurredAt": {
+            "format": "date-time",
+            "title": "Occurredat",
+            "type": "string"
+          },
+          "otherPersonId": {
+            "format": "uuid",
+            "title": "Otherpersonid",
+            "type": "string"
+          },
+          "type": {
+            "enum": [
+              "OFFICE_CHAT",
+              "COFFEE",
+              "LUNCH",
+              "DINNER",
+              "COMMUNITY",
+              "ACTIVITY",
+              "OTHER"
+            ],
+            "title": "Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "clientRequestId",
+          "otherPersonId",
+          "type",
+          "durationBucket",
+          "occurredAt"
+        ],
+        "title": "InteractionCaptureRequestSchema",
+        "type": "object"
+      },
+      "InteractionCaptureResultSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "durationBucket": {
+            "$ref": "#/components/schemas/DurationBucket"
+          },
+          "interactionId": {
+            "format": "uuid",
+            "title": "Interactionid",
+            "type": "string"
+          },
+          "occurredAt": {
+            "format": "date-time",
+            "title": "Occurredat",
+            "type": "string"
+          },
+          "otherPersonId": {
+            "format": "uuid",
+            "title": "Otherpersonid",
+            "type": "string"
+          },
+          "replayed": {
+            "title": "Replayed",
+            "type": "boolean"
+          },
+          "type": {
+            "enum": [
+              "OFFICE_CHAT",
+              "COFFEE",
+              "LUNCH",
+              "DINNER",
+              "COMMUNITY",
+              "ACTIVITY",
+              "OTHER"
+            ],
+            "title": "Type",
+            "type": "string"
+          }
+        },
+        "required": [
+          "interactionId",
+          "otherPersonId",
+          "occurredAt",
+          "type",
+          "durationBucket",
+          "replayed"
+        ],
+        "title": "InteractionCaptureResultSchema",
+        "type": "object"
+      },
       "NamedContextSchema": {
         "additionalProperties": false,
         "properties": {
@@ -845,12 +949,134 @@
     }
   },
   "info": {
-    "description": "Person-first Network Compass API for Vertical Slice 001.",
+    "description": "Person-first Network Compass API for accepted vertical slices.",
     "title": "Network Compass API",
     "version": "0.1.0"
   },
   "openapi": "3.1.0",
   "paths": {
+    "/api/v1/interactions": {
+      "post": {
+        "operationId": "capture_interaction_api_v1_interactions_post",
+        "parameters": [
+          {
+            "description": "Development/test-only synthetic persona external ID, for example P001.",
+            "in": "header",
+            "name": "X-Network-Compass-Persona",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "maxLength": 32,
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Development/test-only synthetic persona external ID, for example P001.",
+              "title": "X-Network-Compass-Persona"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InteractionCaptureRequestSchema"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InteractionCaptureResultSchema"
+                }
+              }
+            },
+            "description": "The same interaction request was replayed without another write."
+          },
+          "201": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InteractionCaptureResultSchema"
+                }
+              }
+            },
+            "description": "Successful Response"
+          },
+          "400": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseSchema"
+                }
+              }
+            },
+            "description": "The interaction violates a frozen capture invariant."
+          },
+          "401": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseSchema"
+                }
+              }
+            },
+            "description": "Authentication or development persona is unavailable."
+          },
+          "404": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseSchema"
+                }
+              }
+            },
+            "description": "The other person is unavailable."
+          },
+          "409": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseSchema"
+                }
+              }
+            },
+            "description": "The idempotency identity was reused with different content."
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseSchema"
+                }
+              }
+            },
+            "description": "The request shape or enum value is invalid."
+          },
+          "500": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponseSchema"
+                }
+              }
+            },
+            "description": "Unexpected safe server error."
+          }
+        },
+        "summary": "Capture a factual self-reported analog interaction",
+        "tags": [
+          "interactions"
+        ]
+      }
+    },
     "/api/v1/me/network": {
       "get": {
         "operationId": "get_current_network_api_v1_me_network_get",

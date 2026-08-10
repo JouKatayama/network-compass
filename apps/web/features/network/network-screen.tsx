@@ -1,6 +1,6 @@
 "use client";
 
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCallback, useMemo, useRef, useState, type ReactNode } from "react";
 
 import type {
@@ -256,6 +256,7 @@ function NetworkReady({
 }: {
   projection: GraphProjectionSchema;
 }) {
+  const queryClient = useQueryClient();
   const [hopMode, setHopMode] = useState<VisibleHopMode>("TWO_HOP");
   const [projection, setProjection] = useState(initialProjection);
   const [positions, setPositions] = useState(() =>
@@ -398,6 +399,23 @@ function NetworkReady({
     }, 0);
   };
 
+  const refreshAfterInteractionCapture = useCallback(async () => {
+    const refreshedProjection = await fetchNetworkProjection();
+    setPositions((current) =>
+      calculateExpandedLayout(
+        current,
+        refreshedProjection.nodes,
+        refreshedProjection.edges,
+        selectedPersonId ?? refreshedProjection.focalPersonId,
+      ),
+    );
+    setProjection(refreshedProjection);
+    queryClient.setQueryData(["current-network"], refreshedProjection);
+    setAnnouncement(
+      "接点を保存し、選択中の人物とネットワークを更新しました。既存の位置は維持されています。",
+    );
+  }, [queryClient, selectedPersonId]);
+
   return (
     <>
       <div className="network-toolbar">
@@ -481,9 +499,11 @@ function NetworkReady({
               expansionMutation.isPending &&
               expansionMutation.variables === selectedPersonId
             }
+            key={selectedPersonId}
             onClose={closeDetail}
             onDetail={handleDetail}
             onExpand={() => expansionMutation.mutate(selectedPersonId)}
+            onInteractionCaptured={refreshAfterInteractionCapture}
             personId={selectedPersonId}
             personNameById={personNameById}
           />
@@ -551,10 +571,7 @@ export function NetworkScreen() {
         networkQuery.data.nodes.some(
           (node) => node.personId !== networkQuery.data.focalPersonId,
         ) ? (
-          <NetworkReady
-            key={`${networkQuery.data.meta.generatedAt}:${networkQuery.data.nodes.length}`}
-            projection={networkQuery.data}
-          />
+          <NetworkReady projection={networkQuery.data} />
         ) : null}
       </main>
     </div>

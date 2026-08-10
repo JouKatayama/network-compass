@@ -1,7 +1,9 @@
 # NC-011 — Analog Interaction Capture v0.1
 
-**Status:** Frozen v0.1 — pre-implementation Review Gate approved on 2026-08-09. The active execution
-plan is `docs/exec-plans/active/NC-011.md`.
+**Status:** Frozen v0.1 implementation candidate — pre-implementation Review Gate approved on
+2026-08-09; final human GO/NO-GO pending. The active execution plan is
+`docs/exec-plans/active/NC-011.md`, with evidence in
+`docs/testing/vs002-acceptance-matrix.md`.
 
 Implement a fast factual 1:1 analog-contact write path from Person Detail through
 `POST /api/v1/interactions`: validate and persist one immutable self-reported `InteractionEvent`,

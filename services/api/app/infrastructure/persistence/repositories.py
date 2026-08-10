@@ -254,6 +254,33 @@ class SqlAlchemyFactRepository:
             for row in person_rows
         )
 
+    def get_person(self, person_id: UUID) -> Person | None:
+        row = self._session.get(PersonRecord, person_id)
+        if row is None:
+            return None
+        identifier_rows = self._session.execute(
+            select(PersonExternalIdentifierRecord)
+            .where(PersonExternalIdentifierRecord.person_id == person_id)
+            .order_by(
+                PersonExternalIdentifierRecord.source_system,
+                PersonExternalIdentifierRecord.external_id,
+            )
+        ).scalars()
+        return Person(
+            id=row.id,
+            display_name=row.display_name,
+            joined_at=_database_utc(row.joined_at, field_name="joined_at"),
+            hire_type=row.hire_type,
+            primary_organization_unit_id=row.primary_organization_unit_id,
+            external_identifiers=tuple(
+                ExternalIdentifier(item.source_system, item.external_id) for item in identifier_rows
+            ),
+            role=row.role,
+            career_level=row.career_level,
+            location=row.location,
+            avatar_url=row.avatar_url,
+        )
+
     def list_organization_units(self) -> tuple[OrganizationUnit, ...]:
         rows = self._session.execute(
             select(OrganizationUnitRecord).order_by(OrganizationUnitRecord.id)
@@ -383,26 +410,127 @@ class SqlAlchemyFactRepository:
             )
         ).scalars()
         return tuple(
-            InteractionEvent(
-                id=row.id,
-                occurred_at=_database_utc(row.occurred_at, field_name="occurred_at"),
-                channel=row.channel,
-                type=row.type,
-                participant_ids=tuple(participants_by_event[row.id]),
-                source=row.source,
-                confidence=Confidence(row.confidence),
-                created_at=_database_utc(row.created_at, field_name="created_at"),
-                conversation_participant_count=row.conversation_participant_count,
-                duration_bucket=row.duration_bucket,
-                activity_id=row.activity_id,
-                community_id=row.community_id,
-                project_id=row.project_id,
-                initiator_person_id=row.initiator_person_id,
-                created_by_person_id=row.created_by_person_id,
-                source_system=row.source_system,
-                external_event_id=row.external_event_id,
-            )
+            self._interaction_to_domain(row, tuple(participants_by_event[row.id]))
             for row in event_rows
+        )
+
+    def get_interaction_by_source(
+        self,
+        source_system: str,
+        external_event_id: str,
+    ) -> InteractionEvent | None:
+        row = self._session.execute(
+            select(InteractionEventRecord).where(
+                InteractionEventRecord.source_system == source_system.casefold(),
+                InteractionEventRecord.external_event_id == external_event_id,
+            )
+        ).scalar_one_or_none()
+        if row is None:
+            return None
+        participants = tuple(
+            self._session.execute(
+                select(InteractionParticipantRecord.person_id)
+                .where(InteractionParticipantRecord.interaction_event_id == row.id)
+                .order_by(InteractionParticipantRecord.person_id)
+            ).scalars()
+        )
+        return self._interaction_to_domain(row, participants)
+
+    def add_interaction_event(self, event: InteractionEvent) -> None:
+        self._session.add(
+            InteractionEventRecord(
+                id=event.id,
+                occurred_at=event.occurred_at,
+                channel=event.channel,
+                type=event.type,
+                source=event.source,
+                confidence=event.confidence.value,
+                created_at=event.created_at,
+                conversation_participant_count=event.conversation_participant_count,
+                duration_bucket=event.duration_bucket,
+                activity_id=event.activity_id,
+                community_id=event.community_id,
+                project_id=event.project_id,
+                initiator_person_id=event.initiator_person_id,
+                created_by_person_id=event.created_by_person_id,
+                source_system=event.source_system,
+                external_event_id=event.external_event_id,
+            )
+        )
+        self._session.add_all(
+            InteractionParticipantRecord(
+                interaction_event_id=event.id,
+                person_id=person_id,
+            )
+            for person_id in event.participant_ids
+        )
+        self._session.flush()
+
+    def list_interaction_events_for_pair(
+        self,
+        pair: PersonPair,
+    ) -> tuple[InteractionEvent, ...]:
+        event_ids = tuple(
+            self._session.execute(
+                select(InteractionParticipantRecord.interaction_event_id)
+                .where(
+                    InteractionParticipantRecord.person_id.in_((pair.person_a_id, pair.person_b_id))
+                )
+                .group_by(InteractionParticipantRecord.interaction_event_id)
+                .having(func.count(InteractionParticipantRecord.person_id) == 2)
+            ).scalars()
+        )
+        if not event_ids:
+            return ()
+
+        participants_by_event: dict[UUID, list[UUID]] = defaultdict(list)
+        participant_rows = self._session.execute(
+            select(InteractionParticipantRecord)
+            .where(InteractionParticipantRecord.interaction_event_id.in_(event_ids))
+            .order_by(
+                InteractionParticipantRecord.interaction_event_id,
+                InteractionParticipantRecord.person_id,
+            )
+        ).scalars()
+        for row in participant_rows:
+            participants_by_event[row.interaction_event_id].append(row.person_id)
+
+        event_rows = self._session.execute(
+            select(InteractionEventRecord)
+            .where(InteractionEventRecord.id.in_(event_ids))
+            .order_by(
+                InteractionEventRecord.occurred_at,
+                InteractionEventRecord.id,
+            )
+        ).scalars()
+        return tuple(
+            self._interaction_to_domain(row, tuple(participants_by_event[row.id]))
+            for row in event_rows
+        )
+
+    @staticmethod
+    def _interaction_to_domain(
+        row: InteractionEventRecord,
+        participant_ids: tuple[UUID, ...],
+    ) -> InteractionEvent:
+        return InteractionEvent(
+            id=row.id,
+            occurred_at=_database_utc(row.occurred_at, field_name="occurred_at"),
+            channel=row.channel,
+            type=row.type,
+            participant_ids=participant_ids,
+            source=row.source,
+            confidence=Confidence(row.confidence),
+            created_at=_database_utc(row.created_at, field_name="created_at"),
+            conversation_participant_count=row.conversation_participant_count,
+            duration_bucket=row.duration_bucket,
+            activity_id=row.activity_id,
+            community_id=row.community_id,
+            project_id=row.project_id,
+            initiator_person_id=row.initiator_person_id,
+            created_by_person_id=row.created_by_person_id,
+            source_system=row.source_system,
+            external_event_id=row.external_event_id,
         )
 
     def relationship_contexts(
@@ -527,6 +655,52 @@ class SqlAlchemyRelationshipProfileRepository:
             (pair.person_a_id, pair.person_b_id),
         )
         return self._to_domain(record) if record is not None else None
+
+    def upsert(self, profile: RelationshipProfile) -> None:
+        record = self._session.get(
+            RelationshipProfileRecord,
+            (profile.pair.person_a_id, profile.pair.person_b_id),
+        )
+        if record is None:
+            record = RelationshipProfileRecord(
+                person_a_id=profile.pair.person_a_id,
+                person_b_id=profile.pair.person_b_id,
+                current_activation=profile.current_activation,
+                historical_depth=profile.historical_depth,
+                digital_evidence=profile.digital_evidence,
+                analog_evidence=profile.analog_evidence,
+                social_context=profile.social_context,
+                reciprocity=profile.reciprocity,
+                channel_diversity=profile.channel_diversity,
+                relationship_strength=profile.relationship_strength,
+                state=profile.state,
+                first_meaningful_interaction_at=profile.first_meaningful_interaction_at,
+                last_meaningful_interaction_at=profile.last_meaningful_interaction_at,
+                expected_cadence_days=profile.expected_cadence_days,
+                dormancy_ratio=profile.dormancy_ratio,
+                data_confidence=profile.data_confidence,
+                model_version=profile.model_version,
+                calculated_at=profile.calculated_at,
+            )
+            self._session.add(record)
+        else:
+            record.current_activation = profile.current_activation
+            record.historical_depth = profile.historical_depth
+            record.digital_evidence = profile.digital_evidence
+            record.analog_evidence = profile.analog_evidence
+            record.social_context = profile.social_context
+            record.reciprocity = profile.reciprocity
+            record.channel_diversity = profile.channel_diversity
+            record.relationship_strength = profile.relationship_strength
+            record.state = profile.state
+            record.first_meaningful_interaction_at = profile.first_meaningful_interaction_at
+            record.last_meaningful_interaction_at = profile.last_meaningful_interaction_at
+            record.expected_cadence_days = profile.expected_cadence_days
+            record.dormancy_ratio = profile.dormancy_ratio
+            record.data_confidence = profile.data_confidence
+            record.model_version = profile.model_version
+            record.calculated_at = profile.calculated_at
+        self._session.flush()
 
     def list_all(self) -> tuple[RelationshipProfile, ...]:
         records = self._session.execute(

@@ -229,6 +229,52 @@ export const potentialPersonDetail: PersonDetailSchema = {
   timeline: [],
 };
 
+export const capturedDormantPersonDetail: PersonDetailSchema = {
+  ...dormantPersonDetail,
+  relationship: {
+    ...dormantPersonDetail.relationship,
+    historyNote: "最近、あらためて接点がありました。",
+    label: "再びつながった関係",
+    lastContactAt: "2026-08-10T00:00:00Z",
+    state: "RECONNECTED",
+  },
+  timeline: [
+    {
+      context: null,
+      endedAt: null,
+      itemType: "INTERACTION",
+      occurredAt: "2026-08-10T00:00:00Z",
+      title: "コーヒーを飲みながら話しました",
+    },
+    ...dormantPersonDetail.timeline,
+  ],
+};
+
+export const capturedNetworkFixture: GraphProjectionSchema = {
+  ...networkFixture,
+  edges: networkFixture.edges.map((edge) =>
+    edge.targetPersonId === "person-003"
+      ? {
+          ...edge,
+          currentActivation: 0.91,
+          opacity: "HIGH",
+          relationshipState: "RECONNECTED",
+          style: "SOLID",
+          width: "THICK",
+        }
+      : edge,
+  ),
+  meta: {
+    ...networkFixture.meta,
+    generatedAt: "2026-08-10T00:00:01Z",
+  },
+  nodes: networkFixture.nodes.map((node) =>
+    node.personId === "person-003"
+      ? { ...node, relationshipState: "RECONNECTED" }
+      : node,
+  ),
+};
+
 export const potentialSearchPage: PersonSearchPageSchema = {
   items: [
     {
